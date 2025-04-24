@@ -1,6 +1,7 @@
 # Note: In a yml each level is padded by 2 spaces
 name: Flutter
 
+
 on:
   # Runs this action when you push on master
   push:
@@ -20,3 +21,15 @@ jobs:
 
       # Clones the project on the machine
       - uses: actions/checkout@v4
+
+      # Installs the flutter and related dependencies on this machine
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.0' # Use the latest stable version of Flutter
+          channel: 'stable'
+          cache: true
+      - name: Install Dependencies
+        run: |
+          flutter pub get
+          flutter pub run build_runner build --delete-conflicting-outputs
