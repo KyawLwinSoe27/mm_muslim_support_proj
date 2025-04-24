@@ -1,1 +1,35 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"mm-muslim-support","appId":"1:60270770558:android:46fe678dfc8310aaf4db2f","fileOutput":"android/app/google-services.json"}},"ios":{"default":{"projectId":"mm-muslim-support","appId":"1:60270770558:ios:e0cb86da73579f4ff4db2f","uploadDebugSymbols":false,"fileOutput":"ios/Runner/GoogleService-Info.plist"}},"dart":{"lib/firebase_options.dart":{"projectId":"mm-muslim-support","configurations":{"android":"1:60270770558:android:46fe678dfc8310aaf4db2f","ios":"1:60270770558:ios:e0cb86da73579f4ff4db2f","web":"1:60270770558:web:83e45d55eacc39cef4db2f"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "mm-muslim-support",
+          "appId": "1:60270770558:android:46fe678dfc8310aaf4db2f",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "mm-muslim-support",
+          "appId": "1:60270770558:ios:e0cb86da73579f4ff4db2f",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "mm-muslim-support",
+          "configurations": {
+            "android": "1:60270770558:android:46fe678dfc8310aaf4db2f",
+            "ios": "1:60270770558:ios:e0cb86da73579f4ff4db2f",
+            "web": "1:60270770558:web:83e45d55eacc39cef4db2f"
+          }
+        }
+      }
+    }
+  },
+  "appdistribution": {
+    "app": "1:60270770558:android:46fe678dfc8310aaf4db2f",
+    "groups": ["all_testers"]
+  }
+}
