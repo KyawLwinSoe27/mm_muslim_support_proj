@@ -10,19 +10,35 @@
 include: package:flutter_lints/flutter.yaml
 
 linter:
-  # The lint rules applied to this project can be customized in the
-  # section below to disable rules from the `package:flutter_lints/flutter.yaml`
-  # included above or to enable additional rules. A list of all available lints
-  # and their documentation is published at https://dart.dev/lints.
-  #
-  # Instead of disabling a lint rule for the entire project in the
-  # section below, it can also be suppressed for a single line of code
-  # or a specific dart file by using the `// ignore: name_of_lint` and
-  # `// ignore_for_file: name_of_lint` syntax on the line or in the file
-  # producing the lint.
   rules:
-    # avoid_print: false  # Uncomment to disable the `avoid_print` rule
-    # prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
+    # Code style & formatting
+    prefer_single_quotes: true
+    always_use_package_imports: true
+    avoid_print: true
+    avoid_unnecessary_containers: true
+    prefer_const_constructors: true
+    prefer_const_literals_to_create_immutables: true
+
+    # Null safety & type checking
+    avoid_returning_null_for_future: true
+    avoid_field_initializers_in_const_classes: true
+    annotate_overrides: true
+    type_annotate_public_apis: true
+
+    # Error prevention
+    no_logic_in_create_state: true
+    avoid_init_to_null: true
+    use_key_in_widget_constructors: true
+
+    # Naming & structure
+    camel_case_types: true
+    constant_identifier_names: false
+    non_constant_identifier_names: false
+
+    # Readability & maintainability
+    always_declare_return_types: true
+    sort_child_properties_last: true
+    avoid_classes_with_only_static_members: false
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
