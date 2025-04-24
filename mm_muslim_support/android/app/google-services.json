@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "60270770558",
+    "project_id": "mm-muslim-support",
+    "storage_bucket": "mm-muslim-support.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:60270770558:android:46fe678dfc8310aaf4db2f",
+        "android_client_info": {
+          "package_name": "com.dynaverse.mm_muslim_support"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAaKW0-CHWOnVZ8p43blS2OECj9k4zF6Ug"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

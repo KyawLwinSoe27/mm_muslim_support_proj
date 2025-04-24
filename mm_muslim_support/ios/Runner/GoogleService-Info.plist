@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyC1eGHtNe9060YzDDSxiiWG18F88P3EFtA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>60270770558</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.dynaverse.mmMuslimSupport</string>
+	<key>PROJECT_ID</key>
+	<string>mm-muslim-support</string>
+	<key>STORAGE_BUCKET</key>
+	<string>mm-muslim-support.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:60270770558:ios:e0cb86da73579f4ff4db2f</string>
+</dict>
+</plist>
