@@ -29,7 +29,12 @@ jobs:
           flutter-version: '3.29.0' # Use the latest stable version of Flutter
           channel: 'stable'
           cache: true
+
+      - name: Change directory to project
+        run: cd mm_muslim_support
+
       - name: Install Dependencies
         run: |
+          cd mm_muslim_support
           flutter pub get
           flutter pub run build_runner build --delete-conflicting-outputs
