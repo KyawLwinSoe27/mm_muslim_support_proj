@@ -21,14 +21,22 @@ class GetPrayerTimeCubit extends Cubit<GetPrayerTimeState> {
       Position? position = await _getCurrentLocation();
       if (position != null) {
         // Define the geographical coordinates for the location
-        Coordinates coordinates = Coordinates(position.latitude, position.longitude);
+        Coordinates coordinates = Coordinates(
+          position.latitude,
+          position.longitude,
+        );
 
         // Specify the calculation parameters for prayer times
         PrayerCalculationParameters params = PrayerCalculationMethod.karachi();
         params.madhab = PrayerMadhab.hanafi;
 
         // Create a PrayerTimes instance for the specified location
-        PrayerTimes prayerTimes = PrayerTimes(coordinates: coordinates, calculationParameters: params, precision: true, locationName: 'Asia/Kolkata');
+        PrayerTimes prayerTimes = PrayerTimes(
+          coordinates: coordinates,
+          calculationParameters: params,
+          precision: true,
+          locationName: 'Asia/Yangon',
+        );
 
         List<DateTime> times = [
           prayerTimes.fajrStartTime!,
@@ -67,16 +75,29 @@ class GetPrayerTimeCubit extends Cubit<GetPrayerTimeState> {
         String nextPrayer = result['next'];
         DateTime nextTime = result['nextTime'];
 
-        PrayerTimeCard nowTime = PrayerTimeCard(title: 'Now', subtitle: currentPrayer, time:  nowEndTime != null ? 'End in ${DateFormat('hh:mm').format(nowEndTime)} PM' : 'Already Ended', image: '', gradientColors: [Color(0xFF6CA6CD), Color(0xFFB0E0E6)]);
-        PrayerTimeCard comingPrayerTime = PrayerTimeCard(title: 'Coming...', subtitle: nextPrayer, time: 'Start ${DateFormat('hh:mm').format(nextTime)} PM', image: '', gradientColors: [Color(0xFF6CA6CD), Color(0xFFB0E0E6)]);
+        PrayerTimeCard nowTime = PrayerTimeCard(
+          title: 'Now',
+          subtitle: currentPrayer,
+          time:
+              nowEndTime != null
+                  ? 'End in ${DateFormat('hh:mm').format(nowEndTime)} PM'
+                  : 'Already Ended',
+          image: '',
+          gradientColors: [Color(0xFF6CA6CD), Color(0xFFB0E0E6)],
+        );
+        PrayerTimeCard comingPrayerTime = PrayerTimeCard(
+          title: 'Coming...',
+          subtitle: nextPrayer,
+          time: 'Start ${DateFormat('hh:mm').format(nextTime)} PM',
+          image: '',
+          gradientColors: [Color(0xFF6CA6CD), Color(0xFFB0E0E6)],
+        );
 
         prayerTimeList.add(nowTime);
 
         prayerTimeList.add(comingPrayerTime);
 
-
         emit(GetPrayerTimeLoaded(prayerTimeList));
-
       } else {
         emit(const GetPrayerTimeError('Unable to get location'));
       }
@@ -108,11 +129,15 @@ class GetPrayerTimeCubit extends Cubit<GetPrayerTimeState> {
 
     if (permission == LocationPermission.deniedForever) {
       // Permissions are permanently denied
-      return Future.error('Location permissions are permanently denied, we cannot request permissions.');
+      return Future.error(
+        'Location permissions are permanently denied, we cannot request permissions.',
+      );
     }
 
     // Get the current position
-    return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    return await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
   }
 
   Map<String, dynamic> _getCurrentAndNextPrayer(List<DateTime> times) {
@@ -124,8 +149,10 @@ class GetPrayerTimeCubit extends Cubit<GetPrayerTimeState> {
 
       if (now.isAfter(start) && now.isBefore(end)) {
         String currentPrayer = _getPrayerNameByIndex(i);
-        String nextPrayer = i + 2 < times.length ? _getPrayerNameByIndex(i + 2) : 'None';
-        DateTime nextTime = i + 2 < times.length ? times[i + 2] : DateTime.now();
+        String nextPrayer =
+            i + 2 < times.length ? _getPrayerNameByIndex(i + 2) : 'None';
+        DateTime nextTime =
+            i + 2 < times.length ? times[i + 2] : DateTime.now();
 
         return {
           'now': currentPrayer,
