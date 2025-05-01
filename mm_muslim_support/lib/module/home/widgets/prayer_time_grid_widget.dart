@@ -17,6 +17,7 @@ class PrayerTimeGrid extends StatelessWidget {
         height: 300,
         width: double.infinity,
         child: GridView.builder(
+          physics: const NeverScrollableScrollPhysics(),
           padding: const EdgeInsets.all(12),
           itemCount: state.prayerTimes.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
