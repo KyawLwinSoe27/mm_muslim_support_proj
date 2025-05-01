@@ -1,14 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mm_muslim_support/model/tasbih_model.dart';
 import 'package:mm_muslim_support/module/home/cubit/bottom_navigation_bar_cubit.dart';
+import 'package:mm_muslim_support/module/home/cubit/tasbih_counter_cubit.dart';
 import 'package:mm_muslim_support/module/home/presentation/dashboard_page.dart';
+import 'package:mm_muslim_support/module/home/presentation/tasbih_page.dart';
 import 'package:mm_muslim_support/module/home/widgets/drawer_widget.dart';
 import 'package:mm_muslim_support/module/home/widgets/today_date_widget.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
-  static const List<Widget> _pages = <Widget>[DashboardPage(), Center(child: Text('Tracker Page')), Center(child: Text('Tasbir Page')), Center(child: Text('Discover Page'))];
+  static String splash = 'splash';
+
+  static List<Widget> _pages = <Widget>[
+    DashboardPage(),
+    Center(child: Text('Tracker Page')),
+    Center(child: BlocProvider(create: (context) => TasbihCounterCubit(), child: TasbihPage(tasbih: tasbihList,))),
+    Center(child: Text('Discover Page')),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +34,7 @@ class HomePage extends StatelessWidget {
             );
           },
         ),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: 10),
-            child: TodayDateWidget(),
-          ),
-        ],
+        actions: const [Padding(padding: EdgeInsets.only(right: 10), child: TodayDateWidget())],
       ),
       drawer: const DrawerWidget(),
       body: BlocBuilder<BottomNavigationBarCubit, int>(

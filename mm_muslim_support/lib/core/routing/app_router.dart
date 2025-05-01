@@ -2,37 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mm_muslim_support/module/fatwa/presentation/fatwa_page.dart';
+import 'package:mm_muslim_support/module/history/presentations/islamic_history_page.dart';
 import 'package:mm_muslim_support/module/home/cubit/bottom_navigation_bar_cubit.dart';
 import 'package:mm_muslim_support/module/home/presentation/home_page.dart';
 
 class AppRouter {
+
   static final GoRouter router = GoRouter(
     initialLocation: '/',
     routes: [
       // Home Route
-      GoRoute(
-        path: '/',
-        builder: (context, state) =>
-            BlocProvider(
-              create: (context) => BottomNavigationBarCubit(),
-              child: const HomePage(),
-            ),
-      ),
+      GoRoute( name: HomePage.splash ,path: '/', builder: (context, state) => BlocProvider(create: (context) => BottomNavigationBarCubit(), child: const HomePage())),
+      GoRoute(name: IslamicHistoryPage.islamicHistory ,path: '/history', builder: (context, state) => const IslamicHistoryPage()),
       // Login Route
-      GoRoute(
-        path: '/login',
-        builder: (context, state) => const FatwaPage(),
-      )
+      GoRoute(path: '/login', builder: (context, state) => const FatwaPage()),
     ],
     // Optional: Custom error page route (404-like)
     errorPageBuilder: (context, state) {
-      return MaterialPage<void>(
-        key: state.pageKey,
-        child: Scaffold(
-          appBar: AppBar(title: const Text('Error')),
-          body: const Center(child: Text('Page not found!')),
-        ),
-      );
+      return MaterialPage<void>(key: state.pageKey, child: Scaffold(appBar: AppBar(title: const Text('Error')), body: const Center(child: Text('Page not found!'))));
     },
   );
 }

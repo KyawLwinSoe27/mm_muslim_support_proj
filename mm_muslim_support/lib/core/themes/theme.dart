@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mm_muslim_support/core/enums/font_family.dart';
 
 class MaterialTheme {
   final TextTheme textTheme;
@@ -341,6 +342,7 @@ class MaterialTheme {
      brightness: colorScheme.brightness,
      colorScheme: colorScheme,
      textTheme: textTheme.apply(
+       fontFamily: FontFamily.poppins.name,
        bodyColor: colorScheme.onSurface,
        displayColor: colorScheme.onSurface,
      ),
