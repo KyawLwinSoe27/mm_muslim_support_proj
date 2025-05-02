@@ -68,6 +68,10 @@ dependencies:
   firebase_crashlytics: ^4.3.5
   firebase_analytics: ^11.4.5
   firebase_performance: ^0.10.1+5
+  geocoding: ^3.0.0
+  flutter_local_notifications: ^18.0.1
+  timezone: ^0.9.2
+  android_intent_plus: ^5.3.0
 
 
 

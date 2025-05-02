@@ -1,13 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mm_muslim_support/core/routing/app_router.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:mm_muslim_support/core/themes/theme.dart';
 import 'package:mm_muslim_support/firebase_options.dart';
 import 'package:mm_muslim_support/logic/theme_cubit.dart';
+import 'package:mm_muslim_support/service/local_notification_service.dart';
+import 'package:mm_muslim_support/service/permission_service.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+FlutterLocalNotificationsPlugin();
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  tz.initializeTimeZones(); // ✅ Required!
+  await LocalNotificationService.initializeNotifications();
+  await PermissionService.requestNotificationPermission();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(BlocProvider(create: (context) => ThemeCubit(), child: const MyApp()));
 }

@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mm_muslim_support/model/tasbih_model.dart';
 import 'package:mm_muslim_support/module/home/cubit/bottom_navigation_bar_cubit.dart';
+import 'package:mm_muslim_support/module/home/cubit/change_date_cubit.dart';
+import 'package:mm_muslim_support/module/home/cubit/get_prayer_time_cubit/get_prayer_time_cubit.dart';
 import 'package:mm_muslim_support/module/home/cubit/tasbih_counter_cubit.dart';
 import 'package:mm_muslim_support/module/home/presentation/dashboard_page.dart';
+import 'package:mm_muslim_support/module/home/presentation/namaz_times_page.dart';
 import 'package:mm_muslim_support/module/home/presentation/tasbih_page.dart';
 import 'package:mm_muslim_support/module/home/widgets/drawer_widget.dart';
 import 'package:mm_muslim_support/module/home/widgets/today_date_widget.dart';
@@ -13,12 +16,35 @@ class HomePage extends StatelessWidget {
 
   static String splash = 'splash';
 
-  static List<Widget> _pages = <Widget>[
-    DashboardPage(),
-    Center(child: Text('Tracker Page')),
-    Center(child: BlocProvider(create: (context) => TasbihCounterCubit(), child: TasbihPage(tasbih: tasbihList,))),
-    Center(child: Text('Discover Page')),
-  ];
+  Widget _buildPage(int index) {
+    switch (index) {
+      case 0:
+        return const DashboardPage();
+      case 1:
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider<GetPrayerTimeCubit>(
+              create: (context) => GetPrayerTimeCubit(),
+            ),
+            BlocProvider<ChangeDateCubit>(
+              create: (context) => ChangeDateCubit(
+                getPrayerTimeCubit: context.read<GetPrayerTimeCubit>(),
+              ),
+            ),
+          ],
+          child: const NamazTimesPage(),
+        );
+      case 2:
+        return BlocProvider(
+          create: (context) => TasbihCounterCubit(),
+          child: TasbihPage(tasbih: tasbihList),
+        );
+      case 3:
+        return const Center(child: Text('Discover Page'));
+      default:
+        return const SizedBox.shrink(); // fallback
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +65,7 @@ class HomePage extends StatelessWidget {
       drawer: const DrawerWidget(),
       body: BlocBuilder<BottomNavigationBarCubit, int>(
         builder: (context, state) {
-          return IndexedStack(
-            index: state, // <-- use the current state directly
-            children: _pages,
-          );
+          return _buildPage(state);
         },
       ),
       bottomNavigationBar: BlocBuilder<BottomNavigationBarCubit, int>(

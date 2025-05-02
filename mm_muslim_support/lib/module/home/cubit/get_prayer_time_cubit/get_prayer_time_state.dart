@@ -28,3 +28,20 @@ final class GetPrayerTimeError extends GetPrayerTimeState {
   @override
   List<Object> get props => [error];
 }
+
+final class GetPrayerTimeByDateLoaded extends GetPrayerTimeState {
+  final List<CustomPrayerTime> prayerTimes;
+
+  const GetPrayerTimeByDateLoaded({required this.prayerTimes});
+}
+
+final class GetPrayerTimeByDateLoading extends GetPrayerTimeState {}
+
+final class GetPrayerTimeByDateError extends GetPrayerTimeState {
+  final String error;
+
+  const GetPrayerTimeByDateError(this.error);
+
+  @override
+  List<Object> get props => [error];
+}
