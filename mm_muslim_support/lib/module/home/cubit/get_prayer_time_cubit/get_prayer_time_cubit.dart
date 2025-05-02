@@ -4,7 +4,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:mm_muslim_support/core/enums/custom_date_format.dart';
+import 'package:mm_muslim_support/model/custom_prayer_time.dart';
 import 'package:mm_muslim_support/model/prayer_time_card.dart';
+import 'package:mm_muslim_support/service/function_service.dart';
+import 'package:mm_muslim_support/utility/date_utils.dart';
 import 'package:mm_muslim_support/utility/image_constants.dart';
 import 'package:prayers_times/prayers_times.dart';
 
@@ -18,7 +22,7 @@ class GetPrayerTimeCubit extends Cubit<GetPrayerTimeState> {
     try {
       List<PrayerTimeCard> prayerTimeList = [];
 
-      Position? position = await _getCurrentLocation();
+      Position? position = await FunctionService.getCurrentLocation();
       if (position != null) {
         // Define the geographical coordinates for the location
         Coordinates coordinates = Coordinates(
@@ -85,37 +89,66 @@ class GetPrayerTimeCubit extends Cubit<GetPrayerTimeState> {
     }
   }
 
-  Future<Position?> _getCurrentLocation() async {
-    bool serviceEnabled;
-    LocationPermission permission;
+  void getPrayerTimeByDate(DateTime date) async{
+    emit(GetPrayerTimeByDateLoading());
+    try {
+      Position? position = await FunctionService.getCurrentLocation();
+      if (position != null) {
+        // Define the geographical coordinates for the location
+        Coordinates coordinates = Coordinates(
+          position.latitude,
+          position.longitude,
+        );
 
-    // Check if location services are enabled
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      // Location services are not enabled
-      return Future.error('Location services are disabled.');
-    }
+        // Specify the calculation parameters for prayer times
+        PrayerCalculationParameters params = PrayerCalculationMethod.karachi();
+        params.madhab = PrayerMadhab.hanafi;
 
-    // Check permission status
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        // Permissions are denied
-        return Future.error('Location permissions are denied.');
+        // Create a PrayerTimes instance for the specified location
+        PrayerTimes prayerTime = PrayerTimes(
+          coordinates: coordinates,
+          calculationParameters: params,
+          precision: true,
+          locationName: 'Asia/Rangoon',
+          dateTime: date, // Specify the desired date
+        );
+
+        CustomDateFormat dateFormat = CustomDateFormat.timeOnly;
+
+        List<CustomPrayerTime> prayerTimes = [
+          CustomPrayerTime(
+            prayerName: 'Fajr',
+            prayerTime: DateUtils.DateTimeToString(prayerTime.fajrStartTime!, dateFormat),
+            enableNotify: false,
+          ),
+          CustomPrayerTime(
+            prayerName: 'Dhuhr',
+            prayerTime: DateUtils.DateTimeToString(prayerTime.dhuhrStartTime!, dateFormat),
+            enableNotify: false,
+          ),
+          CustomPrayerTime(
+            prayerName: 'Asr',
+            prayerTime: DateUtils.DateTimeToString(prayerTime.asrStartTime!, dateFormat),
+            enableNotify: false,
+          ),
+          CustomPrayerTime(
+            prayerName: 'Maghrib',
+            prayerTime: DateUtils.DateTimeToString(prayerTime.maghribStartTime!, dateFormat),
+            enableNotify: false,
+          ),
+          CustomPrayerTime(
+            prayerName: 'Isha',
+            prayerTime: DateUtils.DateTimeToString(prayerTime.ishaStartTime!, dateFormat),
+            enableNotify: false,
+          ),
+        ];
+
+        emit(GetPrayerTimeByDateLoaded(prayerTimes: prayerTimes));
+      } else {
+        emit(const GetPrayerTimeByDateError('Unable to get location'));
       }
+    } catch (e) {
+      emit(GetPrayerTimeByDateError(e.toString()));
     }
-
-    if (permission == LocationPermission.deniedForever) {
-      // Permissions are permanently denied
-      return Future.error(
-        'Location permissions are permanently denied, we cannot request permissions.',
-      );
-    }
-
-    // Get the current position
-    return await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
-    );
   }
 }
