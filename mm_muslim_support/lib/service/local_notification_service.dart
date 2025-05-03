@@ -1,7 +1,18 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:flutter_timezone/flutter_timezone.dart';
+
+class NotiPayLoad {
+  final int id;
+  final String name;
+
+  const NotiPayLoad({
+    required this.id,
+    required this.name
+});
+}
 
 class LocalNotificationService {
   final notificationPlugin = FlutterLocalNotificationsPlugin();
@@ -19,7 +30,7 @@ class LocalNotificationService {
     tz.setLocalLocation(tz.getLocation(timeZoneName));
 
     // init Android
-    const AndroidInitializationSettings initSettingAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
+    const AndroidInitializationSettings initSettingAndroid = AndroidInitializationSettings('@drawable/ic_launcher');
 
     // init IOS
 
@@ -48,6 +59,7 @@ class LocalNotificationService {
     visibility: NotificationVisibility.public,
     audioAttributesUsage: AudioAttributesUsage.alarm,
     sound: RawResourceAndroidNotificationSound('azan'),
+    icon: '@drawable/ic_launcher',
   );
 
   static DarwinNotificationDetails iOSPlatformChannelSpecifics = const DarwinNotificationDetails(sound: 'azan.mp3');
@@ -55,28 +67,63 @@ class LocalNotificationService {
   NotificationDetails notificationDetail = NotificationDetails(android: androidPlatformChannelSpecifics, iOS: iOSPlatformChannelSpecifics);
 
   // Schedule a notification
-  Future<void> scheduleNotification({required int id, required String title, required String body, required int hour, required int minute}) async {
+  // Future<void> scheduleNotification({required int id, required String title, required String body, required tz.TZDateTime scheduledDate}) async {
+  //   await notificationPlugin.zonedSchedule(
+  //     id,
+  //     title,
+  //     body,
+  //     scheduledDate,
+  //     notificationDetail,
+  //
+  //     // IOS specific: Use exact time specified
+  //     uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+  //
+  //     // Android specific: Use exact time specified
+  //     androidScheduleMode: AndroidScheduleMode.alarmClock,
+  //
+  //     // Make the notification repeat daily
+  //     matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
+  //   );
+  // }
 
-    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
-    tz.TZDateTime scheduledDate = tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, minute);
+  Future<void> scheduleNotification({
+    required BuildContext context,
+    required int id,
+    required String title,
+    required String body,
+    required tz.TZDateTime scheduledDate,
+  }) async {
+    try {
+      await notificationPlugin.zonedSchedule(
+        id,
+        title,
+        body,
+        scheduledDate,
+        notificationDetail,
+        uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+        androidScheduleMode: AndroidScheduleMode.alarmClock,
+        matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
+      );
 
-    await notificationPlugin.zonedSchedule(
-      id,
-      title,
-      body,
-      scheduledDate,
-      notificationDetail,
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Notification scheduled for ${scheduledDate.toLocal()}'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (e, stack) {
+      print('Error scheduling notification: $e');
+      print('Stack trace: $stack');
 
-      // IOS specific: Use exact time specified
-      uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
-
-      // Android specific: Use exact time specified
-      androidScheduleMode: AndroidScheduleMode.alarmClock,
-
-      // Make the notification repeat daily
-      matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
-    );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to schedule notification: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
+
 
   // Cancel All notification
   Future<void> cancelAllNotification() async {
@@ -86,6 +133,17 @@ class LocalNotificationService {
   // Cancel Notification By Id
   Future<void> cancelNotificationById(int id) async{
     await notificationPlugin.cancel(id);
+  }
+  Future<List<NotiPayLoad>> retrievePendingNotificationList() async {
+    final List<PendingNotificationRequest> pendingNotificationList =
+    await notificationPlugin.pendingNotificationRequests();
+
+    return pendingNotificationList.map((notification) {
+      return NotiPayLoad(
+        id: notification.id,
+        name: notification.title ?? 'No Title',
+      );
+    }).toList();
   }
 
 }

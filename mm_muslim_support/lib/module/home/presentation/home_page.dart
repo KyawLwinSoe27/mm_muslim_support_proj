@@ -6,6 +6,7 @@ import 'package:mm_muslim_support/module/home/cubit/change_date_cubit.dart';
 import 'package:mm_muslim_support/module/home/cubit/get_prayer_time_cubit/get_prayer_time_cubit.dart';
 import 'package:mm_muslim_support/module/home/cubit/tasbih_counter_cubit.dart';
 import 'package:mm_muslim_support/module/home/presentation/dashboard_page.dart';
+import 'package:mm_muslim_support/module/home/presentation/discovery_page.dart';
 import 'package:mm_muslim_support/module/home/presentation/namaz_times_page.dart';
 import 'package:mm_muslim_support/module/home/presentation/tasbih_page.dart';
 import 'package:mm_muslim_support/module/home/widgets/drawer_widget.dart';
@@ -40,7 +41,7 @@ class HomePage extends StatelessWidget {
           child: TasbihPage(tasbih: tasbihList),
         );
       case 3:
-        return const Center(child: Text('Discover Page'));
+        return const Center(child: DiscoveryPage());
       default:
         return const SizedBox.shrink(); // fallback
     }
