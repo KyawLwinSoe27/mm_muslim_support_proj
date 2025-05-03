@@ -25,22 +25,14 @@ class GetPrayerTimeCubit extends Cubit<GetPrayerTimeState> {
       Position? position = await FunctionService.getCurrentLocation();
       if (position != null) {
         // Define the geographical coordinates for the location
-        Coordinates coordinates = Coordinates(
-          position.latitude,
-          position.longitude,
-        );
+        Coordinates coordinates = Coordinates(position.latitude, position.longitude);
 
         // Specify the calculation parameters for prayer times
         PrayerCalculationParameters params = PrayerCalculationMethod.karachi();
         params.madhab = PrayerMadhab.hanafi;
 
         // Create a PrayerTimes instance for the specified location
-        PrayerTimes prayerTimes = PrayerTimes(
-          coordinates: coordinates,
-          calculationParameters: params,
-          precision: true,
-          locationName: 'Asia/Rangoon',
-        );
+        PrayerTimes prayerTimes = PrayerTimes(coordinates: coordinates, calculationParameters: params, precision: true, locationName: 'Asia/Rangoon');
 
         PrayerTimeCard sehriTime = PrayerTimeCard(
           title: 'Sehri',
@@ -59,7 +51,6 @@ class GetPrayerTimeCubit extends Cubit<GetPrayerTimeState> {
         );
 
         prayerTimeList.add(iftarTime);
-
 
         PrayerTimeCard nowTime = PrayerTimeCard(
           title: 'Now',
@@ -89,16 +80,13 @@ class GetPrayerTimeCubit extends Cubit<GetPrayerTimeState> {
     }
   }
 
-  void getPrayerTimeByDate(DateTime date) async{
+  void getPrayerTimeByDate(DateTime date) async {
     emit(GetPrayerTimeByDateLoading());
     try {
       Position? position = await FunctionService.getCurrentLocation();
       if (position != null) {
         // Define the geographical coordinates for the location
-        Coordinates coordinates = Coordinates(
-          position.latitude,
-          position.longitude,
-        );
+        Coordinates coordinates = Coordinates(position.latitude, position.longitude);
 
         // Specify the calculation parameters for prayer times
         PrayerCalculationParameters params = PrayerCalculationMethod.karachi();
@@ -117,38 +105,58 @@ class GetPrayerTimeCubit extends Cubit<GetPrayerTimeState> {
 
         List<CustomPrayerTime> prayerTimes = [
           CustomPrayerTime(
+            dateTime: prayerTime.date,
             prayerName: 'Fajr',
             prayerTime: DateUtils.DateTimeToString(prayerTime.fajrStartTime!, dateFormat),
+            hour: prayerTime.fajrStartTime!.hour,
+            minute: prayerTime.fajrStartTime!.minute,
             enableNotify: false,
           ),
           CustomPrayerTime(
+            dateTime: prayerTime.date,
             prayerName: 'Dhuhr',
             prayerTime: DateUtils.DateTimeToString(prayerTime.dhuhrStartTime!, dateFormat),
+            hour: prayerTime.dhuhrStartTime!.hour,
+            minute: prayerTime.dhuhrStartTime!.minute,
             enableNotify: false,
           ),
           CustomPrayerTime(
+            dateTime: prayerTime.date,
             prayerName: 'Asr',
             prayerTime: DateUtils.DateTimeToString(prayerTime.asrStartTime!, dateFormat),
+            hour: prayerTime.asrStartTime!.hour,
+            minute: prayerTime.asrStartTime!.minute,
             enableNotify: false,
           ),
           CustomPrayerTime(
+            dateTime: prayerTime.date,
             prayerName: 'Maghrib',
             prayerTime: DateUtils.DateTimeToString(prayerTime.maghribStartTime!, dateFormat),
+            hour: prayerTime.maghribStartTime!.hour,
+            minute: prayerTime.maghribStartTime!.minute,
             enableNotify: false,
           ),
           CustomPrayerTime(
+            dateTime: prayerTime.date,
             prayerName: 'Isha',
             prayerTime: DateUtils.DateTimeToString(prayerTime.ishaStartTime!, dateFormat),
+            hour: prayerTime.ishaStartTime!.hour,
+            minute: prayerTime.ishaStartTime!.minute,
             enableNotify: false,
           ),
         ];
 
-        emit(GetPrayerTimeByDateLoaded(prayerTimes: prayerTimes));
+        emit(GetPrayerTimeByDateLoaded(prayerTimes: prayerTimes, timeStamp: DateTime.now().millisecond));
       } else {
         emit(const GetPrayerTimeByDateError('Unable to get location'));
       }
     } catch (e) {
       emit(GetPrayerTimeByDateError(e.toString()));
     }
+  }
+
+  void toggleNotificationEnable(int index, List<CustomPrayerTime> prayerTimes, bool value) {
+    prayerTimes[index].enableNotify = value;
+    emit(GetPrayerTimeByDateLoaded(prayerTimes: prayerTimes, timeStamp: DateTime.now().millisecond));
   }
 }
