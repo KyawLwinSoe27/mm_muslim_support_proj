@@ -1,0 +1,6 @@
+-keep class io.flutter.** { *; }
+-keep class com.google.firebase.** { *; }
+-keepattributes EnclosingMethod
+-keepattributes Signature
+-keepattributes InnerClasses
+-keep class * extends java.lang.annotation.Annotation { *; }
