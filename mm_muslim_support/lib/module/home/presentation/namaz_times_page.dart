@@ -150,7 +150,7 @@ class NamazTimesPage extends StatelessWidget {
                                                         prayerTime.hour,
                                                         prayerTime.minute,
                                                       );
-                                                  LocalNotificationService()
+                                                  await LocalNotificationService()
                                                       .scheduleNotification(
                                                     context: context,
                                                         id: prayerTime.id,
