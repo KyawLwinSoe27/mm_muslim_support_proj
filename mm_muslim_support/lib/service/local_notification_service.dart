@@ -1,3 +1,4 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -111,6 +112,8 @@ class LocalNotificationService {
           backgroundColor: Colors.green,
         ),
       );
+      FirebaseCrashlytics.instance.log('Scheduled notification with ID $id at $scheduledDate');
+
     } catch (e, stack) {
       print('Error scheduling notification: $e');
       print('Stack trace: $stack');
@@ -119,8 +122,11 @@ class LocalNotificationService {
         SnackBar(
           content: Text('Failed to schedule notification: $e'),
           backgroundColor: Colors.red,
+          duration: const Duration(minutes: 5),
         ),
       );
+
+      FirebaseCrashlytics.instance.log('Scheduled notification with ID $id at $scheduledDate. The error is $e');
     }
   }
 
