@@ -1,6 +1,7 @@
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:mm_muslim_support/service/function_service.dart';
 import 'package:mm_muslim_support/service/shared_preference_service.dart';
 
 class LocationService {
@@ -47,8 +48,7 @@ class LocationService {
 
     // get timezone name
     final String timeZoneName = await FlutterTimezone.getLocalTimezone();
-    String locationName = timeZoneName == 'Asia/Yangon' ? 'Asia/Rangoon' : timeZoneName;
-    await SharedPreferenceService.setLocationName(locationName);
+    await SharedPreferenceService.setLocationName(FunctionService.locationName(timeZoneName));
 
     return currentLocation;
   }

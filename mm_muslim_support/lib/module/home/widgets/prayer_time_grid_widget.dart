@@ -16,7 +16,7 @@ class PrayerTimeGrid extends StatelessWidget {
         builder: (context, state) {
           if (state is GetPrayerTimeLoaded) {
             return SizedBox(
-              height: 300,
+              height: state.prayerTimes.length > 2 ? 300 : 150,
               width: double.infinity,
               child: GridView.builder(
                 physics: const NeverScrollableScrollPhysics(),

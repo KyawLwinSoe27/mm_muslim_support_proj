@@ -1,6 +1,16 @@
 import 'package:flutter/material.dart';
 
 class DialogUtils {
+
+  static void loadingDialog(BuildContext context, {String? message}) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        content: Text(message ?? 'Loading...'),
+      ),
+    );
+  }
+
   static void showSuccessDialog(BuildContext context, String message) {
     showDialog(
       context: context,

@@ -8,8 +8,8 @@ class DioClient {
   DioClient()
       : _dio = Dio(BaseOptions(
     baseUrl: AppConstants.baseUrl,
-    connectTimeout: const Duration(seconds: 10),
-    receiveTimeout: const Duration(seconds: 10),
+    connectTimeout: const Duration(seconds: 100),
+    receiveTimeout: const Duration(seconds: 100),
   )) {
     // Add interceptors
     _dio.interceptors.add(LogInterceptor(
@@ -69,5 +69,25 @@ class DioClient {
       'files': files,
     });
     return _dio.post(path, data: formData, options: options);
+  }
+
+  Future<void> downloadFile(
+      String url,
+      String savePath, {
+        required void Function(int received, int total) onReceiveProgress,
+        CancelToken? cancelToken,
+      }) async {
+    try {
+      await _dio.download(
+        url,
+        savePath,
+        onReceiveProgress: onReceiveProgress,
+        cancelToken: cancelToken,
+        options: Options(responseType: ResponseType.bytes),
+      );
+    } catch (e) {
+      debugPrint('Download error: $e');
+      rethrow;
+    }
   }
 }

@@ -25,7 +25,7 @@ class GetHijriDateCubit extends Cubit<GetHijriDateState> {
       );
       emit(GetHijriDateLoaded(todayDateModel));
     } catch (e) {
-      emit(GetHijriDateError('Failed to fetch date'));
+      emit(const GetHijriDateError('Failed to fetch date'));
     }
   }
 }

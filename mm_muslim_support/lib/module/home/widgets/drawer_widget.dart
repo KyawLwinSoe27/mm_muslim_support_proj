@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:mm_muslim_support/core/routing/app_router.dart';
 import 'package:mm_muslim_support/core/routing/context_ext.dart';
 import 'package:mm_muslim_support/logic/theme_cubit.dart';
-import 'package:mm_muslim_support/module/menu/presentation/setting_page.dart';
+import 'package:mm_muslim_support/module/menu/cubit/change_language_cubit.dart';
+import 'package:mm_muslim_support/module/menu/cubit/get_location_cubit/get_location_cubit.dart';
+import 'package:mm_muslim_support/module/menu/presentation/prayer_time_setting_page.dart';
+import 'package:mm_muslim_support/module/quran/presentations/quran_list_page.dart';
+import 'package:mm_muslim_support/utility/dialog_utils.dart';
 
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({
@@ -42,18 +44,118 @@ class DrawerWidget extends StatelessWidget {
               ),
             ),
           ),
+          Row(
+            children: [
+              Expanded(
+                child: ListTile(
+                  leading: const Icon(Icons.language_rounded),
+                  title: const Text('Language'),
+                  onTap: () {
+                    // Navigate to language selection screen
+                  },
+                ),
+              ),
+              BlocProvider(
+                create: (context) => ChangeLanguageCubit(),
+                child: BlocBuilder<ChangeLanguageCubit, bool>(
+                  builder: (context, state) {
+                    return Row(
+                      children: [
+                        const Text('Eng'),
+                        Switch(value: state, onChanged: (value) =>
+                        context.read<ChangeLanguageCubit>()
+                          ..toggleLanguage()),
+                        const Text('MM'),
+                        const SizedBox(width: 10,)
+                      ],
+                    );
+                  },
+                ),
+              )
+            ],
+          ),
+          BlocListener<GetLocationCubit, GetLocationState>(
+            listener: (context, state) {
+              if(state is GetLocationLoading) {
+                DialogUtils.loadingDialog(context);
+              } else if(state is GetLocationLoaded) {
+                context.back();
+                DialogUtils.showSuccessDialog(context, state.location);
+              } else if(state is GetLocationError) {
+                context.back();
+                DialogUtils.showErrorDialog(context,'Failed to update location');
+              }
+            },
+            child: ListTile(
+              leading: const Icon(Icons.location_on_rounded),
+              title: const Text('Update Location'),
+              onTap: () => context.read<GetLocationCubit>().getCurrentLocation(),
+            ),
+          ),
           ListTile(
-            title: const Text('Settings'),
+            leading: const Icon(Icons.settings_rounded),
+            title: const Text('Prayer Time Settings'),
+            onTap: () => context.navigateWithPushNamed(PrayerTimeSettingPage.routeName),
+          ),
+          ListTile(
+            leading: const Icon(Icons.menu_book_rounded),
+            title: const Text('Quran'),
+            onTap: () => context.navigateWithPushNamed(QuranListPage.routeName),
+          ),
+          ListTile(
+            leading: const Icon(Icons.book_online_rounded),
+            title: const Text('Hadith'),
             onTap: () {
-              context.pop();
-              context.navigateWithPushNamed(SettingPage.routeName);
+              // Navigate to content preferences
             },
           ),
           ListTile(
-            title: const Text('Item 2'),
+            leading: const Icon(Icons.balance_rounded),
+            title: const Text('Fatwa'),
             onTap: () {
-              // Update the state of the app.
-              // ...
+              // Navigate to content preferences
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.explore_rounded),
+            title: const Text('Qibla'),
+            onTap: () {
+              // Navigate to content preferences
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.backup_rounded),
+            title: const Text('Backup & Restore'),
+            onTap: () {
+              // Navigate to backup/restore
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.info_rounded),
+            title: const Text('About'),
+            onTap: () {
+              // Navigate to about page
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.volunteer_activism_rounded),
+            title: const Text('Donate Us'),
+            onTap: () {
+              // Navigate to about page
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.star_rounded),
+            title: const Text('Rate Us'),
+            onTap: () {
+              // Open app store link
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.share),
+            title: const Text('Share App'),
+            onTap: () {
+              // Share app link
             },
           ),
         ],

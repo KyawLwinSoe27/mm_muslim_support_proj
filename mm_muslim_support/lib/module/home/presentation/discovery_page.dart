@@ -21,7 +21,7 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Discovery")),
+      appBar: AppBar(title: const Text('Discovery')),
       body: Column(
         children: [
           ElevatedButton(

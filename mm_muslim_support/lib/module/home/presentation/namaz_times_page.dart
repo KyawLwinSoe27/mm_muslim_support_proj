@@ -313,6 +313,7 @@ class LocationAndTimeWidget extends StatelessWidget {
               height: 150,
               child: Center(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
@@ -320,6 +321,7 @@ class LocationAndTimeWidget extends StatelessWidget {
                       style: context.textTheme.titleMedium?.copyWith(
                         color: context.colorScheme.onSecondary,
                       ),
+                      textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 10),
                     Text(
