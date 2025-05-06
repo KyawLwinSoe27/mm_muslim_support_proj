@@ -15,7 +15,7 @@ import 'package:mm_muslim_support/module/home/widgets/today_date_widget.dart';
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
-  static String splash = 'splash';
+  static String routeName = 'splash';
 
   Widget _buildPage(int index) {
     switch (index) {

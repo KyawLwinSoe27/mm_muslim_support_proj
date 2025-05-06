@@ -7,6 +7,7 @@ import 'package:mm_muslim_support/core/themes/theme.dart';
 import 'package:mm_muslim_support/firebase_options.dart';
 import 'package:mm_muslim_support/logic/theme_cubit.dart';
 import 'package:mm_muslim_support/service/local_notification_service.dart';
+import 'package:mm_muslim_support/service/location_service.dart';
 import 'package:mm_muslim_support/service/permission_service.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -19,6 +20,7 @@ void main() async {
   // tz.initializeTimeZones();
   LocalNotificationService().initNotification();
   await PermissionService.requestNotificationPermission();
+  await LocationService.getCurrentLocation();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(BlocProvider(create: (context) => ThemeCubit(), child: const MyApp()));
 }

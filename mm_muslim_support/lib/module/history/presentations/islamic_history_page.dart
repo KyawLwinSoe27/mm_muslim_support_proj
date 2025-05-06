@@ -5,7 +5,7 @@ import 'package:mm_muslim_support/widget/islamic_history_widget.dart';
 class IslamicHistoryPage extends StatelessWidget {
   const IslamicHistoryPage({super.key});
 
-  static const islamicHistory = 'islamicHistory';
+  static const routeName = 'islamicHistory';
 
   @override
   Widget build(BuildContext context) {
