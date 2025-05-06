@@ -83,73 +83,71 @@ class GetPrayerTimeCubit extends Cubit<GetPrayerTimeState> {
   void getPrayerTimeByDate(DateTime date) async {
     emit(GetPrayerTimeByDateLoading());
     try {
-      Position? position = await LocationService.getCurrentLocation();
-      if (position != null) {
-        // Define the geographical coordinates for the location
-        Coordinates coordinates = Coordinates(position.latitude, position.longitude);
+      double latitude = LocationService.getLatitude();
+      double longitude = LocationService.getLongitude();
+      String locationName = LocationService.getLocationName();
+      // Define the geographical coordinates for the location
+      Coordinates coordinates = Coordinates(latitude, longitude);
 
-        // Specify the calculation parameters for prayer times
-        PrayerCalculationParameters params = PrayerCalculationMethod.karachi();
-        params.madhab = PrayerMadhab.hanafi;
+      // Specify the calculation parameters for prayer times
+      PrayerCalculationParameters params = PrayerCalculationMethod.karachi();
+      params.madhab = PrayerMadhab.hanafi;
 
-        // Create a PrayerTimes instance for the specified location
-        PrayerTimes prayerTime = PrayerTimes(
-          coordinates: coordinates,
-          calculationParameters: params,
-          precision: true,
-          locationName: 'Asia/Rangoon',
-          dateTime: date, // Specify the desired date
-        );
+      // Create a PrayerTimes instance for the specified location
+      PrayerTimes prayerTime = PrayerTimes(
+        coordinates: coordinates,
+        calculationParameters: params,
+        precision: true,
+        locationName: 'Asia/Rangoon',
+        dateTime: date, // Specify the desired date
+      );
 
-        CustomDateFormat dateFormat = CustomDateFormat.timeOnly;
+      CustomDateFormat dateFormat = CustomDateFormat.timeOnly;
 
-        List<CustomPrayerTime> prayerTimes = [
-          CustomPrayerTime(
-            dateTime: prayerTime.date,
-            prayerName: 'Fajr',
-            prayerTime: DateUtils.DateTimeToString(prayerTime.fajrStartTime!, dateFormat),
-            hour: prayerTime.fajrStartTime!.hour,
-            minute: prayerTime.fajrStartTime!.minute,
-            enableNotify: false,
-          ),
-          CustomPrayerTime(
-            dateTime: prayerTime.date,
-            prayerName: 'Dhuhr',
-            prayerTime: DateUtils.DateTimeToString(prayerTime.dhuhrStartTime!, dateFormat),
-            hour: prayerTime.dhuhrStartTime!.hour,
-            minute: prayerTime.dhuhrStartTime!.minute,
-            enableNotify: false,
-          ),
-          CustomPrayerTime(
-            dateTime: prayerTime.date,
-            prayerName: 'Asr',
-            prayerTime: DateUtils.DateTimeToString(prayerTime.asrStartTime!, dateFormat),
-            hour: prayerTime.asrStartTime!.hour,
-            minute: prayerTime.asrStartTime!.minute,
-            enableNotify: false,
-          ),
-          CustomPrayerTime(
-            dateTime: prayerTime.date,
-            prayerName: 'Maghrib',
-            prayerTime: DateUtils.DateTimeToString(prayerTime.maghribStartTime!, dateFormat),
-            hour: prayerTime.maghribStartTime!.hour,
-            minute: prayerTime.maghribStartTime!.minute,
-            enableNotify: false,
-          ),
-          CustomPrayerTime(
-            dateTime: prayerTime.date,
-            prayerName: 'Isha',
-            prayerTime: DateUtils.DateTimeToString(prayerTime.ishaStartTime!, dateFormat),
-            hour: prayerTime.ishaStartTime!.hour,
-            minute: prayerTime.ishaStartTime!.minute,
-            enableNotify: false,
-          ),
-        ];
+      List<CustomPrayerTime> prayerTimes = [
+        CustomPrayerTime(
+          dateTime: prayerTime.date,
+          prayerName: 'Fajr',
+          prayerTime: DateUtils.DateTimeToString(prayerTime.fajrStartTime!, dateFormat),
+          hour: prayerTime.fajrStartTime!.hour,
+          minute: prayerTime.fajrStartTime!.minute,
+          enableNotify: false,
+        ),
+        CustomPrayerTime(
+          dateTime: prayerTime.date,
+          prayerName: 'Dhuhr',
+          prayerTime: DateUtils.DateTimeToString(prayerTime.dhuhrStartTime!, dateFormat),
+          hour: prayerTime.dhuhrStartTime!.hour,
+          minute: prayerTime.dhuhrStartTime!.minute,
+          enableNotify: false,
+        ),
+        CustomPrayerTime(
+          dateTime: prayerTime.date,
+          prayerName: 'Asr',
+          prayerTime: DateUtils.DateTimeToString(prayerTime.asrStartTime!, dateFormat),
+          hour: prayerTime.asrStartTime!.hour,
+          minute: prayerTime.asrStartTime!.minute,
+          enableNotify: false,
+        ),
+        CustomPrayerTime(
+          dateTime: prayerTime.date,
+          prayerName: 'Maghrib',
+          prayerTime: DateUtils.DateTimeToString(prayerTime.maghribStartTime!, dateFormat),
+          hour: prayerTime.maghribStartTime!.hour,
+          minute: prayerTime.maghribStartTime!.minute,
+          enableNotify: false,
+        ),
+        CustomPrayerTime(
+          dateTime: prayerTime.date,
+          prayerName: 'Isha',
+          prayerTime: DateUtils.DateTimeToString(prayerTime.ishaStartTime!, dateFormat),
+          hour: prayerTime.ishaStartTime!.hour,
+          minute: prayerTime.ishaStartTime!.minute,
+          enableNotify: false,
+        ),
+      ];
 
-        emit(GetPrayerTimeByDateLoaded(prayerTimes: prayerTimes, timeStamp: DateTime.now().millisecond));
-      } else {
-        emit(const GetPrayerTimeByDateError('Unable to get location'));
-      }
+      emit(GetPrayerTimeByDateLoaded(prayerTimes: prayerTimes, timeStamp: DateTime.now().millisecond));
     } catch (e) {
       emit(GetPrayerTimeByDateError(e.toString()));
     }
