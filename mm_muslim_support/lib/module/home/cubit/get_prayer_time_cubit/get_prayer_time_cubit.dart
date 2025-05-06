@@ -55,25 +55,99 @@ class GetPrayerTimeCubit extends Cubit<GetPrayerTimeState> {
 
       prayerTimeList.add(iftarTime);
 
-      PrayerTimeCard nowTime = PrayerTimeCard(
-        title: 'Now',
-        subtitle: prayerTimes.currentPrayer(),
-        time: 'End in ${DateFormat('hh:mm').format(prayerTimes.date)} PM',
-        image: '',
-        gradientColors: [Color(0xFF6CA6CD), Color(0xFFB0E0E6)],
-      );
-      PrayerTimeCard comingPrayerTime = PrayerTimeCard(
-        title: 'Coming...',
-        subtitle: prayerTimes.nextPrayer(),
-        time: 'Start ${DateFormat('hh:mm').format(prayerTimes.date)} PM',
-        image: '',
-        gradientColors: [Color(0xFF6CA6CD), Color(0xFFB0E0E6)],
-      );
+      if(prayerTimes.currentPrayer() == 'Fajr') {
+        PrayerTimeCard currentPrayerTime = PrayerTimeCard(
+          title: 'Current',
+          subtitle: prayerTimes.currentPrayer(),
+          time: 'End in ${DateFormat('hh:mm').format(prayerTimes.fajrEndTime!)} AM',
+          image: '',
+          gradientColors: [const Color(0xFF00A86B), const Color(0xFFDAF7DC)],
+        );
+        prayerTimeList.add(currentPrayerTime);
+      } else if (prayerTimes.currentPrayer() == 'Dhuhr') {
+        PrayerTimeCard currentPrayerTime = PrayerTimeCard(
+          title: 'Current',
+          subtitle: prayerTimes.currentPrayer(),
+          time: 'End in ${DateFormat('hh:mm').format(prayerTimes.dhuhrEndTime!)} PM',
+          image: '',
+          gradientColors: [const Color(0xFF00A86B), const Color(0xFFDAF7DC)],
+        );
+        prayerTimeList.add(currentPrayerTime);
+      } else if (prayerTimes.currentPrayer() == 'Asr') {
+        PrayerTimeCard currentPrayerTime = PrayerTimeCard(
+          title: 'Current',
+          subtitle: prayerTimes.currentPrayer(),
+          time: 'End in ${DateFormat('hh:mm').format(prayerTimes.asrEndTime!)} PM',
+          image: '',
+          gradientColors: [const Color(0xFF00A86B), const Color(0xFFDAF7DC)],
+        );
+        prayerTimeList.add(currentPrayerTime);
+      } else if (prayerTimes.currentPrayer() == 'Maghrib') {
+        PrayerTimeCard currentPrayerTime = PrayerTimeCard(
+          title: 'Now',
+          subtitle: prayerTimes.currentPrayer(),
+          time: 'End in ${DateFormat('hh:mm').format(prayerTimes.maghribEndTime!)} PM',
+          image: '',
+          gradientColors: [const Color(0xFF00A86B), const Color(0xFFDAF7DC)],
+        );
+        prayerTimeList.add(currentPrayerTime);
+      } else if (prayerTimes.currentPrayer() == 'Isha') {
+        PrayerTimeCard currentPrayerTime = PrayerTimeCard(
+          title: 'Now',
+          subtitle: prayerTimes.currentPrayer(),
+          time: 'End in ${DateFormat('hh:mm').format(prayerTimes.ishaEndTime!)} PM',
+          image: '',
+          gradientColors: [const Color(0xFF00A86B), const Color(0xFFDAF7DC)],
+        );
+        prayerTimeList.add(currentPrayerTime);
+      }
 
-      prayerTimeList.add(nowTime);
-
-      prayerTimeList.add(comingPrayerTime);
-
+      if(prayerTimes.nextPrayer() == 'Fajr') {
+        PrayerTimeCard comingPrayerTime = PrayerTimeCard(
+          title: 'Coming...',
+          subtitle: prayerTimes.nextPrayer(),
+          time: 'Start ${DateFormat('hh:mm').format(prayerTimes.fajrStartTime!)} AM',
+          image: '',
+          gradientColors: [const Color(0xFF6CA6CD), const Color(0xFFB0E0E6)],
+        );
+        prayerTimeList.add(comingPrayerTime);
+      } else if (prayerTimes.nextPrayer() == 'Dhuhr') {
+        PrayerTimeCard comingPrayerTime = PrayerTimeCard(
+          title: 'Coming...',
+          subtitle: prayerTimes.nextPrayer(),
+          time: 'Start ${DateFormat('hh:mm').format(prayerTimes.dhuhrStartTime!)} PM',
+          image: '',
+          gradientColors: [const Color(0xFF6CA6CD), const Color(0xFFB0E0E6)],
+        );
+        prayerTimeList.add(comingPrayerTime);
+      } else if (prayerTimes.nextPrayer() == 'Asr') {
+        PrayerTimeCard comingPrayerTime = PrayerTimeCard(
+          title: 'Coming...',
+          subtitle: prayerTimes.nextPrayer(),
+          time: 'Start ${DateFormat('hh:mm').format(prayerTimes.asrStartTime!)} PM',
+          image: '',
+          gradientColors: [const Color(0xFF6CA6CD), const Color(0xFFB0E0E6)],
+        );
+        prayerTimeList.add(comingPrayerTime);
+      } else if (prayerTimes.nextPrayer() == 'Maghrib') {
+        PrayerTimeCard comingPrayerTime = PrayerTimeCard(
+          title: 'Coming...',
+          subtitle: prayerTimes.nextPrayer(),
+          time: 'Start ${DateFormat('hh:mm').format(prayerTimes.maghribStartTime!)} PM',
+          image: '',
+          gradientColors: [const Color(0xFF6CA6CD), const Color(0xFFB0E0E6)],
+        );
+        prayerTimeList.add(comingPrayerTime);
+      } else if (prayerTimes.nextPrayer() == 'Isha') {
+        PrayerTimeCard comingPrayerTime = PrayerTimeCard(
+          title: 'Coming...',
+          subtitle: prayerTimes.nextPrayer(),
+          time: 'Start ${DateFormat('hh:mm').format(prayerTimes.ishaStartTime!)} PM',
+          image: '',
+          gradientColors: [const Color(0xFF6CA6CD), const Color(0xFFB0E0E6)],
+        );
+        prayerTimeList.add(comingPrayerTime);
+      }
       emit(GetPrayerTimeLoaded(prayerTimeList));
     } catch (e) {
       emit(GetPrayerTimeError(e.toString()));

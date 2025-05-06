@@ -9,6 +9,7 @@ import 'package:mm_muslim_support/logic/theme_cubit.dart';
 import 'package:mm_muslim_support/service/local_notification_service.dart';
 import 'package:mm_muslim_support/service/location_service.dart';
 import 'package:mm_muslim_support/service/permission_service.dart';
+import 'package:mm_muslim_support/service/shared_preference_service.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 FlutterLocalNotificationsPlugin();
@@ -18,6 +19,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // await LocalNotificationService.initializeNotifications();
   // tz.initializeTimeZones();
+  final sharedPrefs = SharedPreferenceService();
+  await sharedPrefs.init();
   LocalNotificationService().initNotification();
   await PermissionService.requestNotificationPermission();
   await LocationService.getCurrentLocation();
