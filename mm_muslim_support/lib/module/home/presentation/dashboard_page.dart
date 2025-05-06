@@ -66,7 +66,7 @@ class DashboardPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('History Articles', style: context.textTheme.titleMedium,),
-                TextButtonWidget(text: 'See All', onPressed: () => context.navigateWithPushNamed(IslamicHistoryPage.islamicHistory),),
+                TextButtonWidget(text: 'See All', onPressed: () => context.navigateWithPushNamed(IslamicHistoryPage.routeName),),
               ],
             ),
           ),
