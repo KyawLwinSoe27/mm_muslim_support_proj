@@ -1,6 +1,7 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:mm_muslim_support/service/function_service.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:flutter_timezone/flutter_timezone.dart';
@@ -28,7 +29,7 @@ class LocalNotificationService {
     // init time zone handling
     tz.initializeTimeZones();
     final String timeZoneName = await FlutterTimezone.getLocalTimezone();
-    tz.setLocalLocation(tz.getLocation(timeZoneName));
+    tz.setLocalLocation(tz.getLocation(FunctionService.locationName(timeZoneName)));
 
     // init Android
     const AndroidInitializationSettings initSettingAndroid = AndroidInitializationSettings('@drawable/ic_launcher');

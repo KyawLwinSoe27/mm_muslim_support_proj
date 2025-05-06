@@ -16,6 +16,8 @@
 
 
     <application
+        android:usesCleartextTraffic="true"
+        android:hardwareAccelerated="true"
         android:label="mm_muslim_support"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">

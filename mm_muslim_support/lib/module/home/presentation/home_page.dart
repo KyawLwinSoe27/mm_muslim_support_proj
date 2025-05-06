@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mm_muslim_support/model/tasbih_model.dart';
+import 'package:mm_muslim_support/model/tasbih_list_model.dart';
 import 'package:mm_muslim_support/module/home/cubit/bottom_navigation_bar_cubit.dart';
 import 'package:mm_muslim_support/module/home/cubit/change_date_cubit.dart';
 import 'package:mm_muslim_support/module/home/cubit/get_prayer_time_cubit/get_prayer_time_cubit.dart';
@@ -8,9 +8,10 @@ import 'package:mm_muslim_support/module/home/cubit/tasbih_counter_cubit.dart';
 import 'package:mm_muslim_support/module/home/presentation/dashboard_page.dart';
 import 'package:mm_muslim_support/module/home/presentation/discovery_page.dart';
 import 'package:mm_muslim_support/module/home/presentation/namaz_times_page.dart';
-import 'package:mm_muslim_support/module/home/presentation/tasbih_page.dart';
+import 'package:mm_muslim_support/module/home/presentation/tasbih_list_page.dart';
 import 'package:mm_muslim_support/module/home/widgets/drawer_widget.dart';
 import 'package:mm_muslim_support/module/home/widgets/today_date_widget.dart';
+import 'package:mm_muslim_support/module/menu/cubit/get_location_cubit/get_location_cubit.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -28,9 +29,10 @@ class HomePage extends StatelessWidget {
               create: (context) => GetPrayerTimeCubit(),
             ),
             BlocProvider<ChangeDateCubit>(
-              create: (context) => ChangeDateCubit(
-                getPrayerTimeCubit: context.read<GetPrayerTimeCubit>(),
-              ),
+              create: (context) =>
+                  ChangeDateCubit(
+                    getPrayerTimeCubit: context.read<GetPrayerTimeCubit>(),
+                  ),
             ),
           ],
           child: const NamazTimesPage(),
@@ -38,7 +40,7 @@ class HomePage extends StatelessWidget {
       case 2:
         return BlocProvider(
           create: (context) => TasbihCounterCubit(),
-          child: TasbihPage(tasbih: tasbihList),
+          child: TasbihListPage(tasbihListModel: tasbihListModel),
         );
       case 3:
         return const Center(child: DiscoveryPage());
@@ -63,7 +65,10 @@ class HomePage extends StatelessWidget {
         ),
         actions: const [Padding(padding: EdgeInsets.only(right: 10), child: TodayDateWidget())],
       ),
-      drawer: const DrawerWidget(),
+      drawer: BlocProvider(
+        create: (context) => GetLocationCubit(),
+        child: const DrawerWidget(),
+      ),
       body: BlocBuilder<BottomNavigationBarCubit, int>(
         builder: (context, state) {
           return _buildPage(state);
@@ -78,10 +83,10 @@ class HomePage extends StatelessWidget {
               context.read<BottomNavigationBarCubit>().changePage(index);
             },
             items: const [
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-              BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Tracker'),
-              BottomNavigationBarItem(icon: Icon(Icons.incomplete_circle_rounded), label: 'Tasbir'),
-              BottomNavigationBarItem(icon: Icon(Icons.newspaper), label: 'Discover'),
+              BottomNavigationBarItem(icon: Icon(Icons.home_rounded), label: 'Home'),
+              BottomNavigationBarItem(icon: Icon(Icons.mosque_rounded), label: 'Tracker'),
+              BottomNavigationBarItem(icon: Icon(Icons.diamond_rounded), label: 'Tasbir'),
+              BottomNavigationBarItem(icon: Icon(Icons.newspaper_rounded), label: 'Discover'),
             ],
           );
         },

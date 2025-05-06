@@ -73,6 +73,7 @@ dependencies:
   timezone: ^0.9.2
   android_intent_plus: ^5.3.0
   flutter_timezone: ^4.1.0
+  pdfx: ^2.9.1
 
 
 
@@ -113,6 +114,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/documents/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

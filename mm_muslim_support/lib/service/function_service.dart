@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:mm_muslim_support/service/location_service.dart';
@@ -56,4 +55,9 @@ class FunctionService {
       ),
     );
   }
+
+  static String locationName(String timeZoneName) {
+    return timeZoneName == 'Asia/Yangon' ? 'Asia/Rangoon' : timeZoneName;
+  }
+
 }
