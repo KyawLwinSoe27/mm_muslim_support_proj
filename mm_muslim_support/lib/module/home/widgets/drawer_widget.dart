@@ -5,6 +5,7 @@ import 'package:mm_muslim_support/logic/theme_cubit.dart';
 import 'package:mm_muslim_support/module/menu/cubit/change_language_cubit.dart';
 import 'package:mm_muslim_support/module/menu/cubit/get_location_cubit/get_location_cubit.dart';
 import 'package:mm_muslim_support/module/menu/presentation/prayer_time_setting_page.dart';
+import 'package:mm_muslim_support/module/notification/presentations/notification_page.dart';
 import 'package:mm_muslim_support/module/quran/presentations/quran_list_page.dart';
 import 'package:mm_muslim_support/utility/dialog_utils.dart';
 
@@ -34,7 +35,7 @@ class DrawerWidget extends StatelessWidget {
                       IconButton(
                         icon: Icon(Icons.notifications, color: Theme.of(context).colorScheme.onPrimary),
                         onPressed: () {
-                          // Handle notification button press
+                          context.navigateWithPushNamed(NotificationPage.routeName);
                         },
                       ),
                       IconButton(icon: Icon(Icons.brightness_6, color: Theme.of(context).colorScheme.onPrimary), onPressed: () => context.read<ThemeCubit>().toggleTheme()),

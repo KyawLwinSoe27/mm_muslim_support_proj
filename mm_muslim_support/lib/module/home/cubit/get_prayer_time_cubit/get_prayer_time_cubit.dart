@@ -121,7 +121,7 @@ class GetPrayerTimeCubit extends Cubit<GetPrayerTimeState> {
   }
 
   CustomPrayerTime _buildCustomPrayer(String name, DateTime time, DateTime date, CustomDateFormat format) {
-    return CustomPrayerTime(dateTime: date, prayerName: name, prayerTime: DateUtils.DateTimeToString(time, format), hour: time.hour, minute: time.minute, enableNotify: false);
+    return CustomPrayerTime(dateTime: date, prayerName: name, prayerTime: DateUtility.DateTimeToString(time, format), hour: time.hour, minute: time.minute, enableNotify: false);
   }
 
   PrayerTimes _getPrayerTime({DateTime? dateTime}) {
