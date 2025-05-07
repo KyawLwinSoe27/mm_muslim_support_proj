@@ -40,18 +40,59 @@ class _QuranScreenState extends State<QuranScreen> {
           } else if (state is DownloadSuccess) {
             return Stack(
               children: [
-                Positioned.fill(child: PdfView(controller: _pdfController!, scrollDirection: Axis.horizontal, pageSnapping: true, physics: const BouncingScrollPhysics())),
-                Padding(
-                  padding: const EdgeInsets.only(top: 50, right: 30),
-                  child: Align(
-                    alignment: Alignment.topRight,
-                    child: IconButton(
-                      icon: const Icon(Icons.bookmark_add, size: 30,),
-                      onPressed: () async {
-                        final currentPage = _pdfController?.page ?? 1;
-                        context.read<BookMarkCubit>().saveBookMark(state.filePath, currentPage);
-                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Bookmark saved!')));
-                      },
+                Positioned.fill(
+                  child: PdfView(
+                    controller: _pdfController!,
+                    scrollDirection: Axis.horizontal,
+                    pageSnapping: true,
+                    physics: const BouncingScrollPhysics(),
+                  ),
+                ),
+                Positioned(
+                  top: 50,
+                  right: 20,
+                  child: IntrinsicWidth(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        SizedBox(
+                          width: 200,
+                          child: TextField(
+                            keyboardType: TextInputType.number,
+                            decoration: const InputDecoration(
+                              hintText: 'Page',
+                              contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                              border: OutlineInputBorder(),
+                              isDense: true,
+                            ),
+                            onSubmitted: (value) {
+                              final page = int.tryParse(value);
+                              if (page != null && page > 0) {
+                                _pdfController?.animateToPage(
+                                  page,
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.easeInOut,
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('Enter a valid page number')),
+                                );
+                              }
+                            },
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        IconButton(
+                          icon: const Icon(Icons.bookmark_add, size: 28),
+                          onPressed: () async {
+                            final currentPage = _pdfController?.page ?? 1;
+                            context.read<BookMarkCubit>().saveBookMark(state.filePath, currentPage);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Bookmark saved!')),
+                            );
+                          },
+                        ),
+                      ],
                     ),
                   ),
                 ),
