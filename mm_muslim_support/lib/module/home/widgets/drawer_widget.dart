@@ -114,14 +114,12 @@ class DrawerWidget extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.balance_rounded),
             title: const Text('Fatwa'),
-            onTap: () => context.navigateWithPushNamed(CompassPage.routeName),
+            onTap: () {},
           ),
           ListTile(
             leading: const Icon(Icons.explore_rounded),
             title: const Text('Qibla'),
-            onTap: () {
-              // Navigate to content preferences
-            },
+            onTap: () => context.navigateWithPushNamed(CompassPage.routeName),
           ),
           ListTile(
             leading: const Icon(Icons.backup_rounded),
