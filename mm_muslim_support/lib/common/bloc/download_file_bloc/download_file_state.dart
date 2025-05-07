@@ -19,9 +19,9 @@ class DownloadInProgress extends DownloadFileState {
 
 class DownloadSuccess extends DownloadFileState {
   final String filePath;
+  final int currentPage;
 
-  const DownloadSuccess({required this.filePath});
-
+  const DownloadSuccess({required this.filePath, required this.currentPage});
 }
 
 class DownloadFailure extends DownloadFileState {

@@ -15,7 +15,7 @@ class ChangeDateCubit extends Cubit<ChangeDateState> {
   GetPrayerTimeCubit getPrayerTimeCubit;
   ChangeDateCubit({required this.getPrayerTimeCubit}) : super(ChangeDateState(gregorianDate: '', hijriDate: '')) {
     HijriCalendar h_date = HijriCalendar.fromDate(date);
-    emit(ChangeDateState(gregorianDate: DateUtils.DateTimeToString(date, CustomDateFormat.simpleDate), hijriDate: h_date.toFormat(CustomDateFormat.hijriDate.value)));
+    emit(ChangeDateState(gregorianDate: DateUtility.DateTimeToString(date, CustomDateFormat.simpleDate), hijriDate: h_date.toFormat(CustomDateFormat.hijriDate.value)));
     getPrayerTimeCubit.getPrayerTimeByDate(date);
   }
 
@@ -26,7 +26,7 @@ class ChangeDateCubit extends Cubit<ChangeDateState> {
     date = newDate;
     HijriCalendar h_date = HijriCalendar.fromDate(newDate);
 
-    emit(ChangeDateState(gregorianDate: DateUtils.DateTimeToString(newDate, CustomDateFormat.simpleDate), hijriDate: h_date.toFormat(CustomDateFormat.hijriDate.value)));
+    emit(ChangeDateState(gregorianDate: DateUtility.DateTimeToString(newDate, CustomDateFormat.simpleDate), hijriDate: h_date.toFormat(CustomDateFormat.hijriDate.value)));
     getPrayerTimeCubit.getPrayerTimeByDate(newDate);
   }
 
@@ -34,14 +34,14 @@ class ChangeDateCubit extends Cubit<ChangeDateState> {
     DateTime newDate = date.subtract(const Duration(days: 1));
     date = newDate;
     HijriCalendar h_date = HijriCalendar.fromDate(newDate);
-    emit(ChangeDateState(gregorianDate: DateUtils.DateTimeToString(newDate, CustomDateFormat.simpleDate), hijriDate: h_date.toFormat(CustomDateFormat.hijriDate.value)));
+    emit(ChangeDateState(gregorianDate: DateUtility.DateTimeToString(newDate, CustomDateFormat.simpleDate), hijriDate: h_date.toFormat(CustomDateFormat.hijriDate.value)));
     getPrayerTimeCubit.getPrayerTimeByDate(newDate);
   }
 
   void setDate(DateTime date) async {
     this.date = date;
     HijriCalendar h_date = HijriCalendar.fromDate(date);
-    emit(ChangeDateState(gregorianDate: DateUtils.DateTimeToString(date, CustomDateFormat.simpleDate), hijriDate: h_date.toFormat(CustomDateFormat.hijriDate.value)));
+    emit(ChangeDateState(gregorianDate: DateUtility.DateTimeToString(date, CustomDateFormat.simpleDate), hijriDate: h_date.toFormat(CustomDateFormat.hijriDate.value)));
     getPrayerTimeCubit.getPrayerTimeByDate(date);
   }
 }

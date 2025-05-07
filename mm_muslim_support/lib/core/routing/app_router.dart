@@ -9,6 +9,8 @@ import 'package:mm_muslim_support/module/home/cubit/tasbih_counter_cubit.dart';
 import 'package:mm_muslim_support/module/home/presentation/home_page.dart';
 import 'package:mm_muslim_support/module/menu/cubit/get_prayer_calculation_method_cubit.dart';
 import 'package:mm_muslim_support/module/menu/presentation/prayer_time_setting_page.dart';
+import 'package:mm_muslim_support/module/notification/presentations/notification_page.dart';
+import 'package:mm_muslim_support/module/quran/cubit/book_mark_cubit/book_mark_cubit.dart';
 import 'package:mm_muslim_support/module/quran/presentations/quran_list_page.dart';
 import 'package:mm_muslim_support/module/quran/presentations/quran_screen.dart';
 import 'package:mm_muslim_support/module/tasbih/presentations/tasbih_page.dart';
@@ -37,12 +39,16 @@ class AppRouter {
         path: '/quran',
         builder: (context, state) {
           QuranModel quran = state.extra as QuranModel;
-          return BlocProvider(
-            create: (context) => DownloadFileBloc()..add(StartDownload(url: 'https://drive.google.com/uc?export=download&id=${quran.link}', fileName: quran.fileName)),
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => DownloadFileBloc()..add(StartDownload(url: 'https://drive.google.com/uc?export=download&id=${quran.link}', fileName: quran.fileName))),
+              BlocProvider(create: (context) => BookMarkCubit()),
+            ],
             child: const QuranScreen(),
           );
         },
       ),
+      GoRoute(name: NotificationPage.routeName, path: '/notification_page', builder: (context, state) => const NotificationPage()),
     ],
     // Optional: Custom error page route (404-like)
     errorPageBuilder: (context, state) {
