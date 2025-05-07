@@ -6,4 +6,5 @@ class ImageConstants {
   static const String fajr = 'assets/images/fajr.png';
   static const String dhuhr = 'assets/images/dhuhr.png';
   static const String beautifulMasjid = 'assets/images/beautiful_masjid.jpg';
+  static const String kaaba = 'assets/images/kaaba.png';
 }

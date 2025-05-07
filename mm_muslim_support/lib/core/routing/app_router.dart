@@ -8,6 +8,7 @@ import 'package:mm_muslim_support/module/home/cubit/bottom_navigation_bar_cubit.
 import 'package:mm_muslim_support/module/home/cubit/tasbih_counter_cubit.dart';
 import 'package:mm_muslim_support/module/home/presentation/home_page.dart';
 import 'package:mm_muslim_support/module/menu/cubit/get_prayer_calculation_method_cubit.dart';
+import 'package:mm_muslim_support/module/menu/presentation/compass_page.dart';
 import 'package:mm_muslim_support/module/menu/presentation/prayer_time_setting_page.dart';
 import 'package:mm_muslim_support/module/notification/presentations/notification_page.dart';
 import 'package:mm_muslim_support/module/quran/cubit/book_mark_cubit/book_mark_cubit.dart';
@@ -49,6 +50,8 @@ class AppRouter {
         },
       ),
       GoRoute(name: NotificationPage.routeName, path: '/notification_page', builder: (context, state) => const NotificationPage()),
+      GoRoute(name: CompassPage.routeName, path: '/compass', builder: (context, state) => const CompassPage()),
+
     ],
     // Optional: Custom error page route (404-like)
     errorPageBuilder: (context, state) {
