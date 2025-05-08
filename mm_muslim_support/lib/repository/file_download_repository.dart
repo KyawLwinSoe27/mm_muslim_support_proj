@@ -6,6 +6,7 @@ abstract class FileRepository {
   Future<String> downloadAndSaveFile({
     required String fileUrl,
     required String fileName,
+    required Folder folder,
     required Function(int received, int total) onReceiveProgress,
   });
 }
@@ -17,9 +18,10 @@ class FileRepositoryImplementation extends FileRepository {
   Future<String> downloadAndSaveFile({
     required String fileUrl,
     required String fileName,
+    required Folder folder,
     required Function(int received, int total) onReceiveProgress,
   }) async {
-    final dir = await FileManagementService.getDownloadDirectory(Folder.quran);
+    final dir = await FileManagementService.getDownloadDirectory(folder);
     final filePath = '${dir.path}/$fileName';
 
     await _apiService.downloadFile(

@@ -3,8 +3,7 @@ class CustomPrayerTime {
   final DateTime dateTime;
   final String prayerName;
   final String prayerTime;
-  final int hour;
-  final int minute;
+  final DateTime prayerDateTime;
   bool enableNotify;
 
   CustomPrayerTime({
@@ -12,8 +11,7 @@ class CustomPrayerTime {
     required this.dateTime,
     required this.prayerName,
     required this.prayerTime,
-    required this.hour,
-    required this.minute,
+    required this.prayerDateTime,
     this.enableNotify = false,
   });
 }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mm_muslim_support/common/bloc/download_file_bloc/download_file_bloc.dart';
+import 'package:mm_muslim_support/core/enums/folder.dart';
+import 'package:mm_muslim_support/model/quran_song_model.dart';
 import 'package:mm_muslim_support/model/tasbih_model.dart';
 import 'package:mm_muslim_support/module/history/presentations/islamic_history_page.dart';
 import 'package:mm_muslim_support/module/home/cubit/bottom_navigation_bar_cubit.dart';
@@ -14,6 +16,9 @@ import 'package:mm_muslim_support/module/notification/presentations/notification
 import 'package:mm_muslim_support/module/quran/cubit/book_mark_cubit/book_mark_cubit.dart';
 import 'package:mm_muslim_support/module/quran/presentations/quran_list_page.dart';
 import 'package:mm_muslim_support/module/quran/presentations/quran_screen.dart';
+import 'package:mm_muslim_support/module/quran/presentations/surah_listen_list.dart';
+import 'package:mm_muslim_support/module/quran/presentations/surah_listen_page.dart';
+import 'package:mm_muslim_support/module/stay_tuned_page.dart';
 import 'package:mm_muslim_support/module/tasbih/presentations/tasbih_page.dart';
 
 class AppRouter {
@@ -42,7 +47,9 @@ class AppRouter {
           QuranModel quran = state.extra as QuranModel;
           return MultiBlocProvider(
             providers: [
-              BlocProvider(create: (context) => DownloadFileBloc()..add(StartDownload(url: 'https://drive.google.com/uc?export=download&id=${quran.link}', fileName: quran.fileName))),
+              BlocProvider(
+                create: (context) => DownloadFileBloc()..add(StartDownload(url: 'https://drive.google.com/uc?export=download&id=${quran.link}', fileName: quran.fileName, folder: Folder.quran)),
+              ),
               BlocProvider(create: (context) => BookMarkCubit()),
             ],
             child: const QuranScreen(),
@@ -51,7 +58,10 @@ class AppRouter {
       ),
       GoRoute(name: NotificationPage.routeName, path: '/notification_page', builder: (context, state) => const NotificationPage()),
       GoRoute(name: CompassPage.routeName, path: '/compass', builder: (context, state) => const CompassPage()),
+      GoRoute(name: SurahListenList.routeName, path: '/surah_listen_list', builder: (context, state) => BlocProvider(create: (context) => DownloadFileBloc(), child: const SurahListenList())),
+      GoRoute(name: SurahListenPage.routeName, path: '/surah_listen_page', builder: (context, state) => SurahListenPage(quranSongModel: state.extra as QuranSongModel)),
 
+      GoRoute(name: StayTunedPage.routeName, path: '/stay_tuned_page', builder: (context, state) => const StayTunedPage()),
     ],
     // Optional: Custom error page route (404-like)
     errorPageBuilder: (context, state) {

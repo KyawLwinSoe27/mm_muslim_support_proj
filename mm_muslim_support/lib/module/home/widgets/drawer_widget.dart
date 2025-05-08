@@ -8,6 +8,8 @@ import 'package:mm_muslim_support/module/menu/presentation/compass_page.dart';
 import 'package:mm_muslim_support/module/menu/presentation/prayer_time_setting_page.dart';
 import 'package:mm_muslim_support/module/notification/presentations/notification_page.dart';
 import 'package:mm_muslim_support/module/quran/presentations/quran_list_page.dart';
+import 'package:mm_muslim_support/module/quran/presentations/surah_listen_list.dart';
+import 'package:mm_muslim_support/module/stay_tuned_page.dart';
 import 'package:mm_muslim_support/utility/dialog_utils.dart';
 
 class DrawerWidget extends StatelessWidget {
@@ -105,16 +107,19 @@ class DrawerWidget extends StatelessWidget {
             onTap: () => context.navigateWithPushNamed(QuranListPage.routeName),
           ),
           ListTile(
+            leading: const Icon(Icons.multitrack_audio_rounded),
+            title: const Text('Quran Audio'),
+            onTap: () => context.navigateWithPushNamed(SurahListenList.routeName),
+          ),
+          ListTile(
             leading: const Icon(Icons.book_online_rounded),
             title: const Text('Hadith'),
-            onTap: () {
-              // Navigate to content preferences
-            },
+            onTap: () => context.navigateWithPushNamed(StayTunedPage.routeName),
           ),
           ListTile(
             leading: const Icon(Icons.balance_rounded),
             title: const Text('Fatwa'),
-            onTap: () {},
+            onTap: () => context.navigateWithPushNamed(StayTunedPage.routeName),
           ),
           ListTile(
             leading: const Icon(Icons.explore_rounded),
@@ -124,9 +129,7 @@ class DrawerWidget extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.backup_rounded),
             title: const Text('Backup & Restore'),
-            onTap: () {
-              // Navigate to backup/restore
-            },
+            onTap: () => context.navigateWithPushNamed(StayTunedPage.routeName),
           ),
           ListTile(
             leading: const Icon(Icons.info_rounded),

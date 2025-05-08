@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
           darkTheme: customTheme.dark(),
           highContrastTheme: customTheme.lightHighContrast(),
           highContrastDarkTheme: customTheme.darkHighContrast(),
-          themeMode: themeMode, // ← this is correct
+          themeMode: themeMode,
           routerConfig: AppRouter.router,
         );
       },

@@ -84,11 +84,11 @@ class NamazTimesPage extends StatelessWidget {
                                                   LocalNotificationService().cancelNotificationById(prayerTime.id);
                                                   context.read<GetPrayerTimeCubit>().toggleNotificationEnable(index, state.prayerTimes, false);
                                                 } else {
-                                                  DateTime now = DateUtility.convertTo24HourDateTime(prayerTime.prayerTime);
-                                                  DateTime current = DateTime(now.year, now.month, now.day, now.hour, now.minute);
+                                                  DateTime now = DateTime.now();
+                                                  DateTime current = DateTime(prayerTime.prayerDateTime.year, prayerTime.prayerDateTime.month, prayerTime.prayerDateTime.day, prayerTime.prayerDateTime.hour, prayerTime.prayerDateTime.minute);
                                                   TZDateTime scheduledDate = TZDateTime.from(current, local);
 
-                                                  await LocalNotificationService().scheduleNotification(
+                                                  LocalNotificationService().scheduleNotification(
                                                     context: context,
                                                     id: now.millisecond,
                                                     title: prayerTime.prayerName.toUpperCase(),

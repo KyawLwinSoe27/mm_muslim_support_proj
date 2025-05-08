@@ -76,6 +76,12 @@ dependencies:
   pdfx: ^2.9.1
   flutter_compass: ^0.8.1
 
+  just_audio: ^0.10.2
+  audio_session: ^0.2.1
+  audio_service: ^0.18.18
+  just_audio_background: ^0.0.1-beta.16
+  rxdart: ^0.28.0
+
 
 
 

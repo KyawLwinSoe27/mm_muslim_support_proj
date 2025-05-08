@@ -12,6 +12,7 @@ import 'package:mm_muslim_support/module/home/presentation/tasbih_list_page.dart
 import 'package:mm_muslim_support/module/home/widgets/drawer_widget.dart';
 import 'package:mm_muslim_support/module/home/widgets/today_date_widget.dart';
 import 'package:mm_muslim_support/module/menu/cubit/get_location_cubit/get_location_cubit.dart';
+import 'package:mm_muslim_support/module/stay_tuned_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -43,7 +44,7 @@ class HomePage extends StatelessWidget {
           child: TasbihListPage(tasbihListModel: tasbihListModel),
         );
       case 3:
-        return const Center(child: DiscoveryPage());
+        return const Center(child: StayTunedPage());
       default:
         return const SizedBox.shrink(); // fallback
     }
