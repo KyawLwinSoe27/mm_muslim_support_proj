@@ -1,5 +1,6 @@
 enum Folder {
-  quran('quran');
+  quran('quran'),
+  quranRecitation('quran_recitation');
 
 
   final String value;

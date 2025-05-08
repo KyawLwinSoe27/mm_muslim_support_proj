@@ -12,13 +12,14 @@
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"/>
 
 
     <application
+        android:foregroundServiceType="mediaPlayback"
         android:usesCleartextTraffic="true"
         android:hardwareAccelerated="true"
-        android:label="mm_muslim_support"
+        android:label="Myanmar Muslim Support"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
