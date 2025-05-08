@@ -6,6 +6,16 @@
 -keep class io.flutter.** { *; }
 -keep class io.flutter.plugins.** { *; }
 -keep class com.google.firebase.** { *; }
+-keep class com.dynaverse.mm_muslim_support.** { *; }
+-keep class okhttp3.** { *; }  # if using http package with okhttp
+-keep class org.apache.** { *; }
+# Keep just_audio and related classes
+-keep class com.google.android.exoplayer2.** { *; }
+-keep class com.ryanheise.just_audio.** { *; }
+
+# Keep all Dart plugin-generated code (optional but safe)
+-keep class io.flutter.plugins.** { *; }
+-keep class io.flutter.embedding.** { *; }
 -dontwarn io.flutter.embedding.**
 -ignorewarnings
 # Retain generic signatures of TypeToken and its subclasses with R8 version 3.0 and higher.

@@ -12,6 +12,7 @@ class SurahAudioBloc extends Bloc<SurahAudioEvent, SurahAudioState> {
   late final StreamSubscription<PlayerState> _playerStateSub;
   late final StreamSubscription<Duration> _bufferedSub;
 
+
   SurahAudioBloc() : super(SurahAudioInitial()) {
     on<SurahAudioLoad>(_onLoad);
     on<SurahAudioPlay>(_onPlay);
@@ -51,8 +52,8 @@ class SurahAudioBloc extends Bloc<SurahAudioEvent, SurahAudioState> {
       await _player.setAudioSource(AudioSource.uri(Uri.parse(event.url)));
       await _player.play();
       emit(SurahAudioPlaying(_player.position, _player.bufferedPosition, _player.duration ?? Duration.zero));
-    } catch (e) {
-      emit(SurahAudioError(e.toString()));
+    } catch (e, st) {
+      emit(SurahAudioError(st.toString()));
     }
   }
 
