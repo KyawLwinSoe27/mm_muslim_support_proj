@@ -19,13 +19,31 @@ class SurahListenPage extends StatelessWidget {
       create: (_) => SurahAudioBloc()..add(SurahAudioLoad(quranSongModel.mp3Url)),
       child: Scaffold(
         body: Center(
-          child: BlocBuilder<SurahAudioBloc, SurahAudioState>(
-            builder: (context, state) {
-              if (state is SurahAudioPlaying) {
-                if(state.position == Duration.zero) {
-                  context.read<SurahAudioBloc>().add(SurahAudioPause());
-                }
+          child: BlocConsumer<SurahAudioBloc, SurahAudioState>(
+            listener: (context, state) {
+              if (state is SurahAudioError) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state.message),
+                    backgroundColor: Colors.red,
+                    duration: Duration(minutes: 1),
+                  ),
+                );
+              } else if (state is SurahAudioLoading) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Loading audio...'),
+                    backgroundColor: Colors.blue,
+                  ),
+                );
               }
+            },
+            builder: (context, state) {
+              // if (state is SurahAudioPlaying) {
+              //   if(state.position == Duration.zero) {
+              //     context.read<SurahAudioBloc>().add(SurahAudioPause());
+              //   }
+              // }
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
