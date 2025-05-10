@@ -41,3 +41,11 @@ class SurahAudioPaused extends SurahAudioState {
 }
 
 class SurahAudioFinished extends SurahAudioState {}
+
+class SurahAudioNameChanged extends SurahAudioState {
+  final String name;
+  const SurahAudioNameChanged(this.name);
+
+  @override
+  List<Object?> get props => [name];
+}
