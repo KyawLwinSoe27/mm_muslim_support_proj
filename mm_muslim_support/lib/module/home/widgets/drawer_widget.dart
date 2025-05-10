@@ -10,6 +10,7 @@ import 'package:mm_muslim_support/module/notification/presentations/notification
 import 'package:mm_muslim_support/module/quran/presentations/quran_list_page.dart';
 import 'package:mm_muslim_support/module/quran/presentations/surah_listen_list.dart';
 import 'package:mm_muslim_support/module/stay_tuned_page.dart';
+import 'package:mm_muslim_support/utility/constants.dart';
 import 'package:mm_muslim_support/utility/dialog_utils.dart';
 
 class DrawerWidget extends StatelessWidget {
@@ -20,9 +21,7 @@ class DrawerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: ListView(
-        // Important: Remove any padding from the ListView.
-        padding: EdgeInsets.zero,
+      child: Column(
         children: [
           Container(
             height: 120,
@@ -32,7 +31,7 @@ class DrawerWidget extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('MM Support', style: TextStyle(color: Theme.of(context).colorScheme.onPrimary)),
+                  Text(AppConstants.appName, style: TextStyle(color: Theme.of(context).colorScheme.onPrimary)),
                   Row(
                     children: [
                       IconButton(
@@ -48,116 +47,124 @@ class DrawerWidget extends StatelessWidget {
               ),
             ),
           ),
-          Row(
-            children: [
-              Expanded(
-                child: ListTile(
-                  leading: const Icon(Icons.language_rounded),
-                  title: const Text('Language'),
+          Expanded(
+            child: ListView(
+              // Important: Remove any padding from the ListView.
+              padding: EdgeInsets.zero,
+              children: [
+                // Row(
+                //   children: [
+                //     Expanded(
+                //       child: ListTile(
+                //         leading: const Icon(Icons.language_rounded),
+                //         title: const Text('Language'),
+                //         onTap: () {
+                //           // Navigate to language selection screen
+                //         },
+                //       ),
+                //     ),
+                //     BlocProvider(
+                //       create: (context) => ChangeLanguageCubit(),
+                //       child: BlocBuilder<ChangeLanguageCubit, bool>(
+                //         builder: (context, state) {
+                //           return Row(
+                //             children: [
+                //               const Text('Eng'),
+                //               Switch(value: state, onChanged: (value) =>
+                //               context.read<ChangeLanguageCubit>()
+                //                 ..toggleLanguage()),
+                //               const Text('MM'),
+                //               const SizedBox(width: 10,)
+                //             ],
+                //           );
+                //         },
+                //       ),
+                //     )
+                //   ],
+                // ),
+                BlocListener<GetLocationCubit, GetLocationState>(
+                  listener: (context, state) {
+                    if(state is GetLocationLoading) {
+                      DialogUtils.loadingDialog(context);
+                    } else if(state is GetLocationLoaded) {
+                      context.back();
+                      DialogUtils.showSuccessDialog(context, state.location);
+                    } else if(state is GetLocationError) {
+                      context.back();
+                      DialogUtils.showErrorDialog(context,'Failed to update location');
+                    }
+                  },
+                  child: ListTile(
+                    leading: const Icon(Icons.location_on_rounded),
+                    title: const Text('Update Location'),
+                    onTap: () => context.read<GetLocationCubit>().getCurrentLocation(),
+                  ),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.settings_rounded),
+                  title: const Text('Prayer Time Settings'),
+                  onTap: () => context.navigateWithPushNamed(PrayerTimeSettingPage.routeName),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.menu_book_rounded),
+                  title: const Text('Quran'),
+                  onTap: () => context.navigateWithPushNamed(QuranListPage.routeName),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.multitrack_audio_rounded),
+                  title: const Text('Quran Audio'),
+                  onTap: () => context.navigateWithPushNamed(SurahListenList.routeName),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.book_online_rounded),
+                  title: const Text('Hadith'),
+                  onTap: () => context.navigateWithPushNamed(StayTunedPage.routeName),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.balance_rounded),
+                  title: const Text('Fatwa'),
+                  onTap: () => context.navigateWithPushNamed(StayTunedPage.routeName),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.explore_rounded),
+                  title: const Text('Qibla'),
+                  onTap: () => context.navigateWithPushNamed(CompassPage.routeName),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.backup_rounded),
+                  title: const Text('Backup & Restore'),
+                  onTap: () => context.navigateWithPushNamed(StayTunedPage.routeName),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.info_rounded),
+                  title: const Text('About'),
                   onTap: () {
-                    // Navigate to language selection screen
+                    // Navigate to about page
                   },
                 ),
-              ),
-              BlocProvider(
-                create: (context) => ChangeLanguageCubit(),
-                child: BlocBuilder<ChangeLanguageCubit, bool>(
-                  builder: (context, state) {
-                    return Row(
-                      children: [
-                        const Text('Eng'),
-                        Switch(value: state, onChanged: (value) =>
-                        context.read<ChangeLanguageCubit>()
-                          ..toggleLanguage()),
-                        const Text('MM'),
-                        const SizedBox(width: 10,)
-                      ],
-                    );
+                ListTile(
+                  leading: const Icon(Icons.volunteer_activism_rounded),
+                  title: const Text('Donate Us'),
+                  onTap: () {
+                    // Navigate to about page
                   },
                 ),
-              )
-            ],
-          ),
-          BlocListener<GetLocationCubit, GetLocationState>(
-            listener: (context, state) {
-              if(state is GetLocationLoading) {
-                DialogUtils.loadingDialog(context);
-              } else if(state is GetLocationLoaded) {
-                context.back();
-                DialogUtils.showSuccessDialog(context, state.location);
-              } else if(state is GetLocationError) {
-                context.back();
-                DialogUtils.showErrorDialog(context,'Failed to update location');
-              }
-            },
-            child: ListTile(
-              leading: const Icon(Icons.location_on_rounded),
-              title: const Text('Update Location'),
-              onTap: () => context.read<GetLocationCubit>().getCurrentLocation(),
+                ListTile(
+                  leading: const Icon(Icons.star_rounded),
+                  title: const Text('Rate Us'),
+                  onTap: () {
+                    // Open app store link
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.share),
+                  title: const Text('Share App'),
+                  onTap: () {
+                    // Share app link
+                  },
+                ),
+              ],
             ),
-          ),
-          ListTile(
-            leading: const Icon(Icons.settings_rounded),
-            title: const Text('Prayer Time Settings'),
-            onTap: () => context.navigateWithPushNamed(PrayerTimeSettingPage.routeName),
-          ),
-          ListTile(
-            leading: const Icon(Icons.menu_book_rounded),
-            title: const Text('Quran'),
-            onTap: () => context.navigateWithPushNamed(QuranListPage.routeName),
-          ),
-          ListTile(
-            leading: const Icon(Icons.multitrack_audio_rounded),
-            title: const Text('Quran Audio'),
-            onTap: () => context.navigateWithPushNamed(SurahListenList.routeName),
-          ),
-          ListTile(
-            leading: const Icon(Icons.book_online_rounded),
-            title: const Text('Hadith'),
-            onTap: () => context.navigateWithPushNamed(StayTunedPage.routeName),
-          ),
-          ListTile(
-            leading: const Icon(Icons.balance_rounded),
-            title: const Text('Fatwa'),
-            onTap: () => context.navigateWithPushNamed(StayTunedPage.routeName),
-          ),
-          ListTile(
-            leading: const Icon(Icons.explore_rounded),
-            title: const Text('Qibla'),
-            onTap: () => context.navigateWithPushNamed(CompassPage.routeName),
-          ),
-          ListTile(
-            leading: const Icon(Icons.backup_rounded),
-            title: const Text('Backup & Restore'),
-            onTap: () => context.navigateWithPushNamed(StayTunedPage.routeName),
-          ),
-          ListTile(
-            leading: const Icon(Icons.info_rounded),
-            title: const Text('About'),
-            onTap: () {
-              // Navigate to about page
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.volunteer_activism_rounded),
-            title: const Text('Donate Us'),
-            onTap: () {
-              // Navigate to about page
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.star_rounded),
-            title: const Text('Rate Us'),
-            onTap: () {
-              // Open app store link
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.share),
-            title: const Text('Share App'),
-            onTap: () {
-              // Share app link
-            },
           ),
         ],
       ),
