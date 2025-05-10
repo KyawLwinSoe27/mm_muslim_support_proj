@@ -90,7 +90,7 @@ class SurahListenList extends StatelessWidget {
             //     ],
             //   ),
             // ),
-            onTap: () => context.navigateWithPushNamed(SurahListenPage.routeName, extra: surah),
+            onTap: () => context.navigateWithPushNamed(SurahListenPageContent.routeName, extra: surah),
           );
         },
       ),

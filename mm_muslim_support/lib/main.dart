@@ -1,3 +1,4 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -6,6 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:mm_muslim_support/core/themes/theme.dart';
 import 'package:mm_muslim_support/firebase_options.dart';
 import 'package:mm_muslim_support/logic/theme_cubit.dart';
+import 'package:mm_muslim_support/service/audio_handler.dart';
 import 'package:mm_muslim_support/service/local_notification_service.dart';
 import 'package:mm_muslim_support/service/location_service.dart';
 import 'package:mm_muslim_support/service/permission_service.dart';
@@ -13,6 +15,7 @@ import 'package:mm_muslim_support/service/shared_preference_service.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 FlutterLocalNotificationsPlugin();
+late final AudioPlayerHandler audioHandler;
 
 
 void main() async {
@@ -25,6 +28,16 @@ void main() async {
   await PermissionService.requestNotificationPermission();
   await LocationService.getCurrentLocation();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  audioHandler = await AudioService.init(
+    builder: () => AudioPlayerHandler(),
+    config: const AudioServiceConfig(
+      androidNotificationChannelId: 'com.example.audio',
+      androidNotificationChannelName: 'Audio Playback',
+      androidNotificationOngoing: true,
+    ),
+  );
+
   runApp(BlocProvider(create: (context) => ThemeCubit(), child: const MyApp()));
 }
 
