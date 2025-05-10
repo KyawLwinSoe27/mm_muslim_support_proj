@@ -81,6 +81,9 @@ dependencies:
   audio_service: ^0.18.18
   just_audio_background: ^0.0.1-beta.16
   rxdart: ^0.28.0
+  in_app_review: ^2.0.10
+  flutter_rating_bar: ^4.0.1
+  share_plus: ^11.0.0
 
 
 
