@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mm_muslim_support/core/routing/context_ext.dart';
 import 'package:mm_muslim_support/logic/theme_cubit.dart';
 import 'package:mm_muslim_support/module/menu/cubit/get_location_cubit/get_location_cubit.dart';
+import 'package:mm_muslim_support/module/menu/presentation/about_us_screen.dart';
 import 'package:mm_muslim_support/module/menu/presentation/compass_page.dart';
+import 'package:mm_muslim_support/module/menu/presentation/donate_us_screen.dart';
 import 'package:mm_muslim_support/module/menu/presentation/prayer_time_setting_page.dart';
 import 'package:mm_muslim_support/module/notification/presentations/notification_page.dart';
 import 'package:mm_muslim_support/module/quran/presentations/quran_list_page.dart';
@@ -11,6 +13,8 @@ import 'package:mm_muslim_support/module/quran/presentations/surah_listen_list.d
 import 'package:mm_muslim_support/module/stay_tuned_page.dart';
 import 'package:mm_muslim_support/utility/constants.dart';
 import 'package:mm_muslim_support/utility/dialog_utils.dart';
+import 'package:mm_muslim_support/widget/rate_us_dialog.dart';
+import 'package:mm_muslim_support/widget/share_app_helper.dart';
 
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({
@@ -137,30 +141,22 @@ class DrawerWidget extends StatelessWidget {
                 ListTile(
                   leading: const Icon(Icons.info_rounded),
                   title: const Text('About'),
-                  onTap: () {
-                    // Navigate to about page
-                  },
+                  onTap: () => context.navigateWithPushNamed(AboutUsScreen.routeName),
                 ),
                 ListTile(
                   leading: const Icon(Icons.volunteer_activism_rounded),
                   title: const Text('Donate Us'),
-                  onTap: () {
-                    // Navigate to about page
-                  },
+                  onTap: () => context.navigateWithPushNamed(DonateUsScreen.routeName),
                 ),
                 ListTile(
                   leading: const Icon(Icons.star_rounded),
                   title: const Text('Rate Us'),
-                  onTap: () {
-                    // Open app store link
-                  },
+                  onTap: () => RateUsDialog.show(context),
                 ),
                 ListTile(
                   leading: const Icon(Icons.share),
                   title: const Text('Share App'),
-                  onTap: () {
-                    // Share app link
-                  },
+                  onTap: () => AppShareHelper.shareApp(),
                 ),
               ],
             ),

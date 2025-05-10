@@ -10,7 +10,9 @@ import 'package:mm_muslim_support/module/home/cubit/bottom_navigation_bar_cubit.
 import 'package:mm_muslim_support/module/home/cubit/tasbih_counter_cubit.dart';
 import 'package:mm_muslim_support/module/home/presentation/home_page.dart';
 import 'package:mm_muslim_support/module/menu/cubit/get_prayer_calculation_method_cubit.dart';
+import 'package:mm_muslim_support/module/menu/presentation/about_us_screen.dart';
 import 'package:mm_muslim_support/module/menu/presentation/compass_page.dart';
+import 'package:mm_muslim_support/module/menu/presentation/donate_us_screen.dart';
 import 'package:mm_muslim_support/module/menu/presentation/prayer_time_setting_page.dart';
 import 'package:mm_muslim_support/module/notification/presentations/notification_page.dart';
 import 'package:mm_muslim_support/module/quran/bloc/audio_player_cubit/audio_player_cubit.dart';
@@ -78,6 +80,8 @@ class AppRouter {
       }),
 
       GoRoute(name: StayTunedPage.routeName, path: '/stay_tuned_page', builder: (context, state) => const StayTunedPage()),
+      GoRoute(name: DonateUsScreen.routeName, path: '/donate-us', builder: (context, state) => const DonateUsScreen()),
+      GoRoute(name: AboutUsScreen.routeName, path: '/about-us', builder: (context, state) => const AboutUsScreen()),
     ],
     // Optional: Custom error page route (404-like)
     errorPageBuilder: (context, state) {
