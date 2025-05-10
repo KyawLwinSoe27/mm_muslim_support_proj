@@ -1,14 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:just_audio/just_audio.dart';
-import 'package:mm_muslim_support/common/bloc/download_file_bloc/download_file_bloc.dart';
-import 'package:mm_muslim_support/core/enums/folder.dart';
 import 'package:mm_muslim_support/core/routing/context_ext.dart';
 import 'package:mm_muslim_support/model/quran_song_model.dart';
 import 'package:mm_muslim_support/module/quran/presentations/surah_listen_page.dart';
-import 'package:path_provider/path_provider.dart';
 
 class SurahListenList extends StatelessWidget {
   const SurahListenList({super.key});
@@ -31,7 +24,7 @@ class SurahListenList extends StatelessWidget {
               child: Icon(Icons.music_note),
             ),
             title: Text(surah.name),
-            subtitle: Text(surah.number),
+            subtitle: Text(surah.number.toString()),
             // trailing: SizedBox(
             //   width: 100,
             //   child: Row(

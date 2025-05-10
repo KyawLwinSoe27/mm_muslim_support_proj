@@ -7,8 +7,9 @@ abstract class SurahAudioEvent extends Equatable {
 }
 
 class SurahAudioLoad extends SurahAudioEvent {
+  final String name;
   final String url;
-  const SurahAudioLoad(this.url);
+  const SurahAudioLoad(this.url, this.name);
 }
 
 class SurahAudioPlay extends SurahAudioEvent {}

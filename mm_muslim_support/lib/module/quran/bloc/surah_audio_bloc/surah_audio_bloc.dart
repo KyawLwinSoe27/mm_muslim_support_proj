@@ -11,7 +11,7 @@ class SurahAudioBloc extends Bloc<SurahAudioEvent, SurahAudioState> {
   late final StreamSubscription<Duration> _positionSub;
   late final StreamSubscription<PlayerState> _playerStateSub;
   late final StreamSubscription<Duration> _bufferedSub;
-
+  bool _isFinished = false;
 
   SurahAudioBloc() : super(SurahAudioInitial()) {
     on<SurahAudioLoad>(_onLoad);
@@ -19,7 +19,6 @@ class SurahAudioBloc extends Bloc<SurahAudioEvent, SurahAudioState> {
     on<SurahAudioPause>(_onPause);
     on<SurahAudioUpdatePosition>(_onPositionUpdated);
     on<SurahAudioCompleted>((event, emit) {
-      _isFinished = true;
       emit(SurahAudioFinished());
     });
 
@@ -27,15 +26,21 @@ class SurahAudioBloc extends Bloc<SurahAudioEvent, SurahAudioState> {
 
 
     _positionSub = _player.positionStream.listen((pos) {
+      if(_isFinished) return;
       add(SurahAudioUpdatePosition(pos, _player.bufferedPosition, _player.duration ?? Duration.zero));
     });
 
     _bufferedSub = _player.bufferedPositionStream.listen((_) {
-      add(SurahAudioUpdatePosition(_player.position, _player.bufferedPosition, _player.duration ?? Duration.zero));
+      if(_isFinished) return;
+      // when buffered position finished not to update
+      if (_player.bufferedPosition != _player.duration) {
+        add(SurahAudioUpdatePosition(_player.position, _player.bufferedPosition, _player.duration ?? Duration.zero));
+      }
     });
 
     _playerStateSub = _player.playerStateStream.listen((state) {
       if (state.processingState == ProcessingState.completed) {
+        _isFinished = true;
         _player.seek(Duration.zero);
         _player.pause();
         add(SurahAudioCompleted());
@@ -43,15 +48,14 @@ class SurahAudioBloc extends Bloc<SurahAudioEvent, SurahAudioState> {
     });
   }
 
-  bool _isFinished = false;
-
   Future<void> _onLoad(SurahAudioLoad event, Emitter<SurahAudioState> emit) async {
+    print('[DEBUG] _onLoad called with URL: ${event.url}');
     try {
       _isFinished = false; // Reset finish flag
       emit(SurahAudioLoading());
       await _player.setAudioSource(AudioSource.uri(Uri.parse(event.url)));
       await _player.play();
-      emit(SurahAudioPlaying(_player.position, _player.bufferedPosition, _player.duration ?? Duration.zero));
+      emit(SurahAudioNameChanged(event.name));
     } catch (e, st) {
       emit(SurahAudioError(st.toString()));
     }
