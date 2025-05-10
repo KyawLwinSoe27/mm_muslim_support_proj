@@ -5,7 +5,6 @@ import 'package:mm_muslim_support/module/home/cubit/change_date_cubit.dart';
 import 'package:mm_muslim_support/module/home/cubit/get_location_time_cubit/get_location_time_cubit.dart';
 import 'package:mm_muslim_support/module/home/cubit/get_prayer_time_cubit/get_prayer_time_cubit.dart';
 import 'package:mm_muslim_support/service/local_notification_service.dart';
-import 'package:mm_muslim_support/utility/date_utils.dart';
 import 'package:mm_muslim_support/utility/extensions.dart';
 import 'package:mm_muslim_support/utility/image_constants.dart';
 import 'package:timezone/timezone.dart';
