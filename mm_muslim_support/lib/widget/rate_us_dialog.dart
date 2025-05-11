@@ -44,11 +44,11 @@ class _RateUsDialogState extends State<RateUsDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text("Rate Us"),
+      title: const Text('Rate Us'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text("How would you rate this app?"),
+          const Text('How would you rate this app?'),
           const SizedBox(height: 16),
           RatingBar.builder(
             initialRating: 0,
@@ -66,11 +66,11 @@ class _RateUsDialogState extends State<RateUsDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text("Later"),
+          child: const Text('Later'),
         ),
         ElevatedButton(
           onPressed: _submitRating,
-          child: const Text("Submit"),
+          child: const Text('Submit'),
         ),
       ],
     );

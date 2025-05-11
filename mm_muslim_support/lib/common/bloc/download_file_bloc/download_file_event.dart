@@ -30,3 +30,16 @@ class _UpdateProgress extends DownloadFileEvent {
   @override
   List<Object> get props => [percent];
 }
+
+class CheckFileExist extends DownloadFileEvent {
+  final String fileName;
+  final Folder folder;
+
+  const CheckFileExist({
+    required this.fileName,
+    required this.folder,
+  });
+
+  @override
+  List<Object> get props => [fileName, folder];
+}

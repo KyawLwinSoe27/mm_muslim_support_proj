@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:audio_service/audio_service.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:audio_session/audio_session.dart';
+import 'package:mm_muslim_support/core/enums/folder.dart';
 import 'package:mm_muslim_support/model/quran_song_model.dart';
+import 'package:mm_muslim_support/service/file_management_service.dart';
 
 class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
   final AudioPlayer _player = AudioPlayer();
@@ -59,7 +63,18 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
   }
 
   Future<void> setUrl(QuranSongModel quranSongModel) async {
-    final duration = await _player.setUrl(quranSongModel.mp3Url);
+    // check in local file
+    final Duration? duration;
+    final dir = await FileManagementService.getDownloadDirectory(Folder.quranRecitation);
+    final filePath = '${dir.path}/${quranSongModel.filePath}';
+
+    if (await File(filePath).exists()) {
+      duration = await _player.setFilePath(filePath);
+    } else {
+      duration = await _player.setUrl(quranSongModel.mp3Url);
+    }
+
+    // final duration =  await _player.setUrl(quranSongModel.mp3Url);
     final mediaItem = MediaItem(
       id: quranSongModel.number.toString(),
       album: 'Quran',

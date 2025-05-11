@@ -69,7 +69,7 @@ class NamazTimesPage extends StatelessWidget {
                                             SizedBox(
                                               width: 70,
                                               child: Text(
-                                                prayerTime.prayerName, // Replace with dynamic prayer name
+                                                prayerTime.prayerName.value, // Replace with dynamic prayer name
                                                 style: Theme.of(context).textTheme.titleMedium,
                                               ),
                                             ),
@@ -79,6 +79,7 @@ class NamazTimesPage extends StatelessWidget {
                                             ),
                                             ElevatedButton(
                                               onPressed: () async {
+                                                context.read<GetPrayerTimeCubit>().setAlarm(prayerTime.prayerName);
                                                 if (prayerTime.enableNotify) {
                                                   LocalNotificationService().cancelNotificationById(prayerTime.id);
                                                   context.read<GetPrayerTimeCubit>().toggleNotificationEnable(index, state.prayerTimes, false);
@@ -90,8 +91,8 @@ class NamazTimesPage extends StatelessWidget {
                                                   LocalNotificationService().scheduleNotification(
                                                     context: context,
                                                     id: now.millisecond,
-                                                    title: prayerTime.prayerName.toUpperCase(),
-                                                    body: "Don't forget to pray for ${prayerTime.prayerName}",
+                                                    title: prayerTime.prayerName.value.toUpperCase(),
+                                                    body: "Don't forget to pray for ${prayerTime.prayerName.value}",
                                                     scheduledDate: scheduledDate,
                                                   );
                                                   context.read<GetPrayerTimeCubit>().toggleNotificationEnable(index, state.prayerTimes, true);

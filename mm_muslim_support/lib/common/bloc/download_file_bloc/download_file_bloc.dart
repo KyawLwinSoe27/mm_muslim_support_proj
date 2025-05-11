@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:equatable/equatable.dart';
@@ -20,6 +21,7 @@ class DownloadFileBloc extends Bloc<DownloadFileEvent, DownloadFileState> {
       super(DownloadInitial()) {
     on<StartDownload>(_onStartDownload);
     on<_UpdateProgress>(_onUpdateProgress);
+    on<CheckFileExist>(_onCheckFileExist);
   }
 
   Future<void> _onStartDownload(StartDownload event, Emitter<DownloadFileState> emit) async {
@@ -62,5 +64,16 @@ class DownloadFileBloc extends Bloc<DownloadFileEvent, DownloadFileState> {
 
   void _onUpdateProgress(_UpdateProgress event, Emitter<DownloadFileState> emit) {
     emit(DownloadInProgress(progress: event.percent));
+  }
+
+  FutureOr<void> _onCheckFileExist(CheckFileExist event, Emitter<DownloadFileState> emit) async{
+    final dir = await FileManagementService.getDownloadDirectory(event.folder);
+    final filePath = '${dir.path}/${event.fileName}';
+
+    if (await File(filePath).exists()) {
+      return emit(const FileExist(isExist: true));
+    } else {
+      return emit(const FileExist(isExist: false));
+    }
   }
 }

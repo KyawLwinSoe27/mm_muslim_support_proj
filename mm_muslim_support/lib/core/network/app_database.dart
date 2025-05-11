@@ -22,6 +22,7 @@ class AppDatabase {
       version: 1,
       onCreate: (db, version) async {
         await db.execute(BookmarkTableSchema.createTable);
+        await db.execute(PrayerTimeTableSchema.createTable);
       },
     );
   }
