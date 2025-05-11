@@ -1,7 +1,9 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:mm_muslim_support/service/location_service.dart';
+import 'package:mm_muslim_support/utility/dialog_utils.dart';
 import 'package:prayers_times/prayers_times.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class FunctionService {
   static PrayerTimes getPrayerTime({DateTime? dateTime}) {
@@ -60,4 +62,26 @@ class FunctionService {
     return timeZoneName == 'Asia/Yangon' ? 'Asia/Rangoon' : timeZoneName;
   }
 
+  static Future<void> findNearbyMosque(BuildContext context) async {
+    const String query = 'mosque';
+    final Uri googleMapsUrl = Uri.parse('https://www.google.com/maps/search/?api=1&query=$query');
+
+    try {
+      final bool launched = await launchUrl(
+        googleMapsUrl,
+        mode: LaunchMode.externalApplication,
+      );
+
+      if (!launched && context.mounted) {
+        // fallback if launch silently fails
+        DialogUtils.showWarningDialog(context, 'Your phone does not support opening Google Maps.');
+      }
+    } catch (e) {
+      // Handle any errors that occur during the URL launch
+      if (context.mounted) {
+        DialogUtils.showWarningDialog(context, 'An error occurred while trying to open Google Maps.');
+      }
+    }
+
+  }
 }

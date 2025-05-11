@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mm_muslim_support/core/routing/context_ext.dart';
 import 'package:mm_muslim_support/module/quran/presentations/quran_screen.dart';
 import 'package:mm_muslim_support/utility/constants.dart';
+import 'package:mm_muslim_support/utility/extensions.dart';
 
 class QuranModel {
   final String title;
@@ -46,12 +47,7 @@ class QuranListPage extends StatelessWidget {
               leading: const Icon(Icons.menu_book_rounded, color: Colors.teal, size: 32),
               title: Text(
                 quran.title,
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
-              subtitle: Text(
-                quran.link,
-                style: const TextStyle(color: Colors.grey, fontSize: 13),
-                overflow: TextOverflow.ellipsis,
+                style: context.textTheme.bodyLarge,
               ),
               trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 16),
               onTap: () => context.navigateWithPushNamed(QuranScreen.routeName, extra: quran),
