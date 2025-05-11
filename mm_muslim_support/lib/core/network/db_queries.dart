@@ -7,3 +7,9 @@ class BookmarkQueries {
     DELETE FROM bookmarks WHERE filePath = ?
   ''';
 }
+
+class PrayerTimeQueries {
+  static const String getPrayerTimeByDateTime = '''
+    SELECT * FROM prayer_times WHERE dateTime = ?
+  ''';
+}

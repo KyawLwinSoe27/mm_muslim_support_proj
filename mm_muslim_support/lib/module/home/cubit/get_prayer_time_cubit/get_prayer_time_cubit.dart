@@ -4,10 +4,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mm_muslim_support/core/enums/custom_date_format.dart';
+import 'package:mm_muslim_support/core/enums/prayer.dart';
+import 'package:mm_muslim_support/dao/prayer_time_dao.dart';
 import 'package:mm_muslim_support/model/custom_prayer_time.dart';
 import 'package:mm_muslim_support/model/prayer_calculation_method.dart';
 import 'package:mm_muslim_support/model/prayer_time_card.dart';
 import 'package:mm_muslim_support/service/location_service.dart';
+import 'package:mm_muslim_support/service/log_service.dart';
 import 'package:mm_muslim_support/service/shared_preference_service.dart';
 import 'package:mm_muslim_support/utility/date_utils.dart';
 import 'package:mm_muslim_support/utility/image_constants.dart';
@@ -50,15 +53,20 @@ class GetPrayerTimeCubit extends Cubit<GetPrayerTimeState> {
     emit(GetPrayerTimeByDateLoading());
     try {
       final prayerTime = _getPrayerTime(dateTime: date);
-
       final dateFormat = CustomDateFormat.timeOnly;
 
+      bool isFajrAlarm = SharedPreferenceService.getFajrAlarm() ?? false;
+      bool isDhuhrAlarm = SharedPreferenceService.getDhuhrAlarm() ?? false;
+      bool isAsrAlarm = SharedPreferenceService.getAsrAlarm() ?? false;
+      bool isMaghribAlarm = SharedPreferenceService.getMaghribAlarm() ?? false;
+      bool isIshaAlarm = SharedPreferenceService.getIshaAlarm() ?? false;
+
       final prayerTimes = [
-        _buildCustomPrayer('Fajr', prayerTime.fajrStartTime!, prayerTime.date, dateFormat),
-        _buildCustomPrayer('Dhuhr', prayerTime.dhuhrStartTime!, prayerTime.date, dateFormat),
-        _buildCustomPrayer('Asr', prayerTime.asrStartTime!, prayerTime.date, dateFormat),
-        _buildCustomPrayer('Maghrib', prayerTime.maghribStartTime!, prayerTime.date, dateFormat),
-        _buildCustomPrayer('Isha', prayerTime.ishaStartTime!, prayerTime.date, dateFormat),
+        _buildCustomPrayer(Prayer.fajr, prayerTime.fajrStartTime!, prayerTime.date, dateFormat, isFajrAlarm),
+        _buildCustomPrayer(Prayer.dhur, prayerTime.dhuhrStartTime!, prayerTime.date, dateFormat, isDhuhrAlarm),
+        _buildCustomPrayer(Prayer.asr, prayerTime.asrStartTime!, prayerTime.date, dateFormat, isAsrAlarm),
+        _buildCustomPrayer(Prayer.maghrib, prayerTime.maghribStartTime!, prayerTime.date, dateFormat, isMaghribAlarm),
+        _buildCustomPrayer(Prayer.isha, prayerTime.ishaStartTime!, prayerTime.date, dateFormat, isIshaAlarm),
       ];
 
       emit(GetPrayerTimeByDateLoaded(prayerTimes: prayerTimes, timeStamp: DateTime.now().millisecond));
@@ -120,8 +128,8 @@ class GetPrayerTimeCubit extends Cubit<GetPrayerTimeState> {
     }
   }
 
-  CustomPrayerTime _buildCustomPrayer(String name, DateTime time, DateTime date, CustomDateFormat format) {
-    return CustomPrayerTime(dateTime: date, prayerName: name, prayerTime: DateUtility.DateTimeToString(time, format), prayerDateTime: time, enableNotify: false);
+  CustomPrayerTime _buildCustomPrayer(Prayer name, DateTime time, DateTime date, CustomDateFormat format, bool isAlarm) {
+    return CustomPrayerTime(dateTime: date, prayerName: name, prayerTime: DateUtility.DateTimeToString(time, format), prayerDateTime: time, enableNotify: isAlarm);
   }
 
   PrayerTimes _getPrayerTime({DateTime? dateTime}) {
@@ -144,5 +152,26 @@ class GetPrayerTimeCubit extends Cubit<GetPrayerTimeState> {
 
 
     return PrayerTimes(coordinates: coordinates, calculationParameters: params, precision: true, locationName: locationName, dateTime: dateTime);
+  }
+
+  void setAlarm(Prayer prayer) {
+    switch(prayer) {
+      case Prayer.fajr:
+        LogService.logStorage.writeInfoLog('Get Prayer Time Cubit', 'Set Alarm', 'Fajr Alarm Set Successfully');
+        bool isAlarm = SharedPreferenceService.getFajrAlarm() ?? false;
+        SharedPreferenceService.setFajrAlarm(!isAlarm);
+      case Prayer.dhur:
+        bool isAlarm = SharedPreferenceService.getDhuhrAlarm() ?? false;
+        SharedPreferenceService.setDhuhrAlarm(!isAlarm);
+      case Prayer.asr:
+        bool isAlarm = SharedPreferenceService.getAsrAlarm() ?? false;
+        SharedPreferenceService.setAsrAlarm(!isAlarm);
+      case Prayer.maghrib:
+        bool isAlarm = SharedPreferenceService.getMaghribAlarm() ?? false;
+        SharedPreferenceService.setMaghribAlarm(!isAlarm);
+      case Prayer.isha:
+        bool isAlarm = SharedPreferenceService.getIshaAlarm() ?? false;
+        SharedPreferenceService.setIshaAlarm(!isAlarm);
+    }
   }
 }

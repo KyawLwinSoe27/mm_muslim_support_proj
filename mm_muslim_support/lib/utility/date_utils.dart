@@ -23,6 +23,8 @@ class DateUtility {
         return DateFormat(format.value).format(dateTime);
       case CustomDateFormat.hijriDate:
         return DateFormat(format.value).format(dateTime);
+      case CustomDateFormat.yearMonth2:
+        return DateFormat(format.value).format(dateTime);
     }
   }
 

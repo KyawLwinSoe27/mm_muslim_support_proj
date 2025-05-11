@@ -36,3 +36,12 @@ class DownloadFailure extends DownloadFileState {
   @override
   List<Object?> get props => [message];
 }
+
+class FileExist extends DownloadFileState {
+  final bool isExist;
+
+  const FileExist({required this.isExist});
+
+  @override
+  List<Object?> get props => [isExist];
+}

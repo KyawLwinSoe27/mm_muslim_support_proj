@@ -6,6 +6,7 @@ import 'package:mm_muslim_support/module/menu/cubit/get_location_cubit/get_locat
 import 'package:mm_muslim_support/module/menu/presentation/about_us_screen.dart';
 import 'package:mm_muslim_support/module/menu/presentation/compass_page.dart';
 import 'package:mm_muslim_support/module/menu/presentation/donate_us_screen.dart';
+import 'package:mm_muslim_support/module/menu/presentation/logs_page.dart';
 import 'package:mm_muslim_support/module/menu/presentation/prayer_time_setting_page.dart';
 import 'package:mm_muslim_support/module/notification/presentations/notification_page.dart';
 import 'package:mm_muslim_support/module/quran/presentations/quran_list_page.dart';
@@ -142,6 +143,11 @@ class DrawerWidget extends StatelessWidget {
                   leading: const Icon(Icons.info_rounded),
                   title: const Text('About'),
                   onTap: () => context.navigateWithPushNamed(AboutUsScreen.routeName),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.info_rounded),
+                  title: const Text('Logs'),
+                  onTap: () => context.navigateWithPushNamed(LogsScreen.routeName),
                 ),
                 ListTile(
                   leading: const Icon(Icons.volunteer_activism_rounded),
