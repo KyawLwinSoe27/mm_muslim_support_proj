@@ -26,7 +26,14 @@ void main() async {
   await sharedPrefs.init();
   LocalNotificationService().initNotification();
   await PermissionService.requestNotificationPermission();
-  await LocationService.getCurrentLocation();
+
+  bool wasInBackground =  SharedPreferenceService.getAppLifeCycle() ?? false;
+  if(!wasInBackground) {
+    await LocationService.getCurrentLocation();
+    await SharedPreferenceService.setAppLifeCycle(true);
+  }
+
+
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   audioHandler = await AudioService.init(
@@ -46,9 +53,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    MaterialTheme customTheme = MaterialTheme(Typography
-        .material2021()
-        .black);
+    final MaterialTheme customTheme = MaterialTheme(Typography.material2021().black);
 
     return BlocBuilder<ThemeCubit, ThemeMode>(
       builder: (context, themeMode) {

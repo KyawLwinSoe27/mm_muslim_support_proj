@@ -145,7 +145,7 @@ class DrawerWidget extends StatelessWidget {
                   onTap: () => context.navigateWithPushNamed(AboutUsScreen.routeName),
                 ),
                 ListTile(
-                  leading: const Icon(Icons.info_rounded),
+                  leading: const Icon(Icons.file_copy_rounded),
                   title: const Text('Logs'),
                   onTap: () => context.navigateWithPushNamed(LogsScreen.routeName),
                 ),

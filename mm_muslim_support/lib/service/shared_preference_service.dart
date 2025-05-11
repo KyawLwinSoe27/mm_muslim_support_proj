@@ -18,6 +18,7 @@ class SharedPreferenceService {
   static const String _keyPlaceMarksName = 'place_marks_name';
   static const String _keyPrayerCalculationMethod = 'prayer_calculation_method';
   static const String _keyMadhab = 'madhab';
+  static const String _keyAppLifeCycle = 'app_life_cycle';
 
   static const String _keyIsFajrAlarm = 'is_fajr_alarm';
   static const String _keyIsDhuhrAlarm = 'is_dhuhr_alarm';
@@ -50,6 +51,10 @@ class SharedPreferenceService {
 
   static Future<void> setMadhab(bool madhab) async {
     await _prefs?.setBool(_keyMadhab, madhab);
+  }
+
+  static Future<void> setAppLifeCycle(bool appLifeCycle) async {
+    await _prefs?.setBool(_keyAppLifeCycle, appLifeCycle);
   }
 
   static Future<void> setFajrAlarm(bool isFajrAlarm) async {
@@ -115,6 +120,10 @@ class SharedPreferenceService {
   
   static bool? getIshaAlarm() {
     return _prefs?.getBool(_keyIsIshaAlarm);
+  }
+
+  static bool? getAppLifeCycle() {
+    return _prefs?.getBool(_keyAppLifeCycle);
   }
 
   // Remove
