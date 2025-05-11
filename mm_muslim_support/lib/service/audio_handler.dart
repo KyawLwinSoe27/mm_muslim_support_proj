@@ -80,7 +80,7 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
       album: 'Quran',
       title: 'Surah ${quranSongModel.name}', // Optionally pass dynamic title
       duration: duration,
-      artUri: Uri.parse('https://example.com/quran_cover.jpg'), // Optional image
+      artUri: Uri.parse('https://drive.google.com/file/d/1q8oD_nKbaYOJhYb0n6sS2W_IcqNBt6DP/view'), // Optional image
     );
 
     this.mediaItem.add(mediaItem); // ✅ CORRECT — update the stream

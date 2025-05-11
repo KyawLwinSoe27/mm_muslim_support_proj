@@ -4,6 +4,7 @@ import 'package:mm_muslim_support/model/custom_prayer_time.dart';
 import 'package:mm_muslim_support/module/home/cubit/change_date_cubit.dart';
 import 'package:mm_muslim_support/module/home/cubit/get_location_time_cubit/get_location_time_cubit.dart';
 import 'package:mm_muslim_support/module/home/cubit/get_prayer_time_cubit/get_prayer_time_cubit.dart';
+import 'package:mm_muslim_support/service/function_service.dart';
 import 'package:mm_muslim_support/service/local_notification_service.dart';
 import 'package:mm_muslim_support/utility/extensions.dart';
 import 'package:mm_muslim_support/utility/image_constants.dart';
@@ -26,7 +27,16 @@ class NamazTimesPage extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
                 margin: const EdgeInsets.symmetric(horizontal: 20),
-                decoration: BoxDecoration(color: context.colorScheme.surface, borderRadius: BorderRadius.circular(16)),
+                decoration: BoxDecoration(
+                  color: context.colorScheme.surface,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(color: context.colorScheme.onSurface.withValues(alpha: 0.1), blurRadius: 10, offset: const Offset(0, 4)),
+                    BoxShadow(color: context.colorScheme.onSurface.withValues(alpha: 0.1), blurRadius: 10, offset: const Offset(0, 4)),
+                    BoxShadow(color: context.colorScheme.onSurface.withValues(alpha: 0.1), blurRadius: 10, offset: const Offset(0, 4)),
+                    BoxShadow(color: context.colorScheme.onSurface.withValues(alpha: 0.1), blurRadius: 10, offset: const Offset(0, 4)),
+                  ],
+                ),
                 child: Column(
                   children: [
                     const PrayerDateWidget(),
@@ -58,12 +68,13 @@ class NamazTimesPage extends StatelessWidget {
                               builder: (context, state) {
                                 if (state is GetPrayerTimeByDateLoaded) {
                                   return ListView.builder(
-                                    itemCount: 5, // Replace with your actual prayer times count
+                                    itemCount: state.prayerTimes.length, // Replace with your actual prayer times count
                                     itemBuilder: (context, index) {
                                       CustomPrayerTime prayerTime = state.prayerTimes[index];
                                       return Padding(
                                         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                                         child: Row(
+                                          mainAxisSize: MainAxisSize.min,
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
                                             SizedBox(
@@ -85,7 +96,13 @@ class NamazTimesPage extends StatelessWidget {
                                                   context.read<GetPrayerTimeCubit>().toggleNotificationEnable(index, state.prayerTimes, false);
                                                 } else {
                                                   DateTime now = DateTime.now();
-                                                  DateTime current = DateTime(prayerTime.prayerDateTime.year, prayerTime.prayerDateTime.month, prayerTime.prayerDateTime.day, prayerTime.prayerDateTime.hour, prayerTime.prayerDateTime.minute);
+                                                  DateTime current = DateTime(
+                                                    prayerTime.prayerDateTime.year,
+                                                    prayerTime.prayerDateTime.month,
+                                                    prayerTime.prayerDateTime.day,
+                                                    prayerTime.prayerDateTime.hour,
+                                                    prayerTime.prayerDateTime.minute,
+                                                  );
                                                   TZDateTime scheduledDate = TZDateTime.from(current, local);
 
                                                   LocalNotificationService().scheduleNotification(
@@ -111,6 +128,12 @@ class NamazTimesPage extends StatelessWidget {
                               },
                             ),
                           ),
+                          TextButton(
+                            style: ButtonStyle(backgroundColor: WidgetStateProperty.all(context.colorScheme.primary), foregroundColor: WidgetStateProperty.all(context.colorScheme.onPrimary)),
+                            onPressed: () => FunctionService.findNearbyMosque(context),
+                            child: const Text('Find Near Mosque'),
+                          ),
+                          const SizedBox(height: 5),
                         ],
                       ),
                     ),

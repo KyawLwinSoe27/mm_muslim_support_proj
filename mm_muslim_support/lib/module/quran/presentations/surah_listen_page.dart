@@ -62,13 +62,15 @@ class SurahListenPageContent extends StatelessWidget {
               ),
             ),
             Image.asset(ImageConstants.kaaba),
-            Text(quranSongModel.name, style: Theme.of(context).textTheme.displaySmall),
-            const SizedBox(height: 20),
             BlocBuilder<AudioPlayerCubit, AudioPlayerState>(
               builder: (context, state) {
+                bool isPrevButtonVisible = state.currentSurahId > 1;
+                bool isNextButtonVisible = state.currentSurahId != 114;
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    Text(state.name, style: Theme.of(context).textTheme.displaySmall),
+                    const SizedBox(height: 20),
                     SizedBox(
                       height: 6,
                       child: Stack(
@@ -91,12 +93,45 @@ class SurahListenPageContent extends StatelessWidget {
                     const SizedBox(height: 8),
                     Text('${_format(state.position)} / ${_format(state.duration)}'),
                     const SizedBox(height: 20),
-                    IconButton(
-                      icon: Icon(state.isPlaying ? Icons.pause_circle : Icons.play_circle, size: 64),
-                      onPressed: () {
-                        final cubit = context.read<AudioPlayerCubit>();
-                        state.isPlaying ? cubit.pause() : cubit.play();
-                      },
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Visibility(
+                          visible: isPrevButtonVisible,
+                          child: IconButton(
+                            icon: const Icon(Icons.skip_previous_rounded, size: 32,),
+                            onPressed: () {
+                              final cubit = context.read<AudioPlayerCubit>();
+                              QuranSongModel quranSongModel = surahList[state.currentSurahId - 2];
+                              cubit.setAudio(quranSongModel);
+                              context.read<DownloadFileBloc>().add(CheckFileExist(fileName: quranSongModel.filePath, folder: Folder.quranRecitation));
+                            },
+                          ),
+                        ),
+
+                        IconButton(
+                          icon: Icon(state.isPlaying ? Icons.pause_circle : Icons.play_circle, size: 64),
+                          onPressed: () {
+                            final cubit = context.read<AudioPlayerCubit>();
+                            state.isPlaying ? cubit.pause() : cubit.play();
+                          },
+                        ),
+
+                        Visibility(
+                          visible: isNextButtonVisible,
+                          child: IconButton(
+                            icon: const Icon(Icons.skip_next_rounded, size: 32),
+                            onPressed: () {
+                              final cubit = context.read<AudioPlayerCubit>();
+                              QuranSongModel quranSongModel = surahList[state.currentSurahId];
+                              cubit.setAudio(quranSongModel);
+                              context.read<DownloadFileBloc>().add(CheckFileExist(fileName: quranSongModel.filePath, folder: Folder.quranRecitation));
+
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 );

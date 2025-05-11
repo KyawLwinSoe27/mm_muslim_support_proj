@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mm_muslim_support/core/routing/context_ext.dart';
 import 'package:mm_muslim_support/model/quran_song_model.dart';
 import 'package:mm_muslim_support/module/quran/presentations/surah_listen_page.dart';
+import 'package:mm_muslim_support/utility/extensions.dart';
 
 class SurahListenList extends StatelessWidget {
   const SurahListenList({super.key});
@@ -23,8 +24,8 @@ class SurahListenList extends StatelessWidget {
             leading: const CircleAvatar(
               child: Icon(Icons.music_note),
             ),
-            title: Text(surah.name),
-            subtitle: Text(surah.number.toString()),
+            trailing: Text(surah.number.toString()),
+            title: Text(surah.name, style: context.textTheme.titleMedium),
             onTap: () => context.navigateWithPushNamed(SurahListenPageContent.routeName, extra: surah),
           );
         },
