@@ -13,6 +13,6 @@ class AppConstants {
   static const String developerEmail = 'kyawlwinsoe812@gmail.com';
   static const String developerPhone = '+959428256980';
 
-  static const appLink = 'https://play.google.com/store/apps/details?id=com.dynaverse.mm_muslim_support';
-
+  static const appLink =
+      'https://play.google.com/store/apps/details?id=com.dynaverse.mm_muslim_support';
 }

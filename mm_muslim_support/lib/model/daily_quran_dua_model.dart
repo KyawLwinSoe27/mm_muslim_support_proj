@@ -41,8 +41,7 @@ final List<DailyQuranDuaModel> dailyQuranList = [
   ),
   DailyQuranDuaModel(
     arabic: 'حَسْبُنَا ٱللَّهُ وَنِعْمَ ٱلْوَكِيلُ',
-    translation:
-        'Sufficient for us is Allah, and [He is] the best Protector.',
+    translation: 'Sufficient for us is Allah, and [He is] the best Protector.',
     mmTranslation: '',
     reference: 'Surah Al Imran, Verse 173',
   ),
@@ -67,14 +66,16 @@ final List<DailyQuranDuaModel> dailyQuranList = [
     reference: 'Surah As-Saffat, Verse 100',
   ),
   DailyQuranDuaModel(
-    arabic: 'رَبِّ ٱجْعَلْنِى مُقِيمَ ٱلصَّلَوٰةِ وَمِن ذُرِّيَّتِى ۚ رَبَّنَا وَتَقَبَّلْ دُعَآءِ',
+    arabic:
+        'رَبِّ ٱجْعَلْنِى مُقِيمَ ٱلصَّلَوٰةِ وَمِن ذُرِّيَّتِى ۚ رَبَّنَا وَتَقَبَّلْ دُعَآءِ',
     translation:
         'My Lord! Make me and those ˹believers˺ of my descendants keep up prayer. Our Lord! Accept my prayers.',
     mmTranslation: '',
     reference: 'Surah Ibrahim, Verse 40',
   ),
   DailyQuranDuaModel(
-    arabic: 'رَبَّنَآ ءَاتِنَا فِى ٱلدُّنْيَا حَسَنَةًۭ وَفِى ٱلْـَٔاخِرَةِ حَسَنَةًۭ وَقِنَا عَذَابَ ٱلنَّارِ',
+    arabic:
+        'رَبَّنَآ ءَاتِنَا فِى ٱلدُّنْيَا حَسَنَةًۭ وَفِى ٱلْـَٔاخِرَةِ حَسَنَةًۭ وَقِنَا عَذَابَ ٱلنَّارِ',
     translation:
         'Our Lord! Grant us the good of this world and the Hereafter, and protect us from the torment of the Fire.',
     mmTranslation: '',
@@ -90,15 +91,18 @@ final List<DailyQuranDuaModel> dailyDuaList = [
     reference: '',
   ),
   DailyQuranDuaModel(
-    arabic: 'اللَّهُمَّ اغْفِرْ لي ذَنْبِي كُلَّهُ: دِقَّهُ وَجِلَّهُ، وَأَوَّلَهُ وَآخِرَهُ، وَعَلاَنِيَتَهُ وَسِرَّهُ',
+    arabic:
+        'اللَّهُمَّ اغْفِرْ لي ذَنْبِي كُلَّهُ: دِقَّهُ وَجِلَّهُ، وَأَوَّلَهُ وَآخِرَهُ، وَعَلاَنِيَتَهُ وَسِرَّهُ',
     translation:
         'O Allah, forgive me all my sins, the minor and the major, the first and the last, the public and the private.',
     mmTranslation: '',
     reference: 'Hadith - Muslim',
   ),
   DailyQuranDuaModel(
-    arabic: 'اللَّهُمَّ إِنَّكَ عَفُوٌّ كَرِيمٌ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي',
-    translation: 'O Allah, indeed You are Pardoning, [Generous] You love pardon, so pardon me.',
+    arabic:
+        'اللَّهُمَّ إِنَّكَ عَفُوٌّ كَرِيمٌ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي',
+    translation:
+        'O Allah, indeed You are Pardoning, [Generous] You love pardon, so pardon me.',
     mmTranslation: '',
     reference: 'Hadith - Tirmidhi',
   ),
@@ -109,21 +113,24 @@ final List<DailyQuranDuaModel> dailyDuaList = [
     reference: 'Hadith - Sahih Muslim',
   ),
   DailyQuranDuaModel(
-    arabic: 'رَبَّنَا ظَلَمْنَآ أَنفُسَنَا وَإِن لَّمْ تَغْفِرْ لَنَا وَتَرْحَمْنَا لَنَكُونَنَّ مِنَ ٱلْخَـٰسِرِينَ',
+    arabic:
+        'رَبَّنَا ظَلَمْنَآ أَنفُسَنَا وَإِن لَّمْ تَغْفِرْ لَنَا وَتَرْحَمْنَا لَنَكُونَنَّ مِنَ ٱلْخَـٰسِرِينَ',
     translation:
         'Our Lord! We have wronged ourselves. If You do not forgive us and have mercy on us, we will certainly be losers.',
     mmTranslation: '',
     reference: 'Surah Al-A’raf, Verse 23',
   ),
   DailyQuranDuaModel(
-    arabic: 'رَبِّ اجْعَلْنِي مُقِيمَ الصَّلَاةِ وَمِنْ ذُرِّيَّتِي رَبَّنَا وَتَقَبَّلْ دُعَاءِ',
+    arabic:
+        'رَبِّ اجْعَلْنِي مُقِيمَ الصَّلَاةِ وَمِنْ ذُرِّيَّتِي رَبَّنَا وَتَقَبَّلْ دُعَاءِ',
     translation:
         'My Lord, make me an establisher of prayer, and [many] from my descendants. Our Lord, and accept my supplication.',
     mmTranslation: '',
     reference: 'Surah Ibrahim, Verse 40',
   ),
   DailyQuranDuaModel(
-    arabic: 'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ، وَالْعَجْزِ وَالْكَسَلِ، وَالْبُخْلِ وَالْجُبْنِ، وَضَلَعِ الدَّيْنِ وَغَلَبَةِ الرِّجَالِ',
+    arabic:
+        'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ، وَالْعَجْزِ وَالْكَسَلِ، وَالْبُخْلِ وَالْجُبْنِ، وَضَلَعِ الدَّيْنِ وَغَلَبَةِ الرِّجَالِ',
     translation:
         'O Allah! I seek refuge with You from worry and grief, from incapacity and laziness, from cowardice and miserliness, from being heavily in debt and from being overpowered by (other) men.',
     mmTranslation: '',
@@ -138,7 +145,8 @@ final List<DailyQuranDuaModel> dailyDuaList = [
     reference: 'Hadith - Muslim',
   ),
   DailyQuranDuaModel(
-    arabic: 'رَبَّنَآ ءَاتِنَا فِى ٱلدُّنْيَا حَسَنَةًۭ وَفِى ٱلْـَٔاخِرَةِ حَسَنَةًۭ وَقِنَا عَذَابَ ٱلنَّارِ',
+    arabic:
+        'رَبَّنَآ ءَاتِنَا فِى ٱلدُّنْيَا حَسَنَةًۭ وَفِى ٱلْـَٔاخِرَةِ حَسَنَةًۭ وَقِنَا عَذَابَ ٱلنَّارِ',
     translation:
         'Our Lord, give us in this world [that which is] good and in the Hereafter [that which is] good and protect us from the torment of the Fire.',
     mmTranslation: '',
