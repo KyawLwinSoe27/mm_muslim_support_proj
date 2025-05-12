@@ -24,7 +24,7 @@ class _NotificationPageState extends State<NotificationPage> {
       lastDate: DateTime(2100),
     );
 
-    if (pickedDate != null) {
+    if (pickedDate != null && mounted) {
       // Show time picker
       final TimeOfDay? pickedTime = await showTimePicker(
         context: context,

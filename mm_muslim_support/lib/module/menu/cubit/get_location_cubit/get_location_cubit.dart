@@ -1,5 +1,5 @@
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mm_muslim_support/service/location_service.dart';
 import 'package:mm_muslim_support/service/log_service.dart';
 import 'package:mm_muslim_support/service/shared_preference_service.dart';
