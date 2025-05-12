@@ -38,14 +38,20 @@ extension ContextExt on BuildContext {
     });
   }
 
-  void navigateAndClearStackWithoutWidgetsBinding(String routeName, {Object? extra}) {
+  void navigateAndClearStackWithoutWidgetsBinding(
+    String routeName, {
+    Object? extra,
+  }) {
     while (Navigator.of(this).canPop()) {
       back();
     }
     pushReplacementNamed(routeName, extra: extra);
   }
 
-  Future<T?> navigateAndRemoveCurrent<T extends Object?>(String routeName, {Object? extra}) {
+  Future<T?> navigateAndRemoveCurrent<T extends Object?>(
+    String routeName, {
+    Object? extra,
+  }) {
     back();
     return pushNamed(routeName, extra: extra);
   }
@@ -62,11 +68,17 @@ extension ContextExt on BuildContext {
   /// - [extra] is an optional object to pass as extra arguments to the new route.
   ///
   /// Returns a [Future] that completes to the result when the new route is popped.
-  Future<T?> navigateWithPushNamed<T extends Object?>(String routeName, {Object? extra}) {
+  Future<T?> navigateWithPushNamed<T extends Object?>(
+    String routeName, {
+    Object? extra,
+  }) {
     return pushNamed(routeName, extra: extra);
   }
 
-  Future<T?> navigateWithPushNamedWithWidgetsBinding<T extends Object?>(String routeName, {Object? extra}) {
+  Future<T?> navigateWithPushNamedWithWidgetsBinding<T extends Object?>(
+    String routeName, {
+    Object? extra,
+  }) {
     final Completer<T?> completer = Completer<T?>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {

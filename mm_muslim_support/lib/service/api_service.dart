@@ -20,7 +20,25 @@ class ApiService {
     return _client.delete(path, data: data);
   }
 
-  Future<Response> upload(String path, Map<String, dynamic> fields, List<MultipartFile> files) {
+  Future<Response> upload(
+    String path,
+    Map<String, dynamic> fields,
+    List<MultipartFile> files,
+  ) {
     return _client.postMultipart(path, fields, files);
+  }
+
+  Future<void> downloadFile({
+    required String url,
+    required String savePath,
+    required void Function(int received, int total) onReceiveProgress,
+    CancelToken? cancelToken,
+  }) {
+    return _client.downloadFile(
+      url,
+      savePath,
+      onReceiveProgress: onReceiveProgress,
+      cancelToken: cancelToken,
+    );
   }
 }
