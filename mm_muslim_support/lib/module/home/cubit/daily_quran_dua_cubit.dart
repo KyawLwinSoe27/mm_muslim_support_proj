@@ -13,7 +13,7 @@ class DailyQuranDuaCubit extends Cubit<DailyQuranDuaModel> {
   }
 
   void _startRandomizer() {
-    _timer = Timer.periodic(Duration(minutes: 2), (_) {
+    _timer = Timer.periodic(const Duration(seconds: 30), (_) {
       _emitRandom();
     });
   }

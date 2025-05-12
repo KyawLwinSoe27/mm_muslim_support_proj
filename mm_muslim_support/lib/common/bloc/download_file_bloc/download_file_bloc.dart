@@ -7,6 +7,7 @@ import 'package:mm_muslim_support/core/enums/folder.dart';
 import 'package:mm_muslim_support/repository/book_mark_repository.dart';
 import 'package:mm_muslim_support/repository/file_download_repository.dart';
 import 'package:mm_muslim_support/service/file_management_service.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 part 'download_file_event.dart';
 part 'download_file_state.dart';
@@ -43,7 +44,7 @@ class DownloadFileBloc extends Bloc<DownloadFileEvent, DownloadFileState> {
       }
 
       emit(const DownloadInProgress(progress: 0));
-
+      WakelockPlus.enable();
       final downloadedPath = await _fileRepository.downloadAndSaveFile(
         fileUrl: event.url,
         fileName: event.fileName,
@@ -55,7 +56,7 @@ class DownloadFileBloc extends Bloc<DownloadFileEvent, DownloadFileState> {
           }
         },
       );
-
+      WakelockPlus.disable();
       emit(DownloadSuccess(filePath: downloadedPath, currentPage: 1));
     } catch (e) {
       emit(DownloadFailure(message: e.toString()));
