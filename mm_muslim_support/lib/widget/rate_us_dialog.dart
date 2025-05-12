@@ -18,12 +18,12 @@ class RateUsDialog extends StatefulWidget {
 
 class _RateUsDialogState extends State<RateUsDialog> {
   double _rating = 0;
-  bool _submitted = false;
+  // bool _submitted = false;
 
   final InAppReview _inAppReview = InAppReview.instance;
 
   void _submitRating() async {
-    setState(() => _submitted = true);
+    // setState(() => _submitted = true);
 
     Navigator.of(context).pop();
 

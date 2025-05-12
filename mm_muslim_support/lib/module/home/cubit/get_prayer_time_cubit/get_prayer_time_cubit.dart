@@ -5,7 +5,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mm_muslim_support/core/enums/custom_date_format.dart';
 import 'package:mm_muslim_support/core/enums/prayer.dart';
-import 'package:mm_muslim_support/dao/prayer_time_dao.dart';
 import 'package:mm_muslim_support/model/custom_prayer_time.dart';
 import 'package:mm_muslim_support/model/prayer_calculation_method.dart';
 import 'package:mm_muslim_support/model/prayer_time_card.dart';

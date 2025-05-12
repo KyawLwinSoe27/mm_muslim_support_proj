@@ -26,7 +26,7 @@ class CompassCustomPainter extends CustomPainter {
 
     Paint shadowCircle = Paint()
       ..strokeWidth = 2
-      ..color = Colors.grey.withOpacity(.2)
+      ..color = Colors.grey.withValues(alpha: .2)
       ..style = PaintingStyle.fill;
 
     // Draw Shadow For Outer Circle

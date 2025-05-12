@@ -107,25 +107,27 @@ class LocalNotificationService {
         matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
       );
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Notification scheduled for ${scheduledDate.toLocal()}'),
-          backgroundColor: Colors.green,
-        ),
-      );
+      if(context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Notification scheduled for ${scheduledDate.toLocal()}'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
       FirebaseCrashlytics.instance.log('Scheduled notification with ID $id at $scheduledDate');
 
-    } catch (e, stack) {
-      print('Error scheduling notification: $e');
-      print('Stack trace: $stack');
+    } catch (e) {
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Failed to schedule notification: $e'),
-          backgroundColor: Colors.red,
-          duration: const Duration(minutes: 5),
-        ),
-      );
+     if(context.mounted) {
+       ScaffoldMessenger.of(context).showSnackBar(
+         SnackBar(
+           content: Text('Failed to schedule notification: $e'),
+           backgroundColor: Colors.red,
+           duration: const Duration(minutes: 5),
+         ),
+       );
+     }
 
       FirebaseCrashlytics.instance.log('Scheduled notification with ID $id at $scheduledDate. The error is $e');
     }
