@@ -10,21 +10,32 @@ class BookmarkDao {
 
   Future<void> insertBookmark(BookmarkModel bookmark) async {
     final db = await dbProvider.database;
-    await db.insert(DBTables.bookmarks, bookmark.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+    await db.insert(
+      DBTables.bookmarks,
+      bookmark.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
   }
 
   Future<void> updateBookmark(BookmarkModel bookmark) async {
     final db = await dbProvider.database;
     try {
-      await db.update(DBTables.bookmarks, bookmark.toMap(), where: '${DBTables.id} = ?', whereArgs: [bookmark.id]);
-    } catch(e, st) {
+      await db.update(
+        DBTables.bookmarks,
+        bookmark.toMap(),
+        where: '${DBTables.id} = ?',
+        whereArgs: [bookmark.id],
+      );
+    } catch (e, st) {
       debugPrintStack(stackTrace: st);
     }
   }
 
   Future<BookmarkModel?> getBookmarkByPath(String filePath) async {
     final db = await dbProvider.database;
-    final result = await db.rawQuery(BookmarkQueries.getBookmarkByPath, [filePath]);
+    final result = await db.rawQuery(BookmarkQueries.getBookmarkByPath, [
+      filePath,
+    ]);
     if (result.isNotEmpty) {
       return BookmarkModel.fromMap(result.first);
     }

@@ -17,9 +17,8 @@ class CustomPrayerTime {
     this.enableNotify = false,
   });
 
-
   // toMap
-  Map<String,dynamic> toMap() {
+  Map<String, dynamic> toMap() {
     return {
       'id': id,
       'dateTime': dateTime.toIso8601String(),
@@ -42,6 +41,4 @@ class CustomPrayerTime {
       enableNotify: map['alarm'] == 1,
     );
   }
-
-
 }

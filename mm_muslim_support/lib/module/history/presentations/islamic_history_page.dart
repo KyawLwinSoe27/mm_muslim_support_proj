@@ -12,7 +12,14 @@ class IslamicHistoryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Islamic History', style: context.textTheme.titleLarge?.copyWith(color: context.colorScheme.onSecondary, fontWeight: FontWeight.w500))),
+        title: Text(
+          'Islamic History',
+          style: context.textTheme.titleLarge?.copyWith(
+            color: context.colorScheme.onSecondary,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
       body: ListView.builder(
         itemCount: historicalEvents.length, // Replace with your data length
         itemBuilder: (context, index) {

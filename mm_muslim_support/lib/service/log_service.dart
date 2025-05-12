@@ -49,16 +49,24 @@ class LogService {
     }
   }
 
-  Future<File> writeInfoLog(String cubit, String method, String logMessage) async {
+  Future<File> writeInfoLog(
+    String cubit,
+    String method,
+    String logMessage,
+  ) async {
     if (_isMockData != null && _isMockData == true) {
       return Future.value(File(''));
     } else {
       logMessage = 'Cubit: $cubit, Method: $method, Error: $logMessage';
       final String path = await _localPath;
-      String logDate = DateUtility.DateTimeToString(DateTime.now(), CustomDateFormat.yearMonth2);
+      String logDate = DateUtility.DateTimeToString(
+        DateTime.now(),
+        CustomDateFormat.yearMonth2,
+      );
       final File file = File('$path/${Folder.eventLog}$logDate.txt');
       await file.create(recursive: true);
-      String infoLog = '${DateFormat('dd/MM/yyyy HH:mm:ss', 'en_US').format(DateTime.now())} $logMessage \n\n';
+      String infoLog =
+          '${DateFormat('dd/MM/yyyy HH:mm:ss', 'en_US').format(DateTime.now())} $logMessage \n\n';
       return file.writeAsString(infoLog, mode: FileMode.append);
     }
   }
@@ -66,7 +74,10 @@ class LogService {
   // clear log by month
   Future<void> deleteLogFile(DateTime dateTime) async {
     final String path = await _localPath;
-    String logDate = DateUtility.DateTimeToString(DateTime.now(), CustomDateFormat.yearMonth2);
+    String logDate = DateUtility.DateTimeToString(
+      DateTime.now(),
+      CustomDateFormat.yearMonth2,
+    );
     final File file = File('$path/${Folder.eventLog}$logDate.txt');
 
     if (await file.exists()) {

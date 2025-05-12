@@ -15,28 +15,20 @@ class StayTunedPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Icon(
-                Icons.notifications_active,
-                size: 80.0,
-              ),
+              Icon(Icons.notifications_active, size: 80.0),
               SizedBox(height: 20),
               Text(
                 'Something exciting is coming soon!',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 20),
               Text(
                 'Stay tuned and keep an eye out for updates!',
-                style: TextStyle(
-                  fontSize: 16,
-                ),
+                style: TextStyle(fontSize: 16),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 30)
+              SizedBox(height: 30),
             ],
           ),
         ),

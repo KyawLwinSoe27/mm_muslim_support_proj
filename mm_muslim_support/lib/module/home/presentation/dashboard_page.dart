@@ -21,7 +21,10 @@ class DashboardPage extends StatelessWidget {
               create: (context) => DailyQuranDuaCubit(dailyDuaList),
               child: BlocBuilder<DailyQuranDuaCubit, DailyQuranDuaModel>(
                 builder: (context, state) {
-                  return DailyQuranDuaWidget(title: 'Daily Dua', dailyQuranDuaModel: state);
+                  return DailyQuranDuaWidget(
+                    title: 'Daily Dua',
+                    dailyQuranDuaModel: state,
+                  );
                 },
               ),
             ),
@@ -33,7 +36,10 @@ class DashboardPage extends StatelessWidget {
               create: (context) => DailyQuranDuaCubit(dailyQuranList),
               child: BlocBuilder<DailyQuranDuaCubit, DailyQuranDuaModel>(
                 builder: (context, state) {
-                  return DailyQuranDuaWidget(title: 'Daily Quran Verse', dailyQuranDuaModel: state);
+                  return DailyQuranDuaWidget(
+                    title: 'Daily Quran Verse',
+                    dailyQuranDuaModel: state,
+                  );
                 },
               ),
             ),

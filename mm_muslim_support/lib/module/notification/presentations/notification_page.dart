@@ -32,7 +32,7 @@ class _NotificationPageState extends State<NotificationPage> {
       );
 
       if (pickedTime != null) {
-        setState(() async{
+        setState(() async {
           selectedDateTime = DateTime(
             pickedDate.year,
             pickedDate.month,
@@ -41,7 +41,14 @@ class _NotificationPageState extends State<NotificationPage> {
             pickedTime.minute,
           );
           TZDateTime scheduledDate = TZDateTime.from(selectedDateTime!, local);
-          await LocalNotificationService().scheduleNotification(context: context, id: selectedDateTime?.millisecond ?? 0, title: 'Alarm', body: 'This is schedule test alarm ${selectedDateTime?.hour}:${selectedDateTime?.minute}', scheduledDate: scheduledDate);
+          await LocalNotificationService().scheduleNotification(
+            context: context,
+            id: selectedDateTime?.millisecond ?? 0,
+            title: 'Alarm',
+            body:
+                'This is schedule test alarm ${selectedDateTime?.hour}:${selectedDateTime?.minute}',
+            scheduledDate: scheduledDate,
+          );
         });
       }
     }
@@ -51,7 +58,14 @@ class _NotificationPageState extends State<NotificationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Notification Page', style: context.textTheme.titleLarge?.copyWith(color: context.colorScheme.onSecondary, fontWeight: FontWeight.w500))),
+        title: Text(
+          'Notification Page',
+          style: context.textTheme.titleLarge?.copyWith(
+            color: context.colorScheme.onSecondary,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

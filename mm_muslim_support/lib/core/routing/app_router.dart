@@ -30,20 +30,44 @@ class AppRouter {
     initialLocation: '/',
     routes: [
       // Home Route
-      GoRoute(name: HomePage.routeName, path: '/', builder: (context, state) => BlocProvider(create: (context) => BottomNavigationBarCubit(), child: const HomePage())),
-      GoRoute(name: IslamicHistoryPage.routeName, path: '/history', builder: (context, state) => const IslamicHistoryPage()),
+      GoRoute(
+        name: HomePage.routeName,
+        path: '/',
+        builder:
+            (context, state) => BlocProvider(
+              create: (context) => BottomNavigationBarCubit(),
+              child: const HomePage(),
+            ),
+      ),
+      GoRoute(
+        name: IslamicHistoryPage.routeName,
+        path: '/history',
+        builder: (context, state) => const IslamicHistoryPage(),
+      ),
       // Login Route
       GoRoute(
         name: PrayerTimeSettingPage.routeName,
         path: '/prayerSettingPage',
-        builder: (context, state) => BlocProvider(create: (context) => GetPrayerCalculationMethodCubit(), child: const PrayerTimeSettingPage()),
+        builder:
+            (context, state) => BlocProvider(
+              create: (context) => GetPrayerCalculationMethodCubit(),
+              child: const PrayerTimeSettingPage(),
+            ),
       ),
       GoRoute(
         name: TasbihPage.routeName,
         path: '/tasbih',
-        builder: (context, state) => BlocProvider(create: (context) => TasbihCounterCubit(), child: TasbihPage(tasbih: state.extra as List<TasbihModel>)),
+        builder:
+            (context, state) => BlocProvider(
+              create: (context) => TasbihCounterCubit(),
+              child: TasbihPage(tasbih: state.extra as List<TasbihModel>),
+            ),
       ),
-      GoRoute(name: QuranListPage.routeName, path: '/quran_list_page', builder: (context, state) => QuranListPage()),
+      GoRoute(
+        name: QuranListPage.routeName,
+        path: '/quran_list_page',
+        builder: (context, state) => QuranListPage(),
+      ),
       GoRoute(
         name: QuranScreen.routeName,
         path: '/quran',
@@ -52,7 +76,16 @@ class AppRouter {
           return MultiBlocProvider(
             providers: [
               BlocProvider(
-                create: (context) => DownloadFileBloc()..add(StartDownload(url: 'https://drive.google.com/uc?export=download&id=${quran.link}', fileName: quran.fileName, folder: Folder.quran)),
+                create:
+                    (context) =>
+                        DownloadFileBloc()..add(
+                          StartDownload(
+                            url:
+                                'https://drive.google.com/uc?export=download&id=${quran.link}',
+                            fileName: quran.fileName,
+                            folder: Folder.quran,
+                          ),
+                        ),
               ),
               BlocProvider(create: (context) => BookMarkCubit()),
             ],
@@ -60,33 +93,86 @@ class AppRouter {
           );
         },
       ),
-      GoRoute(name: NotificationPage.routeName, path: '/notification_page', builder: (context, state) => const NotificationPage()),
-      GoRoute(name: CompassPage.routeName, path: '/compass', builder: (context, state) => const CompassPage()),
-      GoRoute(name: SurahListenList.routeName, path: '/surah_listen_list', builder: (context, state) => BlocProvider(create: (context) => DownloadFileBloc(), child: const SurahListenList())),
+      GoRoute(
+        name: NotificationPage.routeName,
+        path: '/notification_page',
+        builder: (context, state) => const NotificationPage(),
+      ),
+      GoRoute(
+        name: CompassPage.routeName,
+        path: '/compass',
+        builder: (context, state) => const CompassPage(),
+      ),
+      GoRoute(
+        name: SurahListenList.routeName,
+        path: '/surah_listen_list',
+        builder:
+            (context, state) => BlocProvider(
+              create: (context) => DownloadFileBloc(),
+              child: const SurahListenList(),
+            ),
+      ),
       GoRoute(
         name: SurahListenPageContent.routeName,
         path: '/surah_listen_page',
         builder: (context, state) {
           if (state.extra == null) {
-            return const Scaffold(body: Center(child: Text('No audio URL provided')));
+            return const Scaffold(
+              body: Center(child: Text('No audio URL provided')),
+            );
           }
           final quranSongModel = state.extra as QuranSongModel;
           return MultiBlocProvider(
-            providers: [BlocProvider(create: (_) => AudioPlayerCubit()..setAudio(quranSongModel)), BlocProvider(create: (context) => DownloadFileBloc()..add(CheckFileExist(fileName: quranSongModel.filePath, folder: Folder.quranRecitation)))],
+            providers: [
+              BlocProvider(
+                create: (_) => AudioPlayerCubit()..setAudio(quranSongModel),
+              ),
+              BlocProvider(
+                create:
+                    (context) =>
+                        DownloadFileBloc()..add(
+                          CheckFileExist(
+                            fileName: quranSongModel.filePath,
+                            folder: Folder.quranRecitation,
+                          ),
+                        ),
+              ),
+            ],
             child: SurahListenPageContent(quranSongModel: quranSongModel),
           );
         },
       ),
 
-      GoRoute(name: StayTunedPage.routeName, path: '/stay_tuned_page', builder: (context, state) => const StayTunedPage()),
-      GoRoute(name: DonateUsScreen.routeName, path: '/donate-us', builder: (context, state) => const DonateUsScreen()),
-      GoRoute(name: AboutUsScreen.routeName, path: '/about-us', builder: (context, state) => const AboutUsScreen()),
-      GoRoute(name: LogsScreen.routeName, path: '/logs', builder: (context, state) => const LogsScreen()),
-
+      GoRoute(
+        name: StayTunedPage.routeName,
+        path: '/stay_tuned_page',
+        builder: (context, state) => const StayTunedPage(),
+      ),
+      GoRoute(
+        name: DonateUsScreen.routeName,
+        path: '/donate-us',
+        builder: (context, state) => const DonateUsScreen(),
+      ),
+      GoRoute(
+        name: AboutUsScreen.routeName,
+        path: '/about-us',
+        builder: (context, state) => const AboutUsScreen(),
+      ),
+      GoRoute(
+        name: LogsScreen.routeName,
+        path: '/logs',
+        builder: (context, state) => const LogsScreen(),
+      ),
     ],
     // Optional: Custom error page route (404-like)
     errorPageBuilder: (context, state) {
-      return MaterialPage<void>(key: state.pageKey, child: Scaffold(appBar: AppBar(title: const Text('Error')), body: const Center(child: Text('Page not found!'))));
+      return MaterialPage<void>(
+        key: state.pageKey,
+        child: Scaffold(
+          appBar: AppBar(title: const Text('Error')),
+          body: const Center(child: Text('Page not found!')),
+        ),
+      );
     },
   );
 }

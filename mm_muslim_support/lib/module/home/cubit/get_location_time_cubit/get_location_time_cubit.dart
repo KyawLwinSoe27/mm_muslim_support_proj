@@ -14,11 +14,19 @@ class GetLocationTimeCubit extends Cubit<GetLocationTimeState> {
   void getLocationTime() async {
     emit(GetLocationTimeLoading());
     try {
-
       PrayerTimes prayerTimes = FunctionService.getPrayerTime();
       String? location = await LocationService.getLocation();
 
-      emit(GetLocationTimeLoaded(location: location ?? '', date: DateUtility.DateTimeToString(DateTime.now(), CustomDateFormat.simpleDate), currentPrayer: prayerTimes.currentPrayer()));
+      emit(
+        GetLocationTimeLoaded(
+          location: location ?? '',
+          date: DateUtility.DateTimeToString(
+            DateTime.now(),
+            CustomDateFormat.simpleDate,
+          ),
+          currentPrayer: prayerTimes.currentPrayer(),
+        ),
+      );
     } catch (e) {
       emit(const GetLocationTimeError('Failed to fetch location and time'));
     }

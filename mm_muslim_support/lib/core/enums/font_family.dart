@@ -1,7 +1,4 @@
-enum FontFamily {
-  poppins,
-  scheherazade,
-}
+enum FontFamily { poppins, scheherazade }
 
 extension FontFamilyExtension on FontFamily {
   String get name {

@@ -17,7 +17,6 @@ class GetHijriDateCubit extends Cubit<GetHijriDateState> {
 
       HijriCalendar h_date = HijriCalendar.fromDate(todayDate);
 
-
       // Create a TodayDateModel object with the current date
       TodayDateModel todayDateModel = TodayDateModel(
         gregorianDate: DateFormat('E, d MMMM').format(todayDate),

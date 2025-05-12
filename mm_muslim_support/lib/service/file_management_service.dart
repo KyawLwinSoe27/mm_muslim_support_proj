@@ -4,7 +4,6 @@ import 'package:mm_muslim_support/core/enums/folder.dart';
 import 'package:path_provider/path_provider.dart';
 
 class FileManagementService {
-
   /// Checks if a file with [fileName] already exists in the download directory.
   static Future<bool> fileExists(String fileName) async {
     final dir = await _getDownloadDirectory();

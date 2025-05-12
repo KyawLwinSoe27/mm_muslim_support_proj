@@ -6,10 +6,7 @@ class RateUsDialog extends StatefulWidget {
   const RateUsDialog({super.key});
 
   static Future<void> show(BuildContext context) async {
-    showDialog(
-      context: context,
-      builder: (_) => const RateUsDialog(),
-    );
+    showDialog(context: context, builder: (_) => const RateUsDialog());
   }
 
   @override
@@ -58,7 +55,8 @@ class _RateUsDialogState extends State<RateUsDialog> {
             itemCount: 5,
             itemSize: 36,
             itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-            itemBuilder: (context, _) => const Icon(Icons.star, color: Colors.amber),
+            itemBuilder:
+                (context, _) => const Icon(Icons.star, color: Colors.amber),
             onRatingUpdate: (rating) => _rating = rating,
           ),
         ],
@@ -68,10 +66,7 @@ class _RateUsDialogState extends State<RateUsDialog> {
           onPressed: () => Navigator.of(context).pop(),
           child: const Text('Later'),
         ),
-        ElevatedButton(
-          onPressed: _submitRating,
-          child: const Text('Submit'),
-        ),
+        ElevatedButton(onPressed: _submitRating, child: const Text('Submit')),
       ],
     );
   }

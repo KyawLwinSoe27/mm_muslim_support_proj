@@ -11,7 +11,9 @@ class PrayerTimeGrid extends StatelessWidget {
       create: (context) => GetPrayerTimeCubit()..getPrayerTime(),
       child: BlocBuilder<GetPrayerTimeCubit, GetPrayerTimeState>(
         buildWhen: (prev, current) {
-          return current is GetPrayerTimeLoading || current is GetPrayerTimeLoaded || current is GetPrayerTimeError;
+          return current is GetPrayerTimeLoading ||
+              current is GetPrayerTimeLoaded ||
+              current is GetPrayerTimeError;
         },
         builder: (context, state) {
           if (state is GetPrayerTimeLoaded) {
@@ -22,20 +24,56 @@ class PrayerTimeGrid extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 padding: const EdgeInsets.all(12),
                 itemCount: state.prayerTimes.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisSpacing: 12, crossAxisSpacing: 12, childAspectRatio: 1.3),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 12,
+                  crossAxisSpacing: 12,
+                  childAspectRatio: 1.3,
+                ),
                 itemBuilder: (context, index) {
                   final card = state.prayerTimes[index];
                   return Container(
-                    decoration: BoxDecoration(gradient: LinearGradient(colors: card.gradientColors, begin: Alignment.topCenter, end: Alignment.bottomCenter), borderRadius: BorderRadius.circular(16)),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: card.gradientColors,
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                      ),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
                     padding: const EdgeInsets.all(12),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(card.title, style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold, color: Colors.black)),
-                        Text(card.subtitle ?? card.time, style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold, color: Colors.black)),
+                        Text(
+                          card.title,
+                          style: Theme.of(
+                            context,
+                          ).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          card.subtitle ?? card.time,
+                          style: Theme.of(
+                            context,
+                          ).textTheme.headlineSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
                         const Spacer(),
-                        if (card.image.isNotEmpty) Align(alignment: Alignment.centerRight, child: Image.asset(card.image, height: 48)),
-                        if (card.subtitle != null) Text(card.time, style: const TextStyle(color: Colors.black)),
+                        if (card.image.isNotEmpty)
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: Image.asset(card.image, height: 48),
+                          ),
+                        if (card.subtitle != null)
+                          Text(
+                            card.time,
+                            style: const TextStyle(color: Colors.black),
+                          ),
                       ],
                     ),
                   );

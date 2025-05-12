@@ -5,7 +5,6 @@ enum Prayer {
   maghrib('Maghrib'),
   isha('Isha');
 
-
   final String value;
 
   const Prayer(this.value);

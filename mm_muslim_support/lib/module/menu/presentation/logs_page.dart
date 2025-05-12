@@ -26,12 +26,18 @@ class _LogsScreenState extends State<LogsScreen> {
   @override
   void initState() {
     super.initState();
-    formatDateTime = DateFormat('MMMM yyyy', 'en_US').format(DateTime.parse(selectedDate.toString()));
+    formatDateTime = DateFormat(
+      'MMMM yyyy',
+      'en_US',
+    ).format(DateTime.parse(selectedDate.toString()));
     setUp();
   }
 
   void setUp() {
-    String logDate = DateUtility.DateTimeToString(selectedDate, CustomDateFormat.yearMonth2);
+    String logDate = DateUtility.DateTimeToString(
+      selectedDate,
+      CustomDateFormat.yearMonth2,
+    );
     String fileName = '${Folder.eventLog}$logDate';
     logMessage = logStorage.readLogs(fileName);
   }
@@ -43,12 +49,19 @@ class _LogsScreenState extends State<LogsScreen> {
         scrolledUnderElevation: 0.0,
         title: Text(
           'Activity Logs',
-            style: context.textTheme.titleLarge?.copyWith(color: context.colorScheme.onSecondary, fontWeight: FontWeight.w500)),
+          style: context.textTheme.titleLarge?.copyWith(
+            color: context.colorScheme.onSecondary,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
         actions: [
           InkWell(
             onTap: () async {
-              bool? value = await DialogUtils.showConfirmationDialog(context, 'Are you sure you want to delete logs?');
-              if(value == true && context.mounted) {
+              bool? value = await DialogUtils.showConfirmationDialog(
+                context,
+                'Are you sure you want to delete logs?',
+              );
+              if (value == true && context.mounted) {
                 context.back();
                 await logStorage.deleteLogFile(selectedDate);
                 setUp();
@@ -57,9 +70,9 @@ class _LogsScreenState extends State<LogsScreen> {
             },
             child: Container(
               padding: const EdgeInsets.only(right: 15),
-              child:  const Icon(Icons.delete),
+              child: const Icon(Icons.delete),
             ),
-          )
+          ),
         ],
       ),
       body: Column(
@@ -76,7 +89,10 @@ class _LogsScreenState extends State<LogsScreen> {
                 ),
                 Text(
                   formatDateTime,
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 IconButton(
                   onPressed: _increaseDate,
@@ -90,7 +106,9 @@ class _LogsScreenState extends State<LogsScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Card(
                 elevation: 3,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: FutureBuilder<String>(
@@ -100,7 +118,9 @@ class _LogsScreenState extends State<LogsScreen> {
                         return const Center(child: CircularProgressIndicator());
                       } else if (snapshot.hasError) {
                         return const Center(child: Text('Error loading logs'));
-                      } else if (snapshot.hasData && snapshot.data != null && snapshot.data != 'null') {
+                      } else if (snapshot.hasData &&
+                          snapshot.data != null &&
+                          snapshot.data != 'null') {
                         final logText = snapshot.data!.replaceAll(',', '\n');
                         return SingleChildScrollView(
                           child: Text(
@@ -124,23 +144,23 @@ class _LogsScreenState extends State<LogsScreen> {
 
   void _decreaseDate() {
     setState(() {
-      selectedDate = DateTime(
-        selectedDate.year,
-        selectedDate.month - 1,
-      );
+      selectedDate = DateTime(selectedDate.year, selectedDate.month - 1);
     });
-    formatDateTime = DateFormat('MMMM yyyy', 'en_US').format(DateTime.parse(selectedDate.toString()));
+    formatDateTime = DateFormat(
+      'MMMM yyyy',
+      'en_US',
+    ).format(DateTime.parse(selectedDate.toString()));
     setUp();
   }
 
   void _increaseDate() {
     setState(() {
-      selectedDate = DateTime(
-        selectedDate.year,
-        selectedDate.month + 1,
-      );
+      selectedDate = DateTime(selectedDate.year, selectedDate.month + 1);
     });
-    formatDateTime = DateFormat('MMMM yyyy', 'en_US').format(DateTime.parse(selectedDate.toString()));
+    formatDateTime = DateFormat(
+      'MMMM yyyy',
+      'en_US',
+    ).format(DateTime.parse(selectedDate.toString()));
 
     setUp();
   }

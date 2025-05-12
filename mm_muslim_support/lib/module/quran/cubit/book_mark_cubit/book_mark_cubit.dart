@@ -7,7 +7,9 @@ part 'book_mark_state.dart';
 
 class BookMarkCubit extends Cubit<BookMarkState> {
   final BookmarkRepository _repository;
-  BookMarkCubit([BookmarkRepository? bookMarkRepository]) : _repository = bookMarkRepository ?? BookmarkRepository(), super(BookMarkInitial());
+  BookMarkCubit([BookmarkRepository? bookMarkRepository])
+    : _repository = bookMarkRepository ?? BookmarkRepository(),
+      super(BookMarkInitial());
 
   // Save a bookmark
   Future<void> saveBookMark(String filePath, int page) async {

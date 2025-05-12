@@ -19,7 +19,11 @@ class GetLocationCubit extends Cubit<GetLocationState> {
       String location = SharedPreferenceService.getPlaceMarksName() ?? '';
       emit(GetLocationLoaded(location: 'Your updated location is $location'));
     } catch (e) {
-      LogService.logStorage.writeInfoLog('Get Location Cubit', 'Get Current Location', e.toString());
+      LogService.logStorage.writeInfoLog(
+        'Get Location Cubit',
+        'Get Current Location',
+        e.toString(),
+      );
 
       emit(const GetLocationError('Failed to get location'));
     }

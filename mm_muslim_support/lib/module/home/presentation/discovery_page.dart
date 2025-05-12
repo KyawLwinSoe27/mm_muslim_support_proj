@@ -13,7 +13,8 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
   List<NotiPayLoad> notiPayload = [];
 
   void _loadNotifications() async {
-    final List<NotiPayLoad> pendingNotis = await LocalNotificationService().retrievePendingNotificationList();
+    final List<NotiPayLoad> pendingNotis =
+        await LocalNotificationService().retrievePendingNotificationList();
     setState(() {
       notiPayload = pendingNotis;
     });
@@ -22,7 +23,15 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Discovery',style: context.textTheme.titleLarge?.copyWith(color: context.colorScheme.onSecondary, fontWeight: FontWeight.w500))),
+      appBar: AppBar(
+        title: Text(
+          'Discovery',
+          style: context.textTheme.titleLarge?.copyWith(
+            color: context.colorScheme.onSecondary,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
       body: Column(
         children: [
           ElevatedButton(

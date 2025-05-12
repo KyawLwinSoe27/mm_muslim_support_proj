@@ -1,7 +1,8 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferenceService {
-  static final SharedPreferenceService _instance = SharedPreferenceService._internal();
+  static final SharedPreferenceService _instance =
+      SharedPreferenceService._internal();
   factory SharedPreferenceService() => _instance;
   SharedPreferenceService._internal();
 
@@ -26,8 +27,6 @@ class SharedPreferenceService {
   static const String _keyIsMaghribAlarm = 'is_maghrib_alarm';
   static const String _keyIsIshaAlarm = 'is_isha_alarm';
 
-
-
   // Setters
   Future<void> setLanguage(String value) async {
     await _prefs?.setString(_keyLanguage, value);
@@ -37,11 +36,11 @@ class SharedPreferenceService {
     await _prefs?.setString(_keyLocation, location);
   }
 
-  static Future<void> setLocationName(String locationName) async{
+  static Future<void> setLocationName(String locationName) async {
     await _prefs?.setString(_keyLocationName, locationName);
   }
 
-  static Future<void> setPlaceMarksName(String placeMarksName) async{
+  static Future<void> setPlaceMarksName(String placeMarksName) async {
     await _prefs?.setString(_keyPlaceMarksName, placeMarksName);
   }
 
@@ -77,11 +76,10 @@ class SharedPreferenceService {
     await _prefs?.setBool(_keyIsIshaAlarm, isIshaAlarm);
   }
 
-
   String? getLanguage() {
     return _prefs?.getString(_keyLanguage);
   }
-  
+
   static String? getLocation() {
     return _prefs?.getString(_keyLocation);
   }
@@ -101,7 +99,7 @@ class SharedPreferenceService {
   static bool? getMadhab() {
     return _prefs?.getBool(_keyMadhab);
   }
-  
+
   static bool? getFajrAlarm() {
     return _prefs?.getBool(_keyIsFajrAlarm);
   }
@@ -117,7 +115,7 @@ class SharedPreferenceService {
   static bool? getMaghribAlarm() {
     return _prefs?.getBool(_keyIsMaghribAlarm);
   }
-  
+
   static bool? getIshaAlarm() {
     return _prefs?.getBool(_keyIsIshaAlarm);
   }

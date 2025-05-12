@@ -13,17 +13,22 @@ class TasbihListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       padding: const EdgeInsets.all(16),
-      children: tasbihListModel.map((model) {
-        return Card(
-          child: ListTile(
-            title: Text(model.title),
-            subtitle: model.rewards.isNullOrEmpty ? null : Text(model.rewards),
-            onTap: () {
-              context.navigateWithPushNamed(TasbihPage.routeName, extra: model.tasbihDetailDataList);
-            },
-          ),
-        );
-      }).toList()
+      children:
+          tasbihListModel.map((model) {
+            return Card(
+              child: ListTile(
+                title: Text(model.title),
+                subtitle:
+                    model.rewards.isNullOrEmpty ? null : Text(model.rewards),
+                onTap: () {
+                  context.navigateWithPushNamed(
+                    TasbihPage.routeName,
+                    extra: model.tasbihDetailDataList,
+                  );
+                },
+              ),
+            );
+          }).toList(),
     );
   }
 }

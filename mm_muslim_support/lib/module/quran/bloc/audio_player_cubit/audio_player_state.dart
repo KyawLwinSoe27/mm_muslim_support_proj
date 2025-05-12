@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class AudioPlayerState extends Equatable{
+class AudioPlayerState extends Equatable {
   final bool isPlaying;
   final Duration position;
   final Duration buffered;
@@ -18,12 +18,12 @@ class AudioPlayerState extends Equatable{
   });
 
   const AudioPlayerState.initial()
-      : isPlaying = false,
-        position = Duration.zero,
-        buffered = Duration.zero,
-        name = '',
-        currentSurahId = 0,
-        duration = Duration.zero;
+    : isPlaying = false,
+      position = Duration.zero,
+      buffered = Duration.zero,
+      name = '',
+      currentSurahId = 0,
+      duration = Duration.zero;
 
   AudioPlayerState copyWith({
     bool? isPlaying,

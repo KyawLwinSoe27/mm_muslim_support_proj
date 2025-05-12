@@ -15,9 +15,8 @@ import 'package:mm_muslim_support/service/permission_service.dart';
 import 'package:mm_muslim_support/service/shared_preference_service.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-FlutterLocalNotificationsPlugin();
+    FlutterLocalNotificationsPlugin();
 late final AudioPlayerHandler audioHandler;
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,8 +27,8 @@ void main() async {
   LocalNotificationService().initNotification();
   await PermissionService.requestNotificationPermission();
 
-  bool wasInBackground =  SharedPreferenceService.getAppLifeCycle() ?? false;
-  if(!wasInBackground) {
+  bool wasInBackground = SharedPreferenceService.getAppLifeCycle() ?? false;
+  if (!wasInBackground) {
     await LocationService.getCurrentLocation();
     await SharedPreferenceService.setAppLifeCycle(true);
   }
@@ -56,7 +55,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MaterialTheme customTheme = MaterialTheme(Typography.material2021().black);
+    final MaterialTheme customTheme = MaterialTheme(
+      Typography.material2021().black,
+    );
 
     return BlocBuilder<ThemeCubit, ThemeMode>(
       builder: (context, themeMode) {

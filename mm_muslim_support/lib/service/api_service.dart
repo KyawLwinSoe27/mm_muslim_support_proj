@@ -20,7 +20,11 @@ class ApiService {
     return _client.delete(path, data: data);
   }
 
-  Future<Response> upload(String path, Map<String, dynamic> fields, List<MultipartFile> files) {
+  Future<Response> upload(
+    String path,
+    Map<String, dynamic> fields,
+    List<MultipartFile> files,
+  ) {
     return _client.postMultipart(path, fields, files);
   }
 

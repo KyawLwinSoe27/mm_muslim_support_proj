@@ -6,7 +6,7 @@ class GetPrayerCalculationMethodCubit extends Cubit<PrayerCalculationMethod> {
   GetPrayerCalculationMethodCubit() : super(prayerCalculationMethods.first);
 
   void choosePrayerCalculationMethod(PrayerCalculationMethod? method) {
-    if(method != null) {
+    if (method != null) {
       SharedPreferenceService.setPrayerCalculationMethod(method.key.name);
       emit(method);
     } else {

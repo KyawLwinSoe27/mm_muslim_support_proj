@@ -10,10 +10,7 @@ class NotiPayLoad {
   final int id;
   final String name;
 
-  const NotiPayLoad({
-    required this.id,
-    required this.name
-});
+  const NotiPayLoad({required this.id, required this.name});
 }
 
 class LocalNotificationService {
@@ -29,17 +26,28 @@ class LocalNotificationService {
     // init time zone handling
     tz.initializeTimeZones();
     final String timeZoneName = await FlutterTimezone.getLocalTimezone();
-    tz.setLocalLocation(tz.getLocation(FunctionService.locationName(timeZoneName)));
+    tz.setLocalLocation(
+      tz.getLocation(FunctionService.locationName(timeZoneName)),
+    );
 
     // init Android
-    const AndroidInitializationSettings initSettingAndroid = AndroidInitializationSettings('@drawable/ic_launcher');
+    const AndroidInitializationSettings initSettingAndroid =
+        AndroidInitializationSettings('@drawable/ic_launcher');
 
     // init IOS
 
-    const DarwinInitializationSettings initSettingIOS = DarwinInitializationSettings(requestAlertPermission: true, requestBadgePermission: true, requestSoundPermission: true);
+    const DarwinInitializationSettings initSettingIOS =
+        DarwinInitializationSettings(
+          requestAlertPermission: true,
+          requestBadgePermission: true,
+          requestSoundPermission: true,
+        );
 
     // init settings
-    const InitializationSettings initSettings = InitializationSettings(android: initSettingAndroid, iOS: initSettingIOS);
+    const InitializationSettings initSettings = InitializationSettings(
+      android: initSettingAndroid,
+      iOS: initSettingIOS,
+    );
 
     await notificationPlugin.initialize(initSettings);
 
@@ -47,26 +55,35 @@ class LocalNotificationService {
   }
 
   // Shown an immediate notification
-  Future<void> showNotification({int id = 0, String? title, String? body}) async {
+  Future<void> showNotification({
+    int id = 0,
+    String? title,
+    String? body,
+  }) async {
     await notificationPlugin.show(id, title, body, notificationDetail);
   }
 
-  static AndroidNotificationDetails androidPlatformChannelSpecifics = const AndroidNotificationDetails(
-    'your_channel_id',
-    'your_channel_name',
-    channelDescription: 'your_channel_description',
-    importance: Importance.max,
-    priority: Priority.max,
-    playSound: true,
-    visibility: NotificationVisibility.public,
-    audioAttributesUsage: AudioAttributesUsage.alarm,
-    sound: RawResourceAndroidNotificationSound('azan'),
-    icon: '@drawable/ic_launcher',
+  static AndroidNotificationDetails androidPlatformChannelSpecifics =
+      const AndroidNotificationDetails(
+        'your_channel_id',
+        'your_channel_name',
+        channelDescription: 'your_channel_description',
+        importance: Importance.max,
+        priority: Priority.max,
+        playSound: true,
+        visibility: NotificationVisibility.public,
+        audioAttributesUsage: AudioAttributesUsage.alarm,
+        sound: RawResourceAndroidNotificationSound('azan'),
+        icon: '@drawable/ic_launcher',
+      );
+
+  static DarwinNotificationDetails iOSPlatformChannelSpecifics =
+      const DarwinNotificationDetails(sound: 'azan.mp3');
+
+  NotificationDetails notificationDetail = NotificationDetails(
+    android: androidPlatformChannelSpecifics,
+    iOS: iOSPlatformChannelSpecifics,
   );
-
-  static DarwinNotificationDetails iOSPlatformChannelSpecifics = const DarwinNotificationDetails(sound: 'azan.mp3');
-
-  NotificationDetails notificationDetail = NotificationDetails(android: androidPlatformChannelSpecifics, iOS: iOSPlatformChannelSpecifics);
 
   // Schedule a notification
   // Future<void> scheduleNotification({required int id, required String title, required String body, required tz.TZDateTime scheduledDate}) async {
@@ -102,37 +119,41 @@ class LocalNotificationService {
         body,
         scheduledDate,
         notificationDetail,
-        uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
         androidScheduleMode: AndroidScheduleMode.alarmClock,
         matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
       );
 
-      if(context.mounted) {
+      if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Notification scheduled for ${scheduledDate.toLocal()}'),
+            content: Text(
+              'Notification scheduled for ${scheduledDate.toLocal()}',
+            ),
             backgroundColor: Colors.green,
           ),
         );
       }
-      FirebaseCrashlytics.instance.log('Scheduled notification with ID $id at $scheduledDate');
-
+      FirebaseCrashlytics.instance.log(
+        'Scheduled notification with ID $id at $scheduledDate',
+      );
     } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to schedule notification: $e'),
+            backgroundColor: Colors.red,
+            duration: const Duration(minutes: 5),
+          ),
+        );
+      }
 
-     if(context.mounted) {
-       ScaffoldMessenger.of(context).showSnackBar(
-         SnackBar(
-           content: Text('Failed to schedule notification: $e'),
-           backgroundColor: Colors.red,
-           duration: const Duration(minutes: 5),
-         ),
-       );
-     }
-
-      FirebaseCrashlytics.instance.log('Scheduled notification with ID $id at $scheduledDate. The error is $e');
+      FirebaseCrashlytics.instance.log(
+        'Scheduled notification with ID $id at $scheduledDate. The error is $e',
+      );
     }
   }
-
 
   // Cancel All notification
   Future<void> cancelAllNotification() async {
@@ -140,12 +161,13 @@ class LocalNotificationService {
   }
 
   // Cancel Notification By Id
-  Future<void> cancelNotificationById(int id) async{
+  Future<void> cancelNotificationById(int id) async {
     await notificationPlugin.cancel(id);
   }
+
   Future<List<NotiPayLoad>> retrievePendingNotificationList() async {
     final List<PendingNotificationRequest> pendingNotificationList =
-    await notificationPlugin.pendingNotificationRequests();
+        await notificationPlugin.pendingNotificationRequests();
 
     return pendingNotificationList.map((notification) {
       return NotiPayLoad(
@@ -154,5 +176,4 @@ class LocalNotificationService {
       );
     }).toList();
   }
-
 }

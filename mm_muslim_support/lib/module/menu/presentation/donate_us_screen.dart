@@ -11,7 +11,15 @@ class DonateUsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Donate Us', style: context.textTheme.titleLarge?.copyWith(color: context.colorScheme.onSecondary, fontWeight: FontWeight.w500))),
+      appBar: AppBar(
+        title: Text(
+          'Donate Us',
+          style: context.textTheme.titleLarge?.copyWith(
+            color: context.colorScheme.onSecondary,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -20,9 +28,20 @@ class DonateUsScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.volunteer_activism, size: 80, color: context.colorScheme.primary),
+              Icon(
+                Icons.volunteer_activism,
+                size: 80,
+                color: context.colorScheme.primary,
+              ),
               const SizedBox(height: 20),
-              Text('Support Minara', style: context.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold, color: context.colorScheme.primary), textAlign: TextAlign.center),
+              Text(
+                'Support Minara',
+                style: context.textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: context.colorScheme.primary,
+                ),
+                textAlign: TextAlign.center,
+              ),
               const SizedBox(height: 16),
               const Text(
                 'Your donation helps us improve this app and bring more Islamic content and features to the global Muslim community.',
@@ -42,7 +61,10 @@ class DonateUsScreen extends StatelessWidget {
               // ),
               const SizedBox(height: 20),
               OutlinedButton.icon(
-                icon: Icon(Icons.monetization_on, color: context.colorScheme.primary),
+                icon: Icon(
+                  Icons.monetization_on,
+                  color: context.colorScheme.primary,
+                ),
                 label: Text('Donate', style: context.textTheme.titleMedium),
                 onPressed: () {
                   // Show bank info dialog
@@ -55,21 +77,36 @@ class DonateUsScreen extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text('Developer Name: ${AppConstants.developerName}'),
+                              const Text(
+                                'Developer Name: ${AppConstants.developerName}',
+                              ),
                               const SizedBox(height: 8),
-                              const Text('Account Name: ${AppConstants.developerEmail}'),
+                              const Text(
+                                'Account Name: ${AppConstants.developerEmail}',
+                              ),
                               const SizedBox(height: 16),
                               InkWell(
                                 onTap: () async {
                                   // url opener
                                   // Open the phone dialer with the developer's phone number
-                                  launchUrl(Uri.parse('tel:${AppConstants.developerPhone}'));
+                                  launchUrl(
+                                    Uri.parse(
+                                      'tel:${AppConstants.developerPhone}',
+                                    ),
+                                  );
                                 },
-                                child: const Text('Account Number: ${AppConstants.developerPhone}'),
+                                child: const Text(
+                                  'Account Number: ${AppConstants.developerPhone}',
+                                ),
                               ),
                             ],
                           ),
-                          actions: [TextButton(onPressed: () => Navigator.pop(context), child: const Text('Close'))],
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: const Text('Close'),
+                            ),
+                          ],
                         ),
                   );
                 },

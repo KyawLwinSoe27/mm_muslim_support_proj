@@ -16,18 +16,25 @@ class DownloadFileBloc extends Bloc<DownloadFileEvent, DownloadFileState> {
   final FileRepository _fileRepository;
   final BookmarkRepository _bookmarkRepository;
 
-  DownloadFileBloc({FileRepository? fileRepository, BookmarkRepository? bookmarkRepository})
-    : _fileRepository = fileRepository ?? FileRepositoryImplementation(),
-      _bookmarkRepository = bookmarkRepository ?? BookmarkRepository(),
-      super(DownloadInitial()) {
+  DownloadFileBloc({
+    FileRepository? fileRepository,
+    BookmarkRepository? bookmarkRepository,
+  }) : _fileRepository = fileRepository ?? FileRepositoryImplementation(),
+       _bookmarkRepository = bookmarkRepository ?? BookmarkRepository(),
+       super(DownloadInitial()) {
     on<StartDownload>(_onStartDownload);
     on<_UpdateProgress>(_onUpdateProgress);
     on<CheckFileExist>(_onCheckFileExist);
   }
 
-  Future<void> _onStartDownload(StartDownload event, Emitter<DownloadFileState> emit) async {
+  Future<void> _onStartDownload(
+    StartDownload event,
+    Emitter<DownloadFileState> emit,
+  ) async {
     try {
-      final dir = await FileManagementService.getDownloadDirectory(event.folder);
+      final dir = await FileManagementService.getDownloadDirectory(
+        event.folder,
+      );
       final filePath = '${dir.path}/${event.fileName}';
 
       // File already exists
@@ -63,11 +70,17 @@ class DownloadFileBloc extends Bloc<DownloadFileEvent, DownloadFileState> {
     }
   }
 
-  void _onUpdateProgress(_UpdateProgress event, Emitter<DownloadFileState> emit) {
+  void _onUpdateProgress(
+    _UpdateProgress event,
+    Emitter<DownloadFileState> emit,
+  ) {
     emit(DownloadInProgress(progress: event.percent));
   }
 
-  FutureOr<void> _onCheckFileExist(CheckFileExist event, Emitter<DownloadFileState> emit) async{
+  FutureOr<void> _onCheckFileExist(
+    CheckFileExist event,
+    Emitter<DownloadFileState> emit,
+  ) async {
     final dir = await FileManagementService.getDownloadDirectory(event.folder);
     final filePath = '${dir.path}/${event.fileName}';
 
