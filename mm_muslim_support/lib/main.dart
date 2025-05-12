@@ -1,4 +1,5 @@
 import 'package:audio_service/audio_service.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -33,8 +34,10 @@ void main() async {
     await SharedPreferenceService.setAppLifeCycle(true);
   }
 
-
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  // Subscribe to topic AFTER Firebase is initialized
+  await FirebaseMessaging.instance.subscribeToTopic('all_devices');
 
   audioHandler = await AudioService.init(
     builder: () => AudioPlayerHandler(),
@@ -58,7 +61,7 @@ class MyApp extends StatelessWidget {
     return BlocBuilder<ThemeCubit, ThemeMode>(
       builder: (context, themeMode) {
         return MaterialApp.router(
-          title: 'Myanmar Muslim Support',
+          title: 'Minara',
           debugShowCheckedModeBanner: false,
           theme: customTheme.light(),
           darkTheme: customTheme.dark(),
