@@ -24,6 +24,7 @@ class QuranListPage extends StatelessWidget {
 
   final List<QuranModel> quranList = [
     const QuranModel(title: 'Quran', link: AppConstants.quranUrl, fileName: 'quran_downloaded.pdf'),
+    const QuranModel(title: 'Quran Color coded Tajweed Rules', link: AppConstants.quranTajweed, fileName: 'quran_tajweed_downloaded.pdf'),
     const QuranModel(title: 'Quran Myanmar 1', link: AppConstants.quranMM1Url, fileName: 'quran_mm_1_downloaded.pdf'),
     const QuranModel(title: 'Quran Myanmar 2', link: AppConstants.quranMM2Url, fileName: 'quran_mm_2_downloaded.pdf'),
   ];
@@ -31,8 +32,7 @@ class QuranListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Quran List'),
-      ),
+        title: Text('Quran List', style: context.textTheme.titleLarge?.copyWith(color: context.colorScheme.onSecondary, fontWeight: FontWeight.w500))),
       body: ListView.builder(
         padding: const EdgeInsets.all(12),
         itemCount: quranList.length,

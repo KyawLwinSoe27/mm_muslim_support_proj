@@ -1,8 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_compass/flutter_compass.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:mm_muslim_support/utility/extensions.dart';
 import 'package:mm_muslim_support/utility/image_constants.dart';
 import 'package:mm_muslim_support/widget/compass_painter.dart';
 import 'package:prayers_times/prayers_times.dart';
@@ -50,9 +52,9 @@ class _HomePageState extends State<CompassPage> {
                 }
 
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
+                  return Center(
                     child: CircularProgressIndicator(
-                      color: Colors.white,
+                      color: context.colorScheme.onSurface,
                     ),
                   );
                 }
@@ -106,11 +108,11 @@ class _HomePageState extends State<CompassPage> {
                                 transform: Matrix4.rotationZ(
                                     qiblaDirection * pi / 180),
                                 origin: Offset.zero,
-                                child: const Align(
+                                child: Align(
                                   alignment: Alignment.topCenter,
                                   child: Icon(
                                     Icons.expand_less_outlined,
-                                    color: Colors.white,
+                                    color: context.colorScheme.inverseSurface,
                                     size: 32,
                                   ),
                                 ),
@@ -121,10 +123,6 @@ class _HomePageState extends State<CompassPage> {
                             alignment: const Alignment(0, 0.45),
                             child: Text(
                               showHeading(direction, qiblaDirection),
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
                             ),
                           ),
                         ],
@@ -184,7 +182,13 @@ Future<Position> _determinePosition() async {
 }
 
 String showHeading(double direction, double qiblaDirection) {
-  return qiblaDirection.toInt() != direction.toInt()
-      ? '${direction.toStringAsFixed(0)}°'
+  final normalizedDirection = (direction + 360) % 360;
+
+  if(normalizedDirection.toInt() == qiblaDirection.toInt()) {
+    HapticFeedback.lightImpact();
+  }
+
+  return normalizedDirection.toInt() != qiblaDirection.toInt()
+      ? '${normalizedDirection.toStringAsFixed(0)}°'
       : "You're facing Makkah!";
 }

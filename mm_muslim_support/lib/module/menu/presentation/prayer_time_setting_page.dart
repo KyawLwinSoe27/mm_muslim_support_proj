@@ -14,7 +14,7 @@ class PrayerTimeSettingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Prayer Time Settings', style: context.textTheme.titleLarge?.copyWith(color: context.colorScheme.onSecondary))),
+      appBar: AppBar(title: Text('Prayer Time Settings', style: context.textTheme.titleLarge?.copyWith(color: context.colorScheme.onSecondary, fontWeight: FontWeight.w500))),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         children: [

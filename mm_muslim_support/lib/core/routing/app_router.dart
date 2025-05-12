@@ -7,7 +7,7 @@ import 'package:mm_muslim_support/model/quran_song_model.dart';
 import 'package:mm_muslim_support/model/tasbih_model.dart';
 import 'package:mm_muslim_support/module/history/presentations/islamic_history_page.dart';
 import 'package:mm_muslim_support/module/home/cubit/bottom_navigation_bar_cubit.dart';
-import 'package:mm_muslim_support/module/home/cubit/tasbih_counter_cubit.dart';
+import 'package:mm_muslim_support/module/tasbih/cubits/tasbih_counter_cubit.dart';
 import 'package:mm_muslim_support/module/home/presentation/home_page.dart';
 import 'package:mm_muslim_support/module/menu/cubit/get_prayer_calculation_method_cubit.dart';
 import 'package:mm_muslim_support/module/menu/presentation/about_us_screen.dart';

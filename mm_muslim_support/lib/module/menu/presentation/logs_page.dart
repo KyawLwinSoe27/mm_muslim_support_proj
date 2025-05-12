@@ -6,6 +6,7 @@ import 'package:mm_muslim_support/core/routing/context_ext.dart';
 import 'package:mm_muslim_support/service/log_service.dart';
 import 'package:mm_muslim_support/utility/date_utils.dart';
 import 'package:mm_muslim_support/utility/dialog_utils.dart';
+import 'package:mm_muslim_support/utility/extensions.dart';
 
 class LogsScreen extends StatefulWidget {
   const LogsScreen({super.key});
@@ -40,9 +41,9 @@ class _LogsScreenState extends State<LogsScreen> {
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0.0,
-        title: const Text(
+        title: Text(
           'Activity Logs',
-        ),
+            style: context.textTheme.titleLarge?.copyWith(color: context.colorScheme.onSecondary, fontWeight: FontWeight.w500)),
         actions: [
           InkWell(
             onTap: () async {

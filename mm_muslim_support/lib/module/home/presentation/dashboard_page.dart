@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mm_muslim_support/model/daily_quran_dua_model.dart';
+import 'package:mm_muslim_support/module/home/cubit/daily_quran_dua_cubit.dart';
 import 'package:mm_muslim_support/module/home/widgets/custom_card_widget.dart';
 import 'package:mm_muslim_support/module/home/widgets/prayer_time_grid_widget.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -17,12 +17,26 @@ class DashboardPage extends StatelessWidget {
           const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: DailyQuranDuaWidget(title: 'Daily Dua', dailyQuranDuaModel: DailyQuranDuaModel(arabic: 'اللهم اجرني من النار.', translation: 'O Allah, protect me from Hell.', mmTranslation: '', reference: ''),),
+            child: BlocProvider(
+              create: (context) => DailyQuranDuaCubit(dailyDuaList),
+              child: BlocBuilder<DailyQuranDuaCubit, DailyQuranDuaModel>(
+                builder: (context, state) {
+                  return DailyQuranDuaWidget(title: 'Daily Dua', dailyQuranDuaModel: state);
+                },
+              ),
+            ),
           ),
           const SizedBox(height: 10),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: DailyQuranDuaWidget(title: 'Daily Quran Verse', dailyQuranDuaModel: DailyQuranDuaModel(arabic: 'قَالَ لَا تَخَافَا إِنَّنِي مَعَكُمَا أَسْمَعُ وَأَرَىٰ', translation: 'Allah reassured ˹them˺, Have no fear! I am with you, hearing and seeing.', mmTranslation: '', reference: 'Surah Taha, Verse 46'),),
+            child: BlocProvider(
+              create: (context) => DailyQuranDuaCubit(dailyQuranList),
+              child: BlocBuilder<DailyQuranDuaCubit, DailyQuranDuaModel>(
+                builder: (context, state) {
+                  return DailyQuranDuaWidget(title: 'Daily Quran Verse', dailyQuranDuaModel: state);
+                },
+              ),
+            ),
           ),
           // const SizedBox(height: 20),
           // Padding(
@@ -46,5 +60,3 @@ class DashboardPage extends StatelessWidget {
     );
   }
 }
-
-

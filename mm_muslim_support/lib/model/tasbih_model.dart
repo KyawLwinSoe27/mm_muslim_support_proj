@@ -6,6 +6,7 @@ class TasbihModel {
   final String mmTranslation;
   final int count;
   final File? mp3File;
+  final String englishVoice;
 
 
   TasbihModel({
@@ -13,6 +14,7 @@ class TasbihModel {
     required this.translation,
     required this.mmTranslation,
     required this.count,
+    required this.englishVoice,
     this.mp3File,
   });
 }
