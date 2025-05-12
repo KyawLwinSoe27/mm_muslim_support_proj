@@ -41,19 +41,19 @@ jobs:
 
       # verifies if the dart code is formatted well
       # --set-exit-if-changed stops execution if the any code is not well formatted
-#      # --output=none prints files which needs to be formatted
-#      - name: Verify formatting
-#        run: |
-#          cd mm_muslim_support
-#          dart format --output=none --set-exit-if-changed .
+      # --output=none prints files which needs to be formatted
+      - name: Verify formatting
+        run: |
+          cd mm_muslim_support
+          dart format . --output=none --set-exit-if-changed .
 
 
       # Checks for Symantic errors. Can be configured using analysis_options.yaml
       # --fatal-warnings stops execution if any warnings are found
-#      - name: Analyze project source
-#        run: |
-#          cd mm_muslim_support
-#          flutter analyze --fatal-warnings
+      - name: Analyze project source
+        run: |
+          cd mm_muslim_support
+          flutter analyze --fatal-warnings
           
       # Runs unit test
 #      - name: Run tests
