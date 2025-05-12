@@ -29,12 +29,12 @@ class TasbihCounterCubit extends Cubit<TasbihCounterState> {
   }
 
   void increment(int tasbihIndex) async {
-    final shortPlayer =
-        AudioPlayer(); // Create a new player instance for short sound
-    await shortPlayer.play(
-      AssetSource(AudioConstants.buttonTap),
-      mode: PlayerMode.lowLatency,
-    );
+    // final shortPlayer =
+    //     AudioPlayer(); // Create a new player instance for short sound
+    // await shortPlayer.play(
+    //   AssetSource(AudioConstants.buttonTap),
+    //   mode: PlayerMode.lowLatency,
+    // );
     if (state.count > 0 && state.count == total) {
       if (state.tasbihIndex == tasbihListLength - 1) {
         emit(TasbihCounterState(count: 0, tasbihIndex: 0, finished: true));

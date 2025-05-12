@@ -80,7 +80,7 @@ List<TasbihListModel> tasbihListModel = [
     tasbihDetailDataList: [
       TasbihModel(
         arabic:
-            'سُبْحـانَ اللهِ وَبِحَمْـدِهِ عَدَدَ خَلْـقِه ، وَرِضـا نَفْسِـه ، وَزِنَـةَ عَـرْشِـه ، وَمِـدادَ كَلِمـاتِـه',
+            'سُبْحَانَ اللَّهِ وَبِحَمْدِهِ عَدَدَ خَلْقِهِ وَرِضًا نَفْسِهِ وزِنَةَ عَرْشِهِ وَمِدَادَ كَلِمَاتِهِ',
         translation:
             'Glory is to Allaah and praise is to Him, by the multitude of his creation, by His Pleasure, by the weight of His Throne, and by the extent of His Words.',
         mmTranslation: '',

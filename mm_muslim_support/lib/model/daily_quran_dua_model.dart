@@ -14,7 +14,7 @@ class DailyQuranDuaModel {
 
 final List<DailyQuranDuaModel> dailyQuranList = [
   DailyQuranDuaModel(
-    arabic: 'قَالَ لَا تَخَافَا إِنَّنِي مَعَكُمَا أَسْمَعُ وَأَرَىٰ',
+    arabic: 'قَالَ لَا تَخَافَآ ۖ إِنَّنِى مَعَكُمَآ أَسْمَعُ وَأَرَىٰ',
     translation:
         'Allah reassured ˹them˺, Have no fear! I am with you, hearing and seeing.',
     mmTranslation: '',
@@ -22,7 +22,7 @@ final List<DailyQuranDuaModel> dailyQuranList = [
   ),
   DailyQuranDuaModel(
     arabic: 'رَبِّ اشْرَحْ لِي صَدْرِي',
-    translation: 'My Lord, expand for me my chest.',
+    translation: 'My Lord! Uplift my heart for me.',
     mmTranslation: '',
     reference: 'Surah Taha, Verse 25',
   ),
@@ -40,43 +40,43 @@ final List<DailyQuranDuaModel> dailyQuranList = [
     reference: 'Surah Taha, Verse 114',
   ),
   DailyQuranDuaModel(
-    arabic: 'حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ',
+    arabic: 'حَسْبُنَا ٱللَّهُ وَنِعْمَ ٱلْوَكِيلُ',
     translation:
-        'Sufficient for us is Allah, and [He is] the best Disposer of affairs.',
+        'Sufficient for us is Allah, and [He is] the best Protector.',
     mmTranslation: '',
     reference: 'Surah Al Imran, Verse 173',
   ),
   DailyQuranDuaModel(
-    arabic: 'اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ',
+    arabic: 'ٱللَّهُ لَآ إِلَـٰهَ إِلَّا هُوَ ٱلْحَىُّ ٱلْقَيُّومُ ۚ',
     translation:
-        'Allah! There is no deity except Him, the Ever-Living, the Sustainer of [all] existence.',
+        'Allah! There is no god ˹worthy of worship˺ except Him, the Ever-Living, All-Sustaining.',
     mmTranslation: '',
     reference: 'Surah Al-Baqarah, Verse 255 (Ayat al-Kursi)',
   ),
   DailyQuranDuaModel(
-    arabic: 'رَبِّ إِنِّي لِمَا أَنزَلْتَ إِلَيَّ مِنْ خَيْرٍ فَقِيرٌ',
+    arabic: 'رَبِّ إِنِّى لِمَآ أَنزَلْتَ إِلَىَّ مِنْ خَيْرٍۢ فَقِيرٌۭ',
     translation:
-        'My Lord, indeed I am, for whatever good You would send down to me, in need.',
+        'My Lord! I am truly in ˹desperate˺ need of whatever provision You may have in store for me.',
     mmTranslation: '',
     reference: 'Surah Al-Qasas, Verse 24',
   ),
   DailyQuranDuaModel(
-    arabic: 'رَبِّ هَبْ لِي مِنَ الصَّالِحِينَ',
-    translation: 'My Lord, grant me [a child] from among the righteous.',
+    arabic: 'رَبِّ هَبْ لِى مِنَ ٱلصَّـٰلِحِينَ',
+    translation: 'My Lord! Bless me with righteous offspring.”',
     mmTranslation: '',
     reference: 'Surah As-Saffat, Verse 100',
   ),
   DailyQuranDuaModel(
-    arabic: 'رَبِّ اجْعَلْنِي مُقِيمَ الصَّلَاةِ وَمِن ذُرِّيَّتِي',
+    arabic: 'رَبِّ ٱجْعَلْنِى مُقِيمَ ٱلصَّلَوٰةِ وَمِن ذُرِّيَّتِى ۚ رَبَّنَا وَتَقَبَّلْ دُعَآءِ',
     translation:
-        'My Lord, make me an establisher of prayer, and [many] from my descendants.',
+        'My Lord! Make me and those ˹believers˺ of my descendants keep up prayer. Our Lord! Accept my prayers.',
     mmTranslation: '',
     reference: 'Surah Ibrahim, Verse 40',
   ),
   DailyQuranDuaModel(
-    arabic: 'رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً',
+    arabic: 'رَبَّنَآ ءَاتِنَا فِى ٱلدُّنْيَا حَسَنَةًۭ وَفِى ٱلْـَٔاخِرَةِ حَسَنَةًۭ وَقِنَا عَذَابَ ٱلنَّارِ',
     translation:
-        'Our Lord, give us in this world [that which is] good and in the Hereafter [that which is] good.',
+        'Our Lord! Grant us the good of this world and the Hereafter, and protect us from the torment of the Fire.',
     mmTranslation: '',
     reference: 'Surah Al-Baqarah, Verse 201',
   ),
@@ -84,68 +84,68 @@ final List<DailyQuranDuaModel> dailyQuranList = [
 
 final List<DailyQuranDuaModel> dailyDuaList = [
   DailyQuranDuaModel(
-    arabic: 'اللهم اجرني من النار.',
+    arabic: 'اللَّهُمَّ أَجِرْنِي مِنَ النَّارِ',
     translation: 'O Allah, protect me from Hell.',
     mmTranslation: '',
     reference: '',
   ),
   DailyQuranDuaModel(
-    arabic: 'اللهم اغفر لي ذنبي كله، دقه وجله، وأوله وآخره، وعلانيته وسره.',
+    arabic: 'اللَّهُمَّ اغْفِرْ لي ذَنْبِي كُلَّهُ: دِقَّهُ وَجِلَّهُ، وَأَوَّلَهُ وَآخِرَهُ، وَعَلاَنِيَتَهُ وَسِرَّهُ',
     translation:
         'O Allah, forgive me all my sins, the minor and the major, the first and the last, the public and the private.',
     mmTranslation: '',
     reference: 'Hadith - Muslim',
   ),
   DailyQuranDuaModel(
-    arabic: 'اللهم إنك عفو تحب العفو فاعف عني.',
-    translation: 'O Allah, You are Pardoning and love to pardon, so pardon me.',
+    arabic: 'اللَّهُمَّ إِنَّكَ عَفُوٌّ كَرِيمٌ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي',
+    translation: 'O Allah, indeed You are Pardoning, [Generous] You love pardon, so pardon me.',
     mmTranslation: '',
     reference: 'Hadith - Tirmidhi',
   ),
   DailyQuranDuaModel(
-    arabic: 'اللهم اهدني وسددني.',
-    translation: 'O Allah, guide me and keep me steadfast.',
+    arabic: 'اللهُمَّ اهْدِنِي وَسَدِّدْنِي',
+    translation: 'O Allah! Guide me and set me on the straight path.',
     mmTranslation: '',
-    reference: 'Hadith - Muslim',
+    reference: 'Hadith - Sahih Muslim',
   ),
   DailyQuranDuaModel(
-    arabic: 'ربنا ظلمنا أنفسنا وإن لم تغفر لنا وترحمنا لنكونن من الخاسرين.',
+    arabic: 'رَبَّنَا ظَلَمْنَآ أَنفُسَنَا وَإِن لَّمْ تَغْفِرْ لَنَا وَتَرْحَمْنَا لَنَكُونَنَّ مِنَ ٱلْخَـٰسِرِينَ',
     translation:
-        'Our Lord, we have wronged ourselves, and if You do not forgive us and have mercy upon us, we will surely be among the losers.',
+        'Our Lord! We have wronged ourselves. If You do not forgive us and have mercy on us, we will certainly be losers.',
     mmTranslation: '',
     reference: 'Surah Al-A’raf, Verse 23',
   ),
   DailyQuranDuaModel(
-    arabic: 'رب اجعلني مقيم الصلاة ومن ذريتي.',
+    arabic: 'رَبِّ اجْعَلْنِي مُقِيمَ الصَّلَاةِ وَمِنْ ذُرِّيَّتِي رَبَّنَا وَتَقَبَّلْ دُعَاءِ',
     translation:
-        'My Lord, make me an establisher of prayer, and many from my descendants.',
+        'My Lord, make me an establisher of prayer, and [many] from my descendants. Our Lord, and accept my supplication.',
     mmTranslation: '',
     reference: 'Surah Ibrahim, Verse 40',
   ),
   DailyQuranDuaModel(
-    arabic: 'اللهم إني أعوذ بك من الهم والحزن، والعجز والكسل.',
+    arabic: 'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ، وَالْعَجْزِ وَالْكَسَلِ، وَالْبُخْلِ وَالْجُبْنِ، وَضَلَعِ الدَّيْنِ وَغَلَبَةِ الرِّجَالِ',
     translation:
-        'O Allah, I seek refuge with You from worry and grief, from incapacity and laziness.',
+        'O Allah! I seek refuge with You from worry and grief, from incapacity and laziness, from cowardice and miserliness, from being heavily in debt and from being overpowered by (other) men.',
     mmTranslation: '',
-    reference: 'Hadith - Bukhari',
+    reference: 'Hadith - Al-Bukhari 7/158.',
   ),
   DailyQuranDuaModel(
     arabic:
-        'اللهم إني أعوذ بك من زوال نعمتك، وتحول عافيتك، وفجاءة نقمتك، وجميع سخطك.',
+        'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ زَوَالِ نِعْمَتِكَ، وَتَحَوُّلِ عَافِيَتِكَ، وَفُجَاءَةِ نِقْمَتِكَ، وَجَمِيعِ سَخَطِكَ',
     translation:
         'O Allah, I seek refuge with You from the removal of Your blessing, the loss of well-being, Your sudden punishment, and all forms of Your wrath.',
     mmTranslation: '',
     reference: 'Hadith - Muslim',
   ),
   DailyQuranDuaModel(
-    arabic: 'اللهم آتنا في الدنيا حسنة وفي الآخرة حسنة وقنا عذاب النار.',
+    arabic: 'رَبَّنَآ ءَاتِنَا فِى ٱلدُّنْيَا حَسَنَةًۭ وَفِى ٱلْـَٔاخِرَةِ حَسَنَةًۭ وَقِنَا عَذَابَ ٱلنَّارِ',
     translation:
         'Our Lord, give us in this world [that which is] good and in the Hereafter [that which is] good and protect us from the torment of the Fire.',
     mmTranslation: '',
     reference: 'Surah Al-Baqarah, Verse 201',
   ),
   DailyQuranDuaModel(
-    arabic: 'اللهم إنّي أسألك العفو والعافية.',
+    arabic: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ',
     translation: 'O Allah, I ask You for forgiveness and well-being.',
     mmTranslation: '',
     reference: 'Hadith - Tirmidhi',
