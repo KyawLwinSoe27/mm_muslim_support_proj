@@ -33,10 +33,13 @@ final class GetPrayerTimeByDateLoaded extends GetPrayerTimeState {
   final List<CustomPrayerTime> prayerTimes;
   final int timeStamp;
 
-  const GetPrayerTimeByDateLoaded({required this.prayerTimes, required this.timeStamp});
+  const GetPrayerTimeByDateLoaded({
+    required this.prayerTimes,
+    required this.timeStamp,
+  });
 
   @override
-  List<Object> get props => [prayerTimes,timeStamp ];
+  List<Object> get props => [prayerTimes, timeStamp];
 }
 
 final class GetPrayerTimeByDateLoading extends GetPrayerTimeState {}

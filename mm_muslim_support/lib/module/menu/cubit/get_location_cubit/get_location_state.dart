@@ -13,9 +13,7 @@ final class GetLocationLoading extends GetLocationState {}
 final class GetLocationLoaded extends GetLocationState {
   final String location;
 
-  const GetLocationLoaded({
-    required this.location,
-  });
+  const GetLocationLoaded({required this.location});
 }
 
 final class GetLocationError extends GetLocationState {

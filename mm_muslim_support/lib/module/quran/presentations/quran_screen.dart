@@ -28,14 +28,21 @@ class _QuranScreenState extends State<QuranScreen> {
       body: BlocConsumer<DownloadFileBloc, DownloadFileState>(
         listener: (context, state) async {
           if (state is DownloadSuccess) {
-            _pdfController ??= PdfController(document: PdfDocument.openFile(state.filePath), initialPage: state.currentPage);
+            _pdfController ??= PdfController(
+              document: PdfDocument.openFile(state.filePath),
+              initialPage: state.currentPage,
+            );
           }
         },
         builder: (context, state) {
           if (state is DownloadInProgress) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [Text('Downloading: ${state.progress} %'), const SizedBox(height: 20), LinearProgressIndicator(value: state.progress / 100)],
+              children: [
+                Text('Downloading: ${state.progress} %'),
+                const SizedBox(height: 20),
+                LinearProgressIndicator(value: state.progress / 100),
+              ],
             );
           } else if (state is DownloadSuccess) {
             return Stack(
@@ -61,7 +68,10 @@ class _QuranScreenState extends State<QuranScreen> {
                             keyboardType: TextInputType.number,
                             decoration: const InputDecoration(
                               hintText: 'Page',
-                              contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                              contentPadding: EdgeInsets.symmetric(
+                                vertical: 10,
+                                horizontal: 8,
+                              ),
                               border: OutlineInputBorder(),
                               isDense: true,
                             ),
@@ -75,7 +85,9 @@ class _QuranScreenState extends State<QuranScreen> {
                                 );
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text('Enter a valid page number')),
+                                  const SnackBar(
+                                    content: Text('Enter a valid page number'),
+                                  ),
                                 );
                               }
                             },
@@ -86,7 +98,10 @@ class _QuranScreenState extends State<QuranScreen> {
                           icon: const Icon(Icons.bookmark_add, size: 28),
                           onPressed: () async {
                             final currentPage = _pdfController?.page ?? 1;
-                            context.read<BookMarkCubit>().saveBookMark(state.filePath, currentPage);
+                            context.read<BookMarkCubit>().saveBookMark(
+                              state.filePath,
+                              currentPage,
+                            );
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text('Bookmark saved!')),
                             );

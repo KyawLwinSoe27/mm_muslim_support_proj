@@ -25,13 +25,15 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
       _startPositionTimer();
 
       if (!isClosed) {
-        emit(state.copyWith(
-          isPlaying: playbackState.playing,
-          position: playbackState.position,
-          buffered: playbackState.bufferedPosition,
-          name: mediaItem?.title,
-          currentSurahId: quranSongModel.number,
-        ));
+        emit(
+          state.copyWith(
+            isPlaying: playbackState.playing,
+            position: playbackState.position,
+            buffered: playbackState.bufferedPosition,
+            name: mediaItem?.title,
+            currentSurahId: quranSongModel.number,
+          ),
+        );
       }
       return;
     }
@@ -39,10 +41,12 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
     await audioHandler.stop();
 
     if (!isClosed) {
-      emit(state.copyWith(
-        name: 'Surah ${quranSongModel.name}',
-        currentSurahId: quranSongModel.number,
-      ));
+      emit(
+        state.copyWith(
+          name: 'Surah ${quranSongModel.name}',
+          currentSurahId: quranSongModel.number,
+        ),
+      );
     }
 
     await audioHandler.setUrl(quranSongModel);
@@ -54,10 +58,13 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
     _playbackSubscription?.cancel(); // Cancel old before assigning new
     _mediaItemSubscription?.cancel();
 
-    _playbackSubscription = audioHandler.playbackState.listen((playbackState) async {
+    _playbackSubscription = audioHandler.playbackState.listen((
+      playbackState,
+    ) async {
       if (isClosed) return;
 
-      final isCompleted = playbackState.processingState == AudioProcessingState.completed;
+      final isCompleted =
+          playbackState.processingState == AudioProcessingState.completed;
 
       if (isCompleted && !isFinished) {
         isFinished = true;
@@ -68,11 +75,13 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
       }
 
       if (!isClosed) {
-        emit(state.copyWith(
-          isPlaying: !isCompleted && playbackState.playing,
-          position: playbackState.position,
-          buffered: playbackState.bufferedPosition,
-        ));
+        emit(
+          state.copyWith(
+            isPlaying: !isCompleted && playbackState.playing,
+            position: playbackState.position,
+            buffered: playbackState.bufferedPosition,
+          ),
+        );
       }
     });
 

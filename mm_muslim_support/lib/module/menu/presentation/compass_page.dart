@@ -41,9 +41,7 @@ class _HomePageState extends State<CompassPage> {
               positionResult.latitude,
               positionResult.longitude,
             );
-            double qiblaDirection = Qibla.qibla(
-              coordinates,
-            );
+            double qiblaDirection = Qibla.qibla(coordinates);
             return StreamBuilder(
               stream: FlutterCompass.events,
               builder: (context, snapshot) {
@@ -79,16 +77,15 @@ class _HomePageState extends State<CompassPage> {
                         children: [
                           CustomPaint(
                             size: size,
-                            painter: CompassCustomPainter(
-                              angle: direction,
-                            ),
+                            painter: CompassCustomPainter(angle: direction),
                           ),
                           Transform.rotate(
                             angle: -2 * pi * (direction / 360),
                             child: Transform(
                               alignment: FractionalOffset.center,
                               transform: Matrix4.rotationZ(
-                                  qiblaDirection * pi / 180),
+                                qiblaDirection * pi / 180,
+                              ),
                               origin: Offset.zero,
                               child: Image.asset(
                                 ImageConstants.kaaba,
@@ -106,7 +103,8 @@ class _HomePageState extends State<CompassPage> {
                               child: Transform(
                                 alignment: FractionalOffset.center,
                                 transform: Matrix4.rotationZ(
-                                    qiblaDirection * pi / 180),
+                                  qiblaDirection * pi / 180,
+                                ),
                                 origin: Offset.zero,
                                 child: Align(
                                   alignment: Alignment.topCenter,
@@ -121,9 +119,7 @@ class _HomePageState extends State<CompassPage> {
                           ),
                           Align(
                             alignment: const Alignment(0, 0.45),
-                            child: Text(
-                              showHeading(direction, qiblaDirection),
-                            ),
+                            child: Text(showHeading(direction, qiblaDirection)),
                           ),
                         ],
                       ),
@@ -134,9 +130,7 @@ class _HomePageState extends State<CompassPage> {
             );
           }
           return const Center(
-            child: CircularProgressIndicator(
-              color: Colors.white,
-            ),
+            child: CircularProgressIndicator(color: Colors.white),
           );
         },
       ),
@@ -173,7 +167,8 @@ Future<Position> _determinePosition() async {
   if (permission == LocationPermission.deniedForever) {
     // Permissions are denied forever, handle appropriately.
     return Future.error(
-        'Location permissions are permanently denied, we cannot request permissions.');
+      'Location permissions are permanently denied, we cannot request permissions.',
+    );
   }
 
   // When we reach here, permissions are granted and we can
@@ -184,7 +179,7 @@ Future<Position> _determinePosition() async {
 String showHeading(double direction, double qiblaDirection) {
   final normalizedDirection = (direction + 360) % 360;
 
-  if(normalizedDirection.toInt() == qiblaDirection.toInt()) {
+  if (normalizedDirection.toInt() == qiblaDirection.toInt()) {
     HapticFeedback.lightImpact();
   }
 

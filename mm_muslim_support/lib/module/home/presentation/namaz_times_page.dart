@@ -25,16 +25,43 @@ class NamazTimesPage extends StatelessWidget {
 
             Expanded(
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10.0,
+                  vertical: 10,
+                ),
                 margin: const EdgeInsets.symmetric(horizontal: 20),
                 decoration: BoxDecoration(
                   color: context.colorScheme.surface,
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
-                    BoxShadow(color: context.colorScheme.onSurface.withValues(alpha: 0.1), blurRadius: 10, offset: const Offset(0, 4)),
-                    BoxShadow(color: context.colorScheme.onSurface.withValues(alpha: 0.1), blurRadius: 10, offset: const Offset(0, 4)),
-                    BoxShadow(color: context.colorScheme.onSurface.withValues(alpha: 0.1), blurRadius: 10, offset: const Offset(0, 4)),
-                    BoxShadow(color: context.colorScheme.onSurface.withValues(alpha: 0.1), blurRadius: 10, offset: const Offset(0, 4)),
+                    BoxShadow(
+                      color: context.colorScheme.onSurface.withValues(
+                        alpha: 0.1,
+                      ),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                    BoxShadow(
+                      color: context.colorScheme.onSurface.withValues(
+                        alpha: 0.1,
+                      ),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                    BoxShadow(
+                      color: context.colorScheme.onSurface.withValues(
+                        alpha: 0.1,
+                      ),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                    BoxShadow(
+                      color: context.colorScheme.onSurface.withValues(
+                        alpha: 0.1,
+                      ),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
                   ],
                 ),
                 child: Column(
@@ -46,13 +73,30 @@ class NamazTimesPage extends StatelessWidget {
                         children: [
                           // Header row
                           const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 16.0,
+                              vertical: 8.0,
+                            ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                SizedBox(width: 70, child: Text('Prayer', style: TextStyle(fontWeight: FontWeight.bold))),
-                                Text('Time', style: TextStyle(fontWeight: FontWeight.bold)),
-                                Text('Notify', style: TextStyle(fontWeight: FontWeight.bold)),
+                                SizedBox(
+                                  width: 70,
+                                  child: Text(
+                                    'Prayer',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  'Time',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  'Notify',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
                               ],
                             ),
                           ),
@@ -61,61 +105,140 @@ class NamazTimesPage extends StatelessWidget {
                           const SizedBox(height: 5),
                           // List of prayer times
                           Expanded(
-                            child: BlocBuilder<GetPrayerTimeCubit, GetPrayerTimeState>(
+                            child: BlocBuilder<
+                              GetPrayerTimeCubit,
+                              GetPrayerTimeState
+                            >(
                               buildWhen: (prev, current) {
-                                return current is GetPrayerTimeByDateLoading || current is GetPrayerTimeByDateLoaded || current is GetPrayerTimeByDateError;
+                                return current is GetPrayerTimeByDateLoading ||
+                                    current is GetPrayerTimeByDateLoaded ||
+                                    current is GetPrayerTimeByDateError;
                               },
                               builder: (context, state) {
                                 if (state is GetPrayerTimeByDateLoaded) {
                                   return ListView.builder(
-                                    itemCount: state.prayerTimes.length, // Replace with your actual prayer times count
+                                    itemCount:
+                                        state
+                                            .prayerTimes
+                                            .length, // Replace with your actual prayer times count
                                     itemBuilder: (context, index) {
-                                      CustomPrayerTime prayerTime = state.prayerTimes[index];
+                                      CustomPrayerTime prayerTime =
+                                          state.prayerTimes[index];
                                       return Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 16.0,
+                                          vertical: 8.0,
+                                        ),
                                         child: Row(
                                           mainAxisSize: MainAxisSize.min,
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             SizedBox(
                                               width: 70,
                                               child: Text(
-                                                prayerTime.prayerName.value, // Replace with dynamic prayer name
-                                                style: Theme.of(context).textTheme.titleMedium,
+                                                prayerTime
+                                                    .prayerName
+                                                    .value, // Replace with dynamic prayer name
+                                                style:
+                                                    Theme.of(
+                                                      context,
+                                                    ).textTheme.titleMedium,
                                               ),
                                             ),
                                             Text(
-                                              prayerTime.prayerTime, // Replace with dynamic time
-                                              style: Theme.of(context).textTheme.titleMedium,
+                                              prayerTime
+                                                  .prayerTime, // Replace with dynamic time
+                                              style:
+                                                  Theme.of(
+                                                    context,
+                                                  ).textTheme.titleMedium,
                                             ),
                                             ElevatedButton(
                                               onPressed: () async {
-                                                context.read<GetPrayerTimeCubit>().setAlarm(prayerTime.prayerName);
+                                                context
+                                                    .read<GetPrayerTimeCubit>()
+                                                    .setAlarm(
+                                                      prayerTime.prayerName,
+                                                    );
                                                 if (prayerTime.enableNotify) {
-                                                  LocalNotificationService().cancelNotificationById(prayerTime.id);
-                                                  context.read<GetPrayerTimeCubit>().toggleNotificationEnable(index, state.prayerTimes, false);
+                                                  LocalNotificationService()
+                                                      .cancelNotificationById(
+                                                        prayerTime.id,
+                                                      );
+                                                  context
+                                                      .read<
+                                                        GetPrayerTimeCubit
+                                                      >()
+                                                      .toggleNotificationEnable(
+                                                        index,
+                                                        state.prayerTimes,
+                                                        false,
+                                                      );
                                                 } else {
                                                   DateTime now = DateTime.now();
                                                   DateTime current = DateTime(
-                                                    prayerTime.prayerDateTime.year,
-                                                    prayerTime.prayerDateTime.month,
-                                                    prayerTime.prayerDateTime.day,
-                                                    prayerTime.prayerDateTime.hour,
-                                                    prayerTime.prayerDateTime.minute,
+                                                    prayerTime
+                                                        .prayerDateTime
+                                                        .year,
+                                                    prayerTime
+                                                        .prayerDateTime
+                                                        .month,
+                                                    prayerTime
+                                                        .prayerDateTime
+                                                        .day,
+                                                    prayerTime
+                                                        .prayerDateTime
+                                                        .hour,
+                                                    prayerTime
+                                                        .prayerDateTime
+                                                        .minute,
                                                   );
-                                                  TZDateTime scheduledDate = TZDateTime.from(current, local);
+                                                  TZDateTime scheduledDate =
+                                                      TZDateTime.from(
+                                                        current,
+                                                        local,
+                                                      );
 
-                                                  LocalNotificationService().scheduleNotification(
-                                                    context: context,
-                                                    id: now.millisecond,
-                                                    title: prayerTime.prayerName.value.toUpperCase(),
-                                                    body: "Don't forget to pray for ${prayerTime.prayerName.value}",
-                                                    scheduledDate: scheduledDate,
-                                                  );
-                                                  context.read<GetPrayerTimeCubit>().toggleNotificationEnable(index, state.prayerTimes, true);
+                                                  LocalNotificationService()
+                                                      .scheduleNotification(
+                                                        context: context,
+                                                        id: now.millisecond,
+                                                        title:
+                                                            prayerTime
+                                                                .prayerName
+                                                                .value
+                                                                .toUpperCase(),
+                                                        body:
+                                                            "Don't forget to pray for ${prayerTime.prayerName.value}",
+                                                        scheduledDate:
+                                                            scheduledDate,
+                                                      );
+                                                  context
+                                                      .read<
+                                                        GetPrayerTimeCubit
+                                                      >()
+                                                      .toggleNotificationEnable(
+                                                        index,
+                                                        state.prayerTimes,
+                                                        true,
+                                                      );
                                                 }
                                               },
-                                              child: prayerTime.enableNotify ? Icon(Icons.notifications_active, color: context.colorScheme.primary) : const Icon(Icons.notifications_active_outlined),
+                                              child:
+                                                  prayerTime.enableNotify
+                                                      ? Icon(
+                                                        Icons
+                                                            .notifications_active,
+                                                        color:
+                                                            context
+                                                                .colorScheme
+                                                                .primary,
+                                                      )
+                                                      : const Icon(
+                                                        Icons
+                                                            .notifications_active_outlined,
+                                                      ),
                                             ),
                                           ],
                                         ),
@@ -123,14 +246,24 @@ class NamazTimesPage extends StatelessWidget {
                                     },
                                   );
                                 } else {
-                                  return const Center(child: CircularProgressIndicator());
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
                                 }
                               },
                             ),
                           ),
                           TextButton(
-                            style: ButtonStyle(backgroundColor: WidgetStateProperty.all(context.colorScheme.primary), foregroundColor: WidgetStateProperty.all(context.colorScheme.onPrimary)),
-                            onPressed: () => FunctionService.findNearbyMosque(context),
+                            style: ButtonStyle(
+                              backgroundColor: WidgetStateProperty.all(
+                                context.colorScheme.primary,
+                              ),
+                              foregroundColor: WidgetStateProperty.all(
+                                context.colorScheme.onPrimary,
+                              ),
+                            ),
+                            onPressed:
+                                () => FunctionService.findNearbyMosque(context),
                             child: const Text('Find Near Mosque'),
                           ),
                           const SizedBox(height: 5),
@@ -167,16 +300,32 @@ class PrayerDateWidget extends StatelessWidget {
             return Expanded(
               child: InkWell(
                 onTap: () async {
-                  ChangeDateCubit changeDateCubit = context.read<ChangeDateCubit>();
-                  DateTime? selectedDate = await showDatePicker(context: context, initialDate: context.read<ChangeDateCubit>().date, firstDate: DateTime(2000), lastDate: DateTime(2100));
+                  ChangeDateCubit changeDateCubit =
+                      context.read<ChangeDateCubit>();
+                  DateTime? selectedDate = await showDatePicker(
+                    context: context,
+                    initialDate: context.read<ChangeDateCubit>().date,
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2100),
+                  );
                   if (selectedDate != null) {
                     changeDateCubit.setDate(selectedDate);
                   }
                 },
                 child: Column(
                   children: [
-                    Text(state.gregorianDate, style: context.textTheme.titleMedium?.copyWith(color: context.colorScheme.onSurface)),
-                    Text(state.hijriDate, style: context.textTheme.titleMedium?.copyWith(color: context.colorScheme.onSurface)),
+                    Text(
+                      state.gregorianDate,
+                      style: context.textTheme.titleMedium?.copyWith(
+                        color: context.colorScheme.onSurface,
+                      ),
+                    ),
+                    Text(
+                      state.hijriDate,
+                      style: context.textTheme.titleMedium?.copyWith(
+                        color: context.colorScheme.onSurface,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -212,17 +361,36 @@ class LocationAndTimeWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text('Location: ${state.location}', style: context.textTheme.titleMedium?.copyWith(color: context.colorScheme.onSecondary), textAlign: TextAlign.center),
+                    Text(
+                      'Location: ${state.location}',
+                      style: context.textTheme.titleMedium?.copyWith(
+                        color: context.colorScheme.onSecondary,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
                     const SizedBox(height: 10),
-                    Text('Today\'s Date: ${state.date}', style: context.textTheme.titleSmall?.copyWith(color: context.colorScheme.onSecondary)),
+                    Text(
+                      'Today\'s Date: ${state.date}',
+                      style: context.textTheme.titleSmall?.copyWith(
+                        color: context.colorScheme.onSecondary,
+                      ),
+                    ),
                     const SizedBox(height: 10),
-                    Text('Current Prayer: ${state.currentPrayer}', style: context.textTheme.titleSmall?.copyWith(color: context.colorScheme.onSecondary)),
+                    Text(
+                      'Current Prayer: ${state.currentPrayer}',
+                      style: context.textTheme.titleSmall?.copyWith(
+                        color: context.colorScheme.onSecondary,
+                      ),
+                    ),
                   ],
                 ),
               ),
             );
           } else {
-            return const SizedBox(height: 150, child: Center(child: CircularProgressIndicator()));
+            return const SizedBox(
+              height: 150,
+              child: Center(child: CircularProgressIndicator()),
+            );
           }
         },
       ),
@@ -241,8 +409,17 @@ class BackgroundWidget extends StatelessWidget {
           height: 200,
           child: Stack(
             children: [
-              Container(height: 200, decoration: BoxDecoration(color: context.colorScheme.secondary)),
-              Opacity(opacity: 0.2, child: Image.asset(ImageConstants.beautifulMasjid, fit: BoxFit.cover)),
+              Container(
+                height: 200,
+                decoration: BoxDecoration(color: context.colorScheme.secondary),
+              ),
+              Opacity(
+                opacity: 0.2,
+                child: Image.asset(
+                  ImageConstants.beautifulMasjid,
+                  fit: BoxFit.cover,
+                ),
+              ),
             ],
           ),
         ),

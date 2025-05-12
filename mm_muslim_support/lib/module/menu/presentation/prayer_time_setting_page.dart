@@ -14,14 +14,25 @@ class PrayerTimeSettingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Prayer Time Settings', style: context.textTheme.titleLarge?.copyWith(color: context.colorScheme.onSecondary, fontWeight: FontWeight.w500))),
+      appBar: AppBar(
+        title: Text(
+          'Prayer Time Settings',
+          style: context.textTheme.titleLarge?.copyWith(
+            color: context.colorScheme.onSecondary,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         children: [
           const SizedBox(height: 30),
           LayoutBuilder(
             builder: (context, constraints) {
-              return BlocBuilder<GetPrayerCalculationMethodCubit, PrayerCalculationMethod>(
+              return BlocBuilder<
+                GetPrayerCalculationMethodCubit,
+                PrayerCalculationMethod
+              >(
                 builder: (context, state) {
                   return SizedBox(
                     width: constraints.maxWidth,
@@ -29,12 +40,25 @@ class PrayerTimeSettingPage extends StatelessWidget {
                       isExpanded: true, // <--- IMPORTANT
                       menuMaxHeight: 300,
                       value: state,
-                      decoration: const InputDecoration(labelText: 'Calculation Method', border: OutlineInputBorder()),
+                      decoration: const InputDecoration(
+                        labelText: 'Calculation Method',
+                        border: OutlineInputBorder(),
+                      ),
                       items:
                           prayerCalculationMethods.map((method) {
-                            return DropdownMenuItem<PrayerCalculationMethod>(value: method, child: Text(method.name, overflow: TextOverflow.ellipsis, maxLines: 1));
+                            return DropdownMenuItem<PrayerCalculationMethod>(
+                              value: method,
+                              child: Text(
+                                method.name,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                              ),
+                            );
                           }).toList(),
-                      onChanged: (value) => context.read<GetPrayerCalculationMethodCubit>().choosePrayerCalculationMethod(value),
+                      onChanged:
+                          (value) => context
+                              .read<GetPrayerCalculationMethodCubit>()
+                              .choosePrayerCalculationMethod(value),
                     ),
                   );
                 },
@@ -54,10 +78,26 @@ class PrayerTimeSettingPage extends StatelessWidget {
                 ),
               ),
               BlocProvider(
-                create: (context) => GetMadhabCubit()..setMadhab(SharedPreferenceService.getMadhab() ?? true),
+                create:
+                    (context) =>
+                        GetMadhabCubit()..setMadhab(
+                          SharedPreferenceService.getMadhab() ?? true,
+                        ),
                 child: BlocBuilder<GetMadhabCubit, bool>(
                   builder: (context, state) {
-                    return Row(children: [const Text('Shafi'), Switch(value: state, onChanged: (value) => context.read<GetMadhabCubit>()..toggleMadhab()), const Text('Hanafi')]);
+                    return Row(
+                      children: [
+                        const Text('Shafi'),
+                        Switch(
+                          value: state,
+                          onChanged:
+                              (value) =>
+                                  context.read<GetMadhabCubit>()
+                                    ..toggleMadhab(),
+                        ),
+                        const Text('Hanafi'),
+                      ],
+                    );
                   },
                 ),
               ),

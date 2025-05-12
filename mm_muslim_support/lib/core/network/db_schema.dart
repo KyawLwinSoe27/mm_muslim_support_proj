@@ -10,7 +10,6 @@ class DBTables {
   static const String prayerTimeTime = 'time';
   static const String prayerTimeDate = 'date';
   static const String alarmEnable = 'alarm';
-
 }
 
 class BookmarkTableSchema {
@@ -22,7 +21,6 @@ class BookmarkTableSchema {
     )
   ''';
 }
-
 
 class PrayerTimeTableSchema {
   static const String createTable = '''

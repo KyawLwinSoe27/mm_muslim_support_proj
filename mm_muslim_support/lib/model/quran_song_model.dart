@@ -6,7 +6,12 @@ class QuranSongModel {
   final String mp3Url;
   final String filePath;
 
-  const QuranSongModel({required this.name, required this.number, required this.mp3Url, required this.filePath});
+  const QuranSongModel({
+    required this.name,
+    required this.number,
+    required this.mp3Url,
+    required this.filePath,
+  });
 }
 
 // final List<QuranSongModel> surahList = const [
@@ -77,7 +82,6 @@ class QuranSongModel {
 //     filePath: 'Ad-Duhaa.mp3',
 //   ),
 // ];
-
 
 final List<QuranSongModel> surahList = const [
   QuranSongModel(
@@ -765,4 +769,3 @@ final List<QuranSongModel> surahList = const [
     filePath: 'An-Nas.mp3',
   ),
 ];
-

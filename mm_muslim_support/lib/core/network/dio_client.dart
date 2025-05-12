@@ -6,29 +6,35 @@ class DioClient {
   final Dio _dio;
 
   DioClient()
-      : _dio = Dio(BaseOptions(
-    baseUrl: AppConstants.baseUrl,
-    connectTimeout: const Duration(seconds: 100),
-    receiveTimeout: const Duration(seconds: 100),
-  )) {
+    : _dio = Dio(
+        BaseOptions(
+          baseUrl: AppConstants.baseUrl,
+          connectTimeout: const Duration(seconds: 100),
+          receiveTimeout: const Duration(seconds: 100),
+        ),
+      ) {
     // Add interceptors
-    _dio.interceptors.add(LogInterceptor(
-      request: true,
-      requestHeader: true,
-      requestBody: true,
-      responseHeader: false,
-      responseBody: true,
-      error: true,
-      logPrint: (obj) => debugPrint(obj.toString()),
-    ));
+    _dio.interceptors.add(
+      LogInterceptor(
+        request: true,
+        requestHeader: true,
+        requestBody: true,
+        responseHeader: false,
+        responseBody: true,
+        error: true,
+        logPrint: (obj) => debugPrint(obj.toString()),
+      ),
+    );
 
     // Add error middleware
-    _dio.interceptors.add(InterceptorsWrapper(
-      onError: (DioException e, handler) {
-        _handleError(e);
-        return handler.next(e); // continue
-      },
-    ));
+    _dio.interceptors.add(
+      InterceptorsWrapper(
+        onError: (DioException e, handler) {
+          _handleError(e);
+          return handler.next(e); // continue
+        },
+      ),
+    );
   }
 
   void _handleError(DioException error) {
@@ -46,7 +52,11 @@ class DioClient {
     // You can also throw custom exceptions here
   }
 
-  Future<Response> get(String path, {Map<String, dynamic>? queryParams, Options? options}) {
+  Future<Response> get(
+    String path, {
+    Map<String, dynamic>? queryParams,
+    Options? options,
+  }) {
     return _dio.get(path, queryParameters: queryParams, options: options);
   }
 
@@ -62,21 +72,22 @@ class DioClient {
     return _dio.delete(path, data: data, options: options);
   }
 
-  Future<Response> postMultipart(String path, Map<String, dynamic> fields, List<MultipartFile> files,
-      {Options? options}) {
-    final formData = FormData.fromMap({
-      ...fields,
-      'files': files,
-    });
+  Future<Response> postMultipart(
+    String path,
+    Map<String, dynamic> fields,
+    List<MultipartFile> files, {
+    Options? options,
+  }) {
+    final formData = FormData.fromMap({...fields, 'files': files});
     return _dio.post(path, data: formData, options: options);
   }
 
   Future<void> downloadFile(
-      String url,
-      String savePath, {
-        required void Function(int received, int total) onReceiveProgress,
-        CancelToken? cancelToken,
-      }) async {
+    String url,
+    String savePath, {
+    required void Function(int received, int total) onReceiveProgress,
+    CancelToken? cancelToken,
+  }) async {
     try {
       await _dio.download(
         url,

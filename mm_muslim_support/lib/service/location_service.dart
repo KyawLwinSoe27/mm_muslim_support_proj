@@ -37,44 +37,51 @@ class LocationService {
     Position currentLocation = await Geolocator.getCurrentPosition(
       locationSettings: const LocationSettings(
         accuracy: LocationAccuracy.high,
-        distanceFilter: 10
+        distanceFilter: 10,
       ),
     );
 
     // Save the location to shared preferences
-    String locationLanLong = '${currentLocation.latitude}_${currentLocation.longitude}';
+    String locationLanLong =
+        '${currentLocation.latitude}_${currentLocation.longitude}';
     await SharedPreferenceService.setLocation(locationLanLong);
 
     // get timezone name
     final String timeZoneName = await FlutterTimezone.getLocalTimezone();
-    await SharedPreferenceService.setLocationName(FunctionService.locationName(timeZoneName));
+    await SharedPreferenceService.setLocationName(
+      FunctionService.locationName(timeZoneName),
+    );
 
     return currentLocation;
   }
 
-  static Future<String?> getLocation() async{
+  static Future<String?> getLocation() async {
     String? address = SharedPreferenceService.getPlaceMarksName();
     if (address != null) {
       return address;
     } else {
-      double lat = double.parse(SharedPreferenceService.getLocation()?.split('_')[0] ?? '0.0');
-      double long = double.parse(SharedPreferenceService.getLocation()?.split('_')[1] ?? '0.0');
+      double lat = double.parse(
+        SharedPreferenceService.getLocation()?.split('_')[0] ?? '0.0',
+      );
+      double long = double.parse(
+        SharedPreferenceService.getLocation()?.split('_')[1] ?? '0.0',
+      );
 
-      return await _getLocationFromPlaceMarks(lat,long);
+      return await _getLocationFromPlaceMarks(lat, long);
     }
   }
 
-  static Future<String?> _getLocationFromPlaceMarks(double lat, double long) async {
-    List<Placemark> placemarks = await placemarkFromCoordinates(
-      lat,
-      long,
-    );
+  static Future<String?> _getLocationFromPlaceMarks(
+    double lat,
+    double long,
+  ) async {
+    List<Placemark> placemarks = await placemarkFromCoordinates(lat, long);
 
     if (placemarks.isNotEmpty) {
       Placemark place = placemarks.first;
 
       // You can access city, country, etc.
-      String? city = place.locality;     // e.g., "Yangon"
+      String? city = place.locality; // e.g., "Yangon"
       String? state = place.administrativeArea;
       String? country = place.country;
       String address = '$city, $state, $country';
@@ -85,11 +92,15 @@ class LocationService {
   }
 
   static double getLatitude() {
-    return double.parse(SharedPreferenceService.getLocation()?.split('_')[0] ?? '0.0');
+    return double.parse(
+      SharedPreferenceService.getLocation()?.split('_')[0] ?? '0.0',
+    );
   }
 
   static double getLongitude() {
-    return double.parse(SharedPreferenceService.getLocation()?.split('_')[1] ?? '0.0');
+    return double.parse(
+      SharedPreferenceService.getLocation()?.split('_')[1] ?? '0.0',
+    );
   }
 
   static String getLocationName() {

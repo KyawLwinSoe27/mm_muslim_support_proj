@@ -13,7 +13,7 @@ enum PrayerCalculationMethodType {
   singapore,
   tehran,
   turkey,
-  morocco
+  morocco,
 }
 
 class PrayerCalculationMethod {
@@ -31,7 +31,6 @@ class PrayerCalculationMethod {
     this.ishaInterval = 0.0,
   });
 }
-
 
 List<PrayerCalculationMethod> prayerCalculationMethods = const [
   PrayerCalculationMethod(
@@ -115,7 +114,9 @@ List<PrayerCalculationMethod> prayerCalculationMethods = const [
     ishaAngle: 17.0,
   ),
 ];
-PrayerCalculationParameters getPrayerCalculationMethod(PrayerCalculationMethodType keyName) {
+PrayerCalculationParameters getPrayerCalculationMethod(
+  PrayerCalculationMethodType keyName,
+) {
   switch (keyName) {
     case PrayerCalculationMethodType.muslimWorldLeague:
       return PrayerCalculationParameters('MuslimWorldLeague', 18.0, 17.0)
@@ -130,7 +131,12 @@ PrayerCalculationParameters getPrayerCalculationMethod(PrayerCalculationMethodTy
         ..methodAdjustments = {'dhuhr': 1};
 
     case PrayerCalculationMethodType.ummAlQura:
-      return PrayerCalculationParameters('UmmAlQura', 18.5, 0, ishaInterval: 90);
+      return PrayerCalculationParameters(
+        'UmmAlQura',
+        18.5,
+        0,
+        ishaInterval: 90,
+      );
 
     case PrayerCalculationMethodType.dubai:
       return PrayerCalculationParameters('Dubai', 18.2, 18.2)
@@ -143,10 +149,7 @@ PrayerCalculationParameters getPrayerCalculationMethod(PrayerCalculationMethodTy
 
     case PrayerCalculationMethodType.moonsightingCommittee:
       return PrayerCalculationParameters('MoonsightingCommittee', 18.0, 18.0)
-        ..methodAdjustments = {
-          'dhuhr': 5,
-          'maghrib': 3,
-        };
+        ..methodAdjustments = {'dhuhr': 5, 'maghrib': 3};
 
     case PrayerCalculationMethodType.northAmerica:
       return PrayerCalculationParameters('NorthAmerica', 15.0, 15.0)
@@ -182,10 +185,6 @@ PrayerCalculationParameters getPrayerCalculationMethod(PrayerCalculationMethodTy
 
     case PrayerCalculationMethodType.morocco:
       return PrayerCalculationParameters('Morocco', 19.0, 17.0)
-        ..methodAdjustments = {
-          'sunrise': -3,
-          'dhuhr': 5,
-          'maghrib': 5,
-        };
+        ..methodAdjustments = {'sunrise': -3, 'dhuhr': 5, 'maghrib': 5};
   }
 }

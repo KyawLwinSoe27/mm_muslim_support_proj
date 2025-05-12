@@ -25,26 +25,29 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
       //   _player.seek(Duration.zero); // ✅ Reset to start
       // }
 
-      playbackState.add(PlaybackState(
-        controls: [
-          MediaControl.rewind,
-          _player.playing ? MediaControl.pause : MediaControl.play,
-          MediaControl.stop,
-        ],
-        systemActions: const {
-          MediaAction.seek,
-          MediaAction.seekForward,
-          MediaAction.seekBackward,
-        },
-        androidCompactActionIndices: const [0, 1, 2],
-        processingState: processingState,
-        playing: processingState != AudioProcessingState.completed && _player.playing,
-        updatePosition: _player.position,
-        bufferedPosition: _player.bufferedPosition,
-        speed: _player.speed,
-      ));
+      playbackState.add(
+        PlaybackState(
+          controls: [
+            MediaControl.rewind,
+            _player.playing ? MediaControl.pause : MediaControl.play,
+            MediaControl.stop,
+          ],
+          systemActions: const {
+            MediaAction.seek,
+            MediaAction.seekForward,
+            MediaAction.seekBackward,
+          },
+          androidCompactActionIndices: const [0, 1, 2],
+          processingState: processingState,
+          playing:
+              processingState != AudioProcessingState.completed &&
+              _player.playing,
+          updatePosition: _player.position,
+          bufferedPosition: _player.bufferedPosition,
+          speed: _player.speed,
+        ),
+      );
     });
-
   }
 
   AudioProcessingState _transformState(ProcessingState state) {
@@ -65,7 +68,9 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
   Future<void> setUrl(QuranSongModel quranSongModel) async {
     // check in local file
     final Duration? duration;
-    final dir = await FileManagementService.getDownloadDirectory(Folder.quranRecitation);
+    final dir = await FileManagementService.getDownloadDirectory(
+      Folder.quranRecitation,
+    );
     final filePath = '${dir.path}/${quranSongModel.filePath}';
 
     if (await File(filePath).exists()) {
@@ -80,7 +85,9 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
       album: 'Quran',
       title: 'Surah ${quranSongModel.name}', // Optionally pass dynamic title
       duration: duration,
-      artUri: Uri.parse('https://drive.google.com/file/d/1q8oD_nKbaYOJhYb0n6sS2W_IcqNBt6DP/view'), // Optional image
+      artUri: Uri.parse(
+        'https://drive.google.com/file/d/1q8oD_nKbaYOJhYb0n6sS2W_IcqNBt6DP/view',
+      ), // Optional image
     );
 
     this.mediaItem.add(mediaItem); // ✅ CORRECT — update the stream
@@ -94,7 +101,6 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
     }
     await _player.play();
   }
-
 
   @override
   Future<void> pause() => _player.pause();

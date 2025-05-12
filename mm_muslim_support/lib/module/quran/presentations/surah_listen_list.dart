@@ -13,19 +13,28 @@ class SurahListenList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Surah List', style: context.textTheme.titleLarge?.copyWith(color: context.colorScheme.onSecondary, fontWeight: FontWeight.w500))),
+        title: Text(
+          'Surah List',
+          style: context.textTheme.titleLarge?.copyWith(
+            color: context.colorScheme.onSecondary,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
       body: ListView.separated(
         itemCount: surahList.length,
         separatorBuilder: (_, __) => const Divider(),
         itemBuilder: (context, index) {
           final surah = surahList[index];
           return ListTile(
-            leading: const CircleAvatar(
-              child: Icon(Icons.music_note),
-            ),
+            leading: const CircleAvatar(child: Icon(Icons.music_note)),
             trailing: Text(surah.number.toString()),
             title: Text(surah.name, style: context.textTheme.titleMedium),
-            onTap: () => context.navigateWithPushNamed(SurahListenPageContent.routeName, extra: surah),
+            onTap:
+                () => context.navigateWithPushNamed(
+                  SurahListenPageContent.routeName,
+                  extra: surah,
+                ),
           );
         },
       ),

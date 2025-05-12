@@ -29,8 +29,8 @@ class HomePage extends StatelessWidget {
               create: (context) => GetPrayerTimeCubit(),
             ),
             BlocProvider<ChangeDateCubit>(
-              create: (context) =>
-                  ChangeDateCubit(
+              create:
+                  (context) => ChangeDateCubit(
                     getPrayerTimeCubit: context.read<GetPrayerTimeCubit>(),
                   ),
             ),
@@ -63,7 +63,12 @@ class HomePage extends StatelessWidget {
             );
           },
         ),
-        actions: const [Padding(padding: EdgeInsets.only(right: 10), child: TodayDateWidget())],
+        actions: const [
+          Padding(
+            padding: EdgeInsets.only(right: 10),
+            child: TodayDateWidget(),
+          ),
+        ],
       ),
       drawer: BlocProvider(
         create: (context) => GetLocationCubit(),
@@ -83,10 +88,22 @@ class HomePage extends StatelessWidget {
               context.read<BottomNavigationBarCubit>().changePage(index);
             },
             items: const [
-              BottomNavigationBarItem(icon: Icon(Icons.home_rounded), label: 'Home'),
-              BottomNavigationBarItem(icon: Icon(Icons.mosque_rounded), label: 'Tracker'),
-              BottomNavigationBarItem(icon: Icon(Icons.diamond_rounded), label: 'Tasbir'),
-              BottomNavigationBarItem(icon: Icon(Icons.newspaper_rounded), label: 'Discover'),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home_rounded),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.mosque_rounded),
+                label: 'Tracker',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.diamond_rounded),
+                label: 'Tasbir',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.newspaper_rounded),
+                label: 'Discover',
+              ),
             ],
           );
         },

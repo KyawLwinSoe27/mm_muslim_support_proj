@@ -12,7 +12,14 @@ class FeatureCardWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Column(
         children: [
-          Container(width: 60, height: 60, decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(10))),
+          Container(
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
           const SizedBox(height: 5),
           Text(title, style: context.textTheme.labelMedium),
         ],

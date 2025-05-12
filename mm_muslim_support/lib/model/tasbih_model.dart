@@ -8,7 +8,6 @@ class TasbihModel {
   final File? mp3File;
   final String englishVoice;
 
-
   TasbihModel({
     required this.arabic,
     required this.translation,

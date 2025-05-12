@@ -10,21 +10,33 @@ class PrayerTimeDao {
 
   Future<void> insertBookmark(CustomPrayerTime prayerTime) async {
     final db = await dbProvider.database;
-    await db.insert(DBTables.prayerTimes, prayerTime.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+    await db.insert(
+      DBTables.prayerTimes,
+      prayerTime.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
   }
 
   Future<void> updateBookmark(CustomPrayerTime prayerTime) async {
     final db = await dbProvider.database;
     try {
-      await db.update(DBTables.prayerTimes, prayerTime.toMap(), where: '${DBTables.id} = ?', whereArgs: [prayerTime.id]);
-    } catch(e, st) {
+      await db.update(
+        DBTables.prayerTimes,
+        prayerTime.toMap(),
+        where: '${DBTables.id} = ?',
+        whereArgs: [prayerTime.id],
+      );
+    } catch (e, st) {
       debugPrintStack(stackTrace: st);
     }
   }
 
   Future<CustomPrayerTime?> getPrayerTimeByDateTime(String dateTime) async {
     final db = await dbProvider.database;
-    final result = await db.rawQuery(PrayerTimeQueries.getPrayerTimeByDateTime, [dateTime]);
+    final result = await db.rawQuery(
+      PrayerTimeQueries.getPrayerTimeByDateTime,
+      [dateTime],
+    );
     if (result.isNotEmpty) {
       return CustomPrayerTime.fromMap(result.first);
     }
