@@ -45,7 +45,7 @@ jobs:
       - name: Verify formatting
         run: |
           cd mm_muslim_support
-          dart format --output=none --set-exit-if-changed .
+          dart format . --output=none --set-exit-if-changed .
 
 
       # Checks for Symantic errors. Can be configured using analysis_options.yaml
