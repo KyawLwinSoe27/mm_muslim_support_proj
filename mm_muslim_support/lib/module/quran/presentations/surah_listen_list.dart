@@ -13,8 +13,7 @@ class SurahListenList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Surah List'),
-      ),
+        title: Text('Surah List', style: context.textTheme.titleLarge?.copyWith(color: context.colorScheme.onSecondary, fontWeight: FontWeight.w500))),
       body: ListView.separated(
         itemCount: surahList.length,
         separatorBuilder: (_, __) => const Divider(),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mm_muslim_support/service/local_notification_service.dart';
+import 'package:mm_muslim_support/utility/extensions.dart';
 import 'package:timezone/timezone.dart';
 
 class NotificationPage extends StatefulWidget {
@@ -50,8 +51,7 @@ class _NotificationPageState extends State<NotificationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Notification Page'),
-      ),
+        title: Text('Notification Page', style: context.textTheme.titleLarge?.copyWith(color: context.colorScheme.onSecondary, fontWeight: FontWeight.w500))),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

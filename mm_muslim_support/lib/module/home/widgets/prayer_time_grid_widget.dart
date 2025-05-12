@@ -32,7 +32,6 @@ class PrayerTimeGrid extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(card.title, style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold, color: Colors.black)),
-                        const SizedBox(height: 4),
                         Text(card.subtitle ?? card.time, style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold, color: Colors.black)),
                         const Spacer(),
                         if (card.image.isNotEmpty) Align(alignment: Alignment.centerRight, child: Image.asset(card.image, height: 48)),
