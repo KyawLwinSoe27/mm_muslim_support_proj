@@ -27,9 +27,12 @@ void main() async {
   await PermissionService.requestNotificationPermission();
   await getLocationFromDevice();
 
-  final List<ConnectivityResult> connectivityResult = await (Connectivity().checkConnectivity());
+  final List<ConnectivityResult> connectivityResult =
+      await (Connectivity().checkConnectivity());
   if (!connectivityResult.contains(ConnectivityResult.none)) {
-    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
     await FirebaseMessaging.instance.subscribeToTopic('all_devices');
   }
   // Subscribe to topic AFTER Firebase is initialized
@@ -47,20 +50,20 @@ void main() async {
 }
 
 Future<void> getLocationFromDevice() async {
-  bool googleServiceAvailable  = await PermissionService.googleServiceAvailable();
-  if(googleServiceAvailable) {
+  bool googleServiceAvailable =
+      await PermissionService.googleServiceAvailable();
+  if (googleServiceAvailable) {
     await getLocation();
   } else {
     // Save the location to shared preferences
-    String locationLanLong =
-        '${16.8409}_${96.1735}';
+    String locationLanLong = '${16.8409}_${96.1735}';
     await SharedPreferenceService.setLocation(locationLanLong);
     await SharedPreferenceService.setLocationName('Asia/Rangoon');
   }
 }
 
 Future<void> getLocation() async {
-   bool wasInBackground = SharedPreferenceService.getAppLifeCycle() ?? false;
+  bool wasInBackground = SharedPreferenceService.getAppLifeCycle() ?? false;
   if (!wasInBackground) {
     await LocationService.getCurrentLocation();
     await SharedPreferenceService.setAppLifeCycle(true);

@@ -8,8 +8,10 @@ class PermissionService {
     }
   }
 
-  static Future<bool> googleServiceAvailable() async{
-    GooglePlayServicesAvailability availability = await GoogleApiAvailability.instance.checkGooglePlayServicesAvailability();
+  static Future<bool> googleServiceAvailable() async {
+    GooglePlayServicesAvailability availability =
+        await GoogleApiAvailability.instance
+            .checkGooglePlayServicesAvailability();
     return availability == GooglePlayServicesAvailability.success;
   }
 }
