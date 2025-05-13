@@ -1,3 +1,4 @@
+import 'package:google_api_availability/google_api_availability.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class PermissionService {
@@ -5,5 +6,12 @@ class PermissionService {
     if (await Permission.notification.isDenied) {
       await Permission.notification.request();
     }
+  }
+
+  static Future<bool> googleServiceAvailable() async {
+    GooglePlayServicesAvailability availability =
+        await GoogleApiAvailability.instance
+            .checkGooglePlayServicesAvailability();
+    return availability == GooglePlayServicesAvailability.success;
   }
 }

@@ -63,6 +63,11 @@ class GetPrayerTimeCubit extends Cubit<GetPrayerTimeState> {
 
       emit(GetPrayerTimeLoaded(prayerTimeList));
     } catch (e) {
+      LogService.logStorage.writeInfoLog(
+        'Get Prayer Time Cubit',
+        'Get Prayer Time',
+        e.toString(),
+      );
       emit(GetPrayerTimeError(e.toString()));
     }
   }
@@ -124,6 +129,11 @@ class GetPrayerTimeCubit extends Cubit<GetPrayerTimeState> {
         ),
       );
     } catch (e) {
+      LogService.logStorage.writeInfoLog(
+        'Get Prayer Time Cubit',
+        'Get Prayer Time By Date',
+        e.toString(),
+      );
       emit(GetPrayerTimeByDateError(e.toString()));
     }
   }
