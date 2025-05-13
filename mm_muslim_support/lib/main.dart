@@ -1,4 +1,5 @@
 import 'package:audio_service/audio_service.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,34 +21,50 @@ late final AudioPlayerHandler audioHandler;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await LocalNotificationService.initializeNotifications();
-  // tz.initializeTimeZones();
   final sharedPrefs = SharedPreferenceService();
   await sharedPrefs.init();
   LocalNotificationService().initNotification();
   await PermissionService.requestNotificationPermission();
+  await getLocationFromDevice();
 
-  bool wasInBackground = SharedPreferenceService.getAppLifeCycle() ?? false;
-  if (!wasInBackground) {
-    await LocationService.getCurrentLocation();
-    await SharedPreferenceService.setAppLifeCycle(true);
+  final List<ConnectivityResult> connectivityResult = await (Connectivity().checkConnectivity());
+  if (!connectivityResult.contains(ConnectivityResult.none)) {
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+    await FirebaseMessaging.instance.subscribeToTopic('all_devices');
   }
-
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
   // Subscribe to topic AFTER Firebase is initialized
-  await FirebaseMessaging.instance.subscribeToTopic('all_devices');
 
   audioHandler = await AudioService.init(
     builder: () => AudioPlayerHandler(),
     config: const AudioServiceConfig(
-      androidNotificationChannelId: 'com.example.audio',
-      androidNotificationChannelName: 'Audio Playback',
+      androidNotificationChannelId: 'com.dynaverse.audio',
+      androidNotificationChannelName: 'Quran Playback',
       androidNotificationOngoing: true,
     ),
   );
 
   runApp(BlocProvider(create: (context) => ThemeCubit(), child: const MyApp()));
+}
+
+Future<void> getLocationFromDevice() async {
+  bool googleServiceAvailable  = await PermissionService.googleServiceAvailable();
+  if(googleServiceAvailable) {
+    await getLocation();
+  } else {
+    // Save the location to shared preferences
+    String locationLanLong =
+        '${16.8409}_${96.1735}';
+    await SharedPreferenceService.setLocation(locationLanLong);
+    await SharedPreferenceService.setLocationName('Asia/Rangoon');
+  }
+}
+
+Future<void> getLocation() async {
+   bool wasInBackground = SharedPreferenceService.getAppLifeCycle() ?? false;
+  if (!wasInBackground) {
+    await LocationService.getCurrentLocation();
+    await SharedPreferenceService.setAppLifeCycle(true);
+  }
 }
 
 class MyApp extends StatelessWidget {

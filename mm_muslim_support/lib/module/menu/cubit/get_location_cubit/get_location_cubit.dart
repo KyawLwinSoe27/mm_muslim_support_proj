@@ -24,7 +24,6 @@ class GetLocationCubit extends Cubit<GetLocationState> {
         'Get Current Location',
         e.toString(),
       );
-
       emit(const GetLocationError('Failed to get location'));
     }
   }

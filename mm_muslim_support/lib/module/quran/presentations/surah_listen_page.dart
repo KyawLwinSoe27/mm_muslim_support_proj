@@ -46,7 +46,9 @@ class SurahListenPageContent extends StatelessWidget {
                           ),
                           Text(
                             '${state.progress}%',
-                            style: context.textTheme.labelMedium,
+                            style: context.textTheme.labelMedium?.copyWith(
+                              color: context.colorScheme.primary,
+                            ),
                           ),
                         ],
                       );
