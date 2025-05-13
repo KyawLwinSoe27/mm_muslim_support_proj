@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:mm_muslim_support/model/today_date_model.dart';
+import 'package:mm_muslim_support/service/log_service.dart';
 
 part 'get_hijri_date_state.dart';
 
@@ -24,6 +25,11 @@ class GetHijriDateCubit extends Cubit<GetHijriDateState> {
       );
       emit(GetHijriDateLoaded(todayDateModel));
     } catch (e) {
+      LogService.logStorage.writeInfoLog(
+        'Get Hijri Date Cubit',
+        'Get Today Date',
+        e.toString(),
+      );
       emit(const GetHijriDateError('Failed to fetch date'));
     }
   }

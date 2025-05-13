@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mm_muslim_support/model/book_model.dart';
 import 'package:mm_muslim_support/repository/book_mark_repository.dart';
+import 'package:mm_muslim_support/service/log_service.dart';
 
 part 'book_mark_state.dart';
 
@@ -17,6 +18,11 @@ class BookMarkCubit extends Cubit<BookMarkState> {
       await _repository.saveBookmark(filePath, page);
       emit(SavedBookMark(status: page));
     } catch (e) {
+      LogService.logStorage.writeInfoLog(
+        'Bookmark Cubit',
+        'Get Bookmark',
+        e.toString(),
+      );
       emit(BookMarkError(message: 'Failed to save bookmark: $e'));
     }
   }
@@ -31,6 +37,11 @@ class BookMarkCubit extends Cubit<BookMarkState> {
         return 1;
       }
     } catch (e) {
+      LogService.logStorage.writeInfoLog(
+        'Bookmark Cubit',
+        'Get Bookmark',
+        e.toString(),
+      );
       return 1;
     }
   }

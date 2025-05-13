@@ -12,6 +12,7 @@ import 'package:mm_muslim_support/module/notification/presentations/notification
 import 'package:mm_muslim_support/module/quran/presentations/quran_list_page.dart';
 import 'package:mm_muslim_support/module/quran/presentations/surah_listen_list.dart';
 import 'package:mm_muslim_support/module/stay_tuned_page.dart';
+import 'package:mm_muslim_support/service/permission_service.dart';
 import 'package:mm_muslim_support/utility/constants.dart';
 import 'package:mm_muslim_support/utility/dialog_utils.dart';
 import 'package:mm_muslim_support/utility/extensions.dart';
@@ -123,11 +124,20 @@ class DrawerWidget extends StatelessWidget {
                   child: ListTile(
                     leading: const Icon(Icons.location_on_rounded),
                     title: const Text('Update Location'),
-                    onTap:
-                        () =>
-                            context
-                                .read<GetLocationCubit>()
-                                .getCurrentLocation(),
+                    onTap: () async {
+                      GetLocationCubit getLocationCubit =
+                          context.read<GetLocationCubit>();
+                      if (await PermissionService.googleServiceAvailable()) {
+                        getLocationCubit.getCurrentLocation();
+                      } else {
+                        if (context.mounted) {
+                          DialogUtils.showErrorDialog(
+                            context,
+                            'Your phone doesn\'t support Google Service, your location cannot be updated. In Minara App Version 1.1.0, you can update your location.',
+                          );
+                        }
+                      }
+                    },
                   ),
                 ),
                 ListTile(
