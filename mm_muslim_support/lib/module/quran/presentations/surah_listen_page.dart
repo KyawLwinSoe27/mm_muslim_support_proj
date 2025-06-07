@@ -105,37 +105,96 @@ class SurahListenPageContent extends StatelessWidget {
                       style: Theme.of(context).textTheme.displaySmall,
                     ),
                     const SizedBox(height: 20),
-                    SizedBox(
-                      height: 6,
+                    SliderTheme(
+                      data: SliderTheme.of(context).copyWith(
+                        trackHeight: 10,
+                        thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 6),
+                        overlayShape: const RoundSliderOverlayShape(overlayRadius: 12),
+                        activeTrackColor: context.colorScheme.primary,
+                        inactiveTrackColor: context.colorScheme.outlineVariant.withValues(alpha: 0.0),
+                        thumbColor: context.colorScheme.onPrimary,
+                        overlayColor: context.colorScheme.primary.withValues(alpha: 0.2),
+                      ),
                       child: Stack(
+                        alignment: Alignment.centerLeft,
                         children: [
-                          // Buffered progress (bottom layer)
-                          LinearProgressIndicator(
-                            value:
-                                state.duration.inMilliseconds == 0
+                          // Buffered layer (background)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Align(
+                              alignment: Alignment.bottomLeft,
+                              child: FractionallySizedBox(
+                                widthFactor: state.duration.inMilliseconds == 0
                                     ? 0
-                                    : state.buffered.inMilliseconds /
-                                        state.duration.inMilliseconds,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              context.colorScheme.outlineVariant,
+                                    : state.buffered.inMilliseconds / state.duration.inMilliseconds,
+                                child: Container(
+                                  height: 10, // Match your Slider trackHeight
+                                  decoration: BoxDecoration(
+                                    color: context.colorScheme.outlineVariant.withValues(alpha: 0.5),
+                                    borderRadius: BorderRadius.circular(2),
+                                  ),
+                                ),
+                              ),
                             ),
-                            backgroundColor: Colors.transparent,
                           ),
-                          // Played progress (top layer)
-                          LinearProgressIndicator(
-                            value:
-                                state.duration.inMilliseconds == 0
-                                    ? 0
-                                    : state.position.inMilliseconds /
-                                        state.duration.inMilliseconds,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              context.colorScheme.primary,
-                            ),
-                            backgroundColor: Colors.transparent,
+                          // Slider (played progress + draggable)
+                          Slider(
+                            value: state.duration.inMilliseconds == 0
+                                ? 0
+                                : state.position.inMilliseconds.clamp(0, state.duration.inMilliseconds).toDouble(),
+                            min: 0,
+                            max: state.duration.inMilliseconds.toDouble(),
+                            onChanged: (value) {
+                              final position = Duration(milliseconds: value.toInt());
+                              context.read<AudioPlayerCubit>().seek(position);
+                            },
                           ),
                         ],
                       ),
                     ),
+                    // Slider(
+                    //   value: state.position.inMilliseconds.clamp(0, state.duration.inMilliseconds).toDouble(),
+                    //   max: state.duration.inMilliseconds.toDouble(),
+                    //   onChanged: (value) {
+                    //     // You may optionally emit temp position here if you want to show immediate visual change.
+                    //   },
+                    //   onChangeEnd: (value) {
+                    //     context.read<AudioPlayerCubit>().seek(Duration(milliseconds: value.round()));
+                    //   },
+                    //   activeColor: context.colorScheme.primary,
+                    //   inactiveColor: context.colorScheme.outlineVariant,
+                    // ),
+                    // SizedBox(
+                    //   height: 6,
+                    //   child: Stack(
+                    //     children: [
+                    //       // Buffered progress (bottom layer)
+                    //       LinearProgressIndicator(
+                    //         value:
+                    //             state.duration.inMilliseconds == 0
+                    //                 ? 0
+                    //                 : state.buffered.inMilliseconds /
+                    //                     state.duration.inMilliseconds,
+                    //         valueColor: AlwaysStoppedAnimation<Color>(
+                    //           context.colorScheme.outlineVariant,
+                    //         ),
+                    //         backgroundColor: Colors.transparent,
+                    //       ),
+                    //       // Played progress (top layer)
+                    //       LinearProgressIndicator(
+                    //         value:
+                    //             state.duration.inMilliseconds == 0
+                    //                 ? 0
+                    //                 : state.position.inMilliseconds /
+                    //                     state.duration.inMilliseconds,
+                    //         valueColor: AlwaysStoppedAnimation<Color>(
+                    //           context.colorScheme.primary,
+                    //         ),
+                    //         backgroundColor: Colors.transparent,
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                     const SizedBox(height: 8),
                     Text(
                       '${_format(state.position)} / ${_format(state.duration)}',
