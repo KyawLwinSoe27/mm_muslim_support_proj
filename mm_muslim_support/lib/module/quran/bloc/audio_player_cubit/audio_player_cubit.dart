@@ -12,13 +12,24 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
   StreamSubscription? _mediaItemSubscription;
   Timer? _positionTimer;
   bool isFinished = false;
+  QuranSongModel? currentSong;
 
-  Future<void> setAudio(QuranSongModel quranSongModel) async {
+  void setCurrentSurah(QuranSongModel quranSongModel) {
+    currentSong = quranSongModel;
+  }
+
+  void seek(Duration position) {
+    audioHandler.seek(position);
+    emit(state.copyWith(position: position));
+  }
+
+  Future<void> setAudio(QuranSongModel surah) async {
+    setCurrentSurah(surah);
     final MediaItem? mediaItem = await audioHandler.mediaItem.first;
     final PlaybackState playbackState = await audioHandler.playbackState.first;
 
     final String? currentSongId = mediaItem?.id;
-    final String targetSongId = quranSongModel.number.toString();
+    final String targetSongId = currentSong!.number.toString();
 
     if (currentSongId != null && currentSongId == targetSongId) {
       _listenToPlaybackState();
@@ -31,7 +42,7 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
             position: playbackState.position,
             buffered: playbackState.bufferedPosition,
             name: mediaItem?.title,
-            currentSurahId: quranSongModel.number,
+            currentSurahId: currentSong!.number,
           ),
         );
       }
@@ -43,13 +54,13 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
     if (!isClosed) {
       emit(
         state.copyWith(
-          name: 'Surah ${quranSongModel.name}',
-          currentSurahId: quranSongModel.number,
+          name: 'Surah ${currentSong!.name}',
+          currentSurahId: currentSong!.number,
         ),
       );
     }
 
-    await audioHandler.setUrl(quranSongModel);
+    await audioHandler.setUrl(currentSong!);
     _listenToPlaybackState();
     _startPositionTimer();
   }
@@ -68,8 +79,8 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
 
       if (isCompleted && !isFinished) {
         isFinished = true;
-        QuranSongModel quranSongModel = surahList[state.currentSurahId];
-        await setAudio(quranSongModel);
+        currentSong = surahList[state.currentSurahId];
+        await setAudio(currentSong!);
         await audioHandler.play();
         isFinished = false;
       }
