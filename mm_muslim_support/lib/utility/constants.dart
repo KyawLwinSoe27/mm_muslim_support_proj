@@ -8,7 +8,8 @@ class AppConstants {
   static const String quranMM2Url = '1PUONj3MdJyeQtBhqRGvIXj6RSJn_o_iw';
   // static const String quranRecitationUrl =
   //     'https://kyawlwinsoe.site/quran_audio/';
-  static const String quranRecitationUrl = 'https://download.quranicaudio.com/quran/abdurrahmaan_as-sudays/';
+  static const String quranRecitationUrl =
+      'https://download.quranicaudio.com/quran/abdurrahmaan_as-sudays/';
 
   static const String developerName = 'Kyaw Lwin Soe';
   static const String developerEmail = 'kyawlwinsoe812@gmail.com';

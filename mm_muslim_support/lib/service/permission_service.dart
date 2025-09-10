@@ -11,7 +11,7 @@ class PermissionService {
   }
 
   static Future<bool> googleServiceAvailable() async {
-    if(Platform.isIOS) {
+    if (Platform.isIOS) {
       return true;
     }
     GooglePlayServicesAvailability availability =
