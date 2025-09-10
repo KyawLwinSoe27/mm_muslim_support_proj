@@ -39,11 +39,11 @@ class _SurahListenListState extends State<SurahListenList> {
         thickness: 10,
         radius: const Radius.circular(4),
         interactive: true,
-        thumbVisibility: true, // Set to true to always show the scrollbar
+        thumbVisibility: false, // Set to true to always show the scrollbar
         child: ListView.separated(
           controller: _scrollController,
           itemCount: surahList.length,
-          separatorBuilder: (_, __) => const Divider(),
+          separatorBuilder: (_, _) => const Divider(),
           itemBuilder: (context, index) {
             final surah = surahList[index];
             return ListTile(
