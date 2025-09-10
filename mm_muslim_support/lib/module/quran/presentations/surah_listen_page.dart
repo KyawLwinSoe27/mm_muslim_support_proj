@@ -108,12 +108,19 @@ class SurahListenPageContent extends StatelessWidget {
                     SliderTheme(
                       data: SliderTheme.of(context).copyWith(
                         trackHeight: 10,
-                        thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 6),
-                        overlayShape: const RoundSliderOverlayShape(overlayRadius: 12),
+                        thumbShape: const RoundSliderThumbShape(
+                          enabledThumbRadius: 6,
+                        ),
+                        overlayShape: const RoundSliderOverlayShape(
+                          overlayRadius: 12,
+                        ),
                         activeTrackColor: context.colorScheme.primary,
-                        inactiveTrackColor: context.colorScheme.outlineVariant.withValues(alpha: 0.0),
+                        inactiveTrackColor: context.colorScheme.outlineVariant
+                            .withValues(alpha: 0.0),
                         thumbColor: context.colorScheme.onPrimary,
-                        overlayColor: context.colorScheme.primary.withValues(alpha: 0.2),
+                        overlayColor: context.colorScheme.primary.withValues(
+                          alpha: 0.2,
+                        ),
                       ),
                       child: Stack(
                         alignment: Alignment.centerLeft,
@@ -124,13 +131,16 @@ class SurahListenPageContent extends StatelessWidget {
                             child: Align(
                               alignment: Alignment.bottomLeft,
                               child: FractionallySizedBox(
-                                widthFactor: state.duration.inMilliseconds == 0
-                                    ? 0
-                                    : state.buffered.inMilliseconds / state.duration.inMilliseconds,
+                                widthFactor:
+                                    state.duration.inMilliseconds == 0
+                                        ? 0
+                                        : state.buffered.inMilliseconds /
+                                            state.duration.inMilliseconds,
                                 child: Container(
                                   height: 10, // Match your Slider trackHeight
                                   decoration: BoxDecoration(
-                                    color: context.colorScheme.outlineVariant.withValues(alpha: 0.5),
+                                    color: context.colorScheme.outlineVariant
+                                        .withValues(alpha: 0.5),
                                     borderRadius: BorderRadius.circular(2),
                                   ),
                                 ),
@@ -139,13 +149,18 @@ class SurahListenPageContent extends StatelessWidget {
                           ),
                           // Slider (played progress + draggable)
                           Slider(
-                            value: state.duration.inMilliseconds == 0
-                                ? 0
-                                : state.position.inMilliseconds.clamp(0, state.duration.inMilliseconds).toDouble(),
+                            value:
+                                state.duration.inMilliseconds == 0
+                                    ? 0
+                                    : state.position.inMilliseconds
+                                        .clamp(0, state.duration.inMilliseconds)
+                                        .toDouble(),
                             min: 0,
                             max: state.duration.inMilliseconds.toDouble(),
                             onChanged: (value) {
-                              final position = Duration(milliseconds: value.toInt());
+                              final position = Duration(
+                                milliseconds: value.toInt(),
+                              );
                               context.read<AudioPlayerCubit>().seek(position);
                             },
                           ),

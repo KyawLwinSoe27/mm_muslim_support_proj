@@ -50,14 +50,15 @@ class _SurahListenListState extends State<SurahListenList> {
               leading: const CircleAvatar(child: Icon(Icons.music_note)),
               trailing: Text(surah.number.toString()),
               title: Text(surah.name, style: context.textTheme.titleMedium),
-              onTap: () => context.navigateWithPushNamed(
-                SurahListenPageContent.routeName,
-                extra: surah,
-              ),
+              onTap:
+                  () => context.navigateWithPushNamed(
+                    SurahListenPageContent.routeName,
+                    extra: surah,
+                  ),
             );
           },
         ),
-      )
+      ),
     );
   }
 }
