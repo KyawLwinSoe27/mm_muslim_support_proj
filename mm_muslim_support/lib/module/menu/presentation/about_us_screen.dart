@@ -26,7 +26,7 @@ class AboutUsScreen extends StatelessWidget {
             // App Logo / Icon
             CircleAvatar(
               radius: 50,
-              backgroundColor: colors.primary.withOpacity(0.1),
+              backgroundColor: colors.primary.withValues(alpha: 0.1),
               child: Icon(Icons.apps, size: 50, color: colors.primary),
             ),
             const SizedBox(height: 16),

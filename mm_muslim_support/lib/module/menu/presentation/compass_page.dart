@@ -90,7 +90,7 @@ class _CompassPageState extends State<CompassPage> {
                                     Container(
                                       width: 4,
                                       height: size.width / 2 - 60,
-                                      color: Colors.amberAccent.withOpacity(0.7),
+                                      color: Colors.amberAccent.withValues(alpha: 0.7),
                                     ),
                                   ],
                                 ),
@@ -114,7 +114,7 @@ class _CompassPageState extends State<CompassPage> {
                           margin: const EdgeInsets.symmetric(horizontal: 24),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16)),
-                          color: Colors.black.withOpacity(0.5),
+                          color: Colors.black.withValues(alpha: 0.5),
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),
                             child: Column(

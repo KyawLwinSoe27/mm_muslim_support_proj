@@ -21,7 +21,7 @@ class DonateUsScreen extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [colors.primary.withOpacity(0.8), colors.secondary],
+                colors: [colors.primary.withValues(alpha: 0.8), colors.secondary],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -39,7 +39,7 @@ class DonateUsScreen extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)),
                       elevation: 6,
-                      shadowColor: colors.primary.withOpacity(0.4),
+                      shadowColor: colors.primary.withValues(alpha: 0.4),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 32, horizontal: 24),

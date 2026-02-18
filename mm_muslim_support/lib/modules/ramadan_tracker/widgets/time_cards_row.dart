@@ -27,9 +27,9 @@ class TimeCardsRow extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: (accent ?? colorScheme.surface).withOpacity(0.4),
+                color: (accent ?? colorScheme.surface).withValues(alpha: 0.4),
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: (accent ?? colorScheme.primary).withOpacity(0.2)),
+                border: Border.all(color: (accent ?? colorScheme.primary).withValues(alpha: 0.2)),
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,

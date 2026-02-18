@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mm_muslim_support/utility/extensions.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class CharitySadaqahPage extends StatelessWidget {
   const CharitySadaqahPage({super.key});
@@ -108,24 +107,26 @@ class CharitySadaqahPage extends StatelessWidget {
             ),
             const SizedBox(height: 30),
             // Donate Button
-            ElevatedButton.icon(
-              icon: const Icon(Icons.attach_money),
-              label: const Text('Donate Now'),
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                backgroundColor: Colors.deepOrange,
-              ),
-              onPressed: () async {
-                if (await canLaunchUrl(Uri.parse(donationUrl))) {
-                  await launchUrl(Uri.parse(donationUrl));
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Unable to open donation link')),
-                  );
-                }
-              },
-            ),
+            // ElevatedButton.icon(
+            //   icon: const Icon(Icons.attach_money),
+            //   label: const Text('Donate Now'),
+            //   style: ElevatedButton.styleFrom(
+            //     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+            //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            //     backgroundColor: Colors.deepOrange,
+            //   ),
+            //   onPressed: () async {
+            //     if (await canLaunchUrl(Uri.parse(donationUrl))) {
+            //       await launchUrl(Uri.parse(donationUrl));
+            //     } else {
+            //       if(context.mounted) {
+            //         ScaffoldMessenger.of(context).showSnackBar(
+            //           const SnackBar(content: Text('Unable to open donation link')),
+            //         );
+            //       }
+            //     }
+            //   },
+            // ),
           ],
         ),
       ),

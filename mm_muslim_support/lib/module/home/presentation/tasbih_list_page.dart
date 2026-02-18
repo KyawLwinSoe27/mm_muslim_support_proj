@@ -17,7 +17,7 @@ class TasbihListPage extends StatelessWidget {
     return ListView.separated(
       padding: const EdgeInsets.all(16),
       itemCount: tasbihListModel.length,
-      separatorBuilder: (_, __) => const SizedBox(height: 14),
+      separatorBuilder: (_, _) => const SizedBox(height: 14),
       itemBuilder: (context, index) {
         final model = tasbihListModel[index];
 
@@ -33,7 +33,7 @@ class TasbihListPage extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  context.colorScheme.primary.withOpacity(0.9),
+                  context.colorScheme.primary.withValues(alpha: 0.9),
                   context.colorScheme.primaryContainer,
                 ],
                 begin: Alignment.topLeft,
@@ -59,7 +59,7 @@ class TasbihListPage extends StatelessWidget {
                   height: 50,
                   width: 50,
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.15),
+                    color: Colors.white.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: const Icon(

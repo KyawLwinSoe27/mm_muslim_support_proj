@@ -18,7 +18,7 @@ class MonthlyScheduleList extends StatelessWidget {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: schedule.length,
-      separatorBuilder: (_, __) => const Divider(height: 1),
+      separatorBuilder: (_, _) => const Divider(height: 1),
       itemBuilder: (context, index) {
         final day = schedule[index];
         final isToday = day.isToday;
@@ -26,9 +26,9 @@ class MonthlyScheduleList extends StatelessWidget {
         return Container(
           decoration: BoxDecoration(
             color: isToday
-                ? colorScheme.primary.withOpacity(0.1)
+                ? colorScheme.primary.withValues(alpha: 0.1)
                 : isCompleted
-                    ? colorScheme.surfaceContainerHighest.withOpacity(0.2)
+                    ? colorScheme.surfaceContainerHighest.withValues(alpha: 0.2)
                     : Colors.transparent,
             borderRadius: BorderRadius.circular(8),
           ),
