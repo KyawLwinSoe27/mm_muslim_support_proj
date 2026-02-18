@@ -12,199 +12,148 @@ import 'package:mm_muslim_support/service/location_service.dart';
 import 'package:mm_muslim_support/service/log_service.dart';
 import 'package:mm_muslim_support/service/shared_preference_service.dart';
 import 'package:mm_muslim_support/utility/date_utils.dart';
-import 'package:mm_muslim_support/utility/image_constants.dart';
 import 'package:prayers_times/prayers_times.dart';
-
 part 'get_prayer_time_state.dart';
 
 class GetPrayerTimeCubit extends Cubit<GetPrayerTimeState> {
   GetPrayerTimeCubit() : super(GetPrayerTimeInitial());
 
-  void getPrayerTime() async {
+  /* ------------------------------------------------ */
+  /*                    PUBLIC API                    */
+  /* ------------------------------------------------ */
+
+  Future<void> getPrayerTime() async {
     emit(GetPrayerTimeLoading());
+
     try {
-      final PrayerTimes prayerTimes = _getPrayerTime();
+      final prayerTimes = _calculatePrayerTimes();
+      final cards = _buildPrayerCards(prayerTimes);
 
-      final prayerTimeList = <PrayerTimeCard>[
-        _createStaticCard('Sehri', prayerTimes.sehri, ImageConstants.sehri),
-        _createStaticCard(
-          'Iftari',
-          prayerTimes.maghribStartTime,
-          ImageConstants.iftar,
-        ),
-      ];
-
-      final currentPrayer = prayerTimes.currentPrayer();
-      final nextPrayer = prayerTimes.nextPrayer();
-
-      final currentEndTime = _getPrayerEndTime(prayerTimes, currentPrayer);
-      if (currentEndTime != null) {
-        prayerTimeList.add(
-          _createDynamicCard(
-            title: 'Current',
-            subtitle: currentPrayer,
-            timeLabel: 'End in ${_formatTime(currentEndTime)}',
-            colors: [const Color(0xFF00A86B), const Color(0xFFDAF7DC)],
-          ),
-        );
-      }
-
-      final nextStartTime = _getPrayerStartTime(prayerTimes, nextPrayer);
-      if (nextStartTime != null) {
-        prayerTimeList.add(
-          _createDynamicCard(
-            title: 'Coming...',
-            subtitle: nextPrayer,
-            timeLabel: 'Start ${_formatTime(nextStartTime)}',
-            colors: [const Color(0xFF6CA6CD), const Color(0xFFB0E0E6)],
-          ),
-        );
-      }
-
-      emit(GetPrayerTimeLoaded(prayerTimeList));
+      emit(GetPrayerTimeLoaded(cards));
     } catch (e) {
-      LogService.logStorage.writeInfoLog(
-        'Get Prayer Time Cubit',
-        'Get Prayer Time',
-        e.toString(),
-      );
+      _logError('Get Prayer Time', e);
       emit(GetPrayerTimeError(e.toString()));
     }
   }
 
-  void getPrayerTimeByDate(DateTime date) async {
+  Future<void> getPrayerTimeByDate(DateTime date) async {
     emit(GetPrayerTimeByDateLoading());
+
     try {
-      final prayerTime = _getPrayerTime(dateTime: date);
-      final dateFormat = CustomDateFormat.timeOnly;
-
-      bool isFajrAlarm = SharedPreferenceService.getFajrAlarm() ?? false;
-      bool isDhuhrAlarm = SharedPreferenceService.getDhuhrAlarm() ?? false;
-      bool isAsrAlarm = SharedPreferenceService.getAsrAlarm() ?? false;
-      bool isMaghribAlarm = SharedPreferenceService.getMaghribAlarm() ?? false;
-      bool isIshaAlarm = SharedPreferenceService.getIshaAlarm() ?? false;
-
-      final prayerTimes = [
-        _buildCustomPrayer(
-          Prayer.fajr,
-          prayerTime.fajrStartTime!,
-          prayerTime.date,
-          dateFormat,
-          isFajrAlarm,
-        ),
-        _buildCustomPrayer(
-          Prayer.dhur,
-          prayerTime.dhuhrStartTime!,
-          prayerTime.date,
-          dateFormat,
-          isDhuhrAlarm,
-        ),
-        _buildCustomPrayer(
-          Prayer.asr,
-          prayerTime.asrStartTime!,
-          prayerTime.date,
-          dateFormat,
-          isAsrAlarm,
-        ),
-        _buildCustomPrayer(
-          Prayer.maghrib,
-          prayerTime.maghribStartTime!,
-          prayerTime.date,
-          dateFormat,
-          isMaghribAlarm,
-        ),
-        _buildCustomPrayer(
-          Prayer.isha,
-          prayerTime.ishaStartTime!,
-          prayerTime.date,
-          dateFormat,
-          isIshaAlarm,
-        ),
-      ];
+      final prayerTimes = _calculatePrayerTimes(dateTime: date);
+      final prayers = _buildDailyPrayerList(prayerTimes);
 
       emit(
         GetPrayerTimeByDateLoaded(
-          prayerTimes: prayerTimes,
-          timeStamp: DateTime.now().millisecond,
+          prayerTimes: prayers,
+          timeStamp: DateTime.now().millisecondsSinceEpoch,
         ),
       );
     } catch (e) {
-      LogService.logStorage.writeInfoLog(
-        'Get Prayer Time Cubit',
-        'Get Prayer Time By Date',
-        e.toString(),
-      );
+      _logError('Get Prayer Time By Date', e);
       emit(GetPrayerTimeByDateError(e.toString()));
     }
   }
 
-  void toggleNotificationEnable(
-    int index,
-    List<CustomPrayerTime> prayerTimes,
-    bool value,
-  ) {
-    prayerTimes[index].enableNotify = value;
-    emit(
-      GetPrayerTimeByDateLoaded(
-        prayerTimes: prayerTimes,
-        timeStamp: DateTime.now().millisecond,
-      ),
+  void toggleNotification(Prayer prayer) {
+    final current = _getAlarmStatus(prayer);
+    _setAlarmStatus(prayer, !current);
+  }
+
+  /* ------------------------------------------------ */
+  /*                    BUILDERS                      */
+  /* ------------------------------------------------ */
+
+  List<PrayerTimeCard> _buildPrayerCards(PrayerTimes times) {
+    final list = <PrayerTimeCard>[
+      _staticCard('Sehri', times.sehri),
+      _staticCard('Iftari', times.maghribStartTime),
+    ];
+
+    list.addAll(_currentAndNextCards(times));
+    return list;
+  }
+
+  List<CustomPrayerTime> _buildDailyPrayerList(PrayerTimes times) {
+    return Prayer.values.map((prayer) {
+      final time = _getStartTime(times, prayer);
+      return CustomPrayerTime(
+        dateTime: times.date,
+        prayerName: prayer,
+        prayerTime:
+        DateUtility.DateTimeToString(time!, CustomDateFormat.timeOnly),
+        prayerDateTime: time,
+        enableNotify: _getAlarmStatus(prayer),
+      );
+    }).toList();
+  }
+
+  /* ------------------------------------------------ */
+  /*                PRAYER LOGIC                      */
+  /* ------------------------------------------------ */
+
+  PrayerTimes _calculatePrayerTimes({DateTime? dateTime}) {
+    final coordinates = Coordinates(
+      LocationService.getLatitude(),
+      LocationService.getLongitude(),
+    );
+
+    final method = _getCalculationMethod();
+    final locationName = LocationService.getLocationName();
+
+    return PrayerTimes(
+      coordinates: coordinates,
+      calculationParameters: method,
+      precision: true,
+      locationName: locationName,
+      dateTime: dateTime,
     );
   }
 
-  /// Utilities
+  PrayerCalculationParameters _getCalculationMethod() {
+    final methodName =
+        SharedPreferenceService.getPrayerCalculationMethod() ??
+            'muslimWorldLeague';
 
-  PrayerTimeCard _createStaticCard(
-    String title,
-    DateTime? time,
-    String imagePath,
-  ) {
-    return PrayerTimeCard(
-      title: title,
-      time: _formatTime(time),
-      image: imagePath,
-      gradientColors: [const Color(0xFF00A86B), const Color(0xFFDAF7DC)],
+    final madhab =
+    (SharedPreferenceService.getMadhab() ?? true)
+        ? PrayerMadhab.hanafi
+        : PrayerMadhab.shafi;
+
+    final methodEnum = PrayerCalculationMethodType.values.firstWhere(
+          (e) => e.name == methodName,
+      orElse: () => PrayerCalculationMethodType.muslimWorldLeague,
     );
+
+    final params = getPrayerCalculationMethod(methodEnum);
+    params.madhab = madhab;
+
+    return params;
   }
 
-  PrayerTimeCard _createDynamicCard({
-    required String title,
-    required String subtitle,
-    required String timeLabel,
-    required List<Color> colors,
-  }) {
-    return PrayerTimeCard(
-      title: title,
-      subtitle: subtitle,
-      time: timeLabel,
-      image: '',
-      gradientColors: colors,
-    );
-  }
+  /* ------------------------------------------------ */
+  /*                TIME HELPERS                      */
+  /* ------------------------------------------------ */
 
-  String _formatTime(DateTime? dateTime) {
-    return dateTime != null ? DateFormat('hh:mm').format(dateTime) : '--:--';
-  }
-
-  DateTime? _getPrayerStartTime(PrayerTimes times, String? prayer) {
+  DateTime? _getStartTime(PrayerTimes times, Prayer prayer) {
     switch (prayer) {
-      case 'fajr':
+      case Prayer.sehri:
+        return times.sehri;
+      case Prayer.fajr:
         return times.fajrStartTime;
-      case 'dhuhr':
+      case Prayer.dhur:
         return times.dhuhrStartTime;
-      case 'asr':
+      case Prayer.asr:
         return times.asrStartTime;
-      case 'maghrib':
+      case Prayer.maghrib:
         return times.maghribStartTime;
-      case 'isha':
+      case Prayer.isha:
         return times.ishaStartTime;
-      default:
-        return null;
     }
   }
 
-  DateTime? _getPrayerEndTime(PrayerTimes times, String? prayer) {
-    switch (prayer) {
+  DateTime? _getEndTime(PrayerTimes times, String? prayerName) {
+    switch (prayerName) {
       case 'fajr':
         return times.fajrEndTime;
       case 'dhuhr':
@@ -220,74 +169,123 @@ class GetPrayerTimeCubit extends Cubit<GetPrayerTimeState> {
     }
   }
 
-  CustomPrayerTime _buildCustomPrayer(
-    Prayer name,
-    DateTime time,
-    DateTime date,
-    CustomDateFormat format,
-    bool isAlarm,
-  ) {
-    return CustomPrayerTime(
-      dateTime: date,
-      prayerName: name,
-      prayerTime: DateUtility.DateTimeToString(time, format),
-      prayerDateTime: time,
-      enableNotify: isAlarm,
+  String _format(DateTime? time) =>
+      time != null ? DateFormat('hh:mm').format(time) : '--:--';
+
+  /* ------------------------------------------------ */
+  /*                CARD BUILDERS                     */
+  /* ------------------------------------------------ */
+
+  PrayerTimeCard _staticCard(String title, DateTime? time) {
+    return PrayerTimeCard(
+      title: title,
+      time: _format(time),
+      image: '',
+      gradientColors: const [
+        Color(0xFF00A86B),
+        Color(0xFFDAF7DC),
+      ],
     );
   }
 
-  PrayerTimes _getPrayerTime({DateTime? dateTime}) {
-    final latitude = LocationService.getLatitude();
-    final longitude = LocationService.getLongitude();
-    final locationName = LocationService.getLocationName();
-    final methodName =
-        SharedPreferenceService.getPrayerCalculationMethod() ??
-        'muslimWorldLeague';
-    final prayerMadhab = SharedPreferenceService.getMadhab() ?? true;
+  List<PrayerTimeCard> _currentAndNextCards(PrayerTimes times) {
+    final current = times.currentPrayer();
+    final next = times.nextPrayer();
 
-    final coordinates = Coordinates(latitude, longitude);
+    final list = <PrayerTimeCard>[];
 
-    final PrayerCalculationMethodType methodEnum = PrayerCalculationMethodType
-        .values
-        .firstWhere(
-          (e) => e.name == methodName,
-          orElse: () => PrayerCalculationMethodType.muslimWorldLeague,
-        );
-
-    PrayerCalculationParameters params = getPrayerCalculationMethod(methodEnum);
-    params.madhab = prayerMadhab ? PrayerMadhab.hanafi : PrayerMadhab.shafi;
-
-    return PrayerTimes(
-      coordinates: coordinates,
-      calculationParameters: params,
-      precision: true,
-      locationName: locationName,
-      dateTime: dateTime,
-    );
-  }
-
-  void setAlarm(Prayer prayer) {
-    switch (prayer) {
-      case Prayer.fajr:
-        LogService.logStorage.writeInfoLog(
-          'Get Prayer Time Cubit',
-          'Set Alarm',
-          'Fajr Alarm Set Successfully',
-        );
-        bool isAlarm = SharedPreferenceService.getFajrAlarm() ?? false;
-        SharedPreferenceService.setFajrAlarm(!isAlarm);
-      case Prayer.dhur:
-        bool isAlarm = SharedPreferenceService.getDhuhrAlarm() ?? false;
-        SharedPreferenceService.setDhuhrAlarm(!isAlarm);
-      case Prayer.asr:
-        bool isAlarm = SharedPreferenceService.getAsrAlarm() ?? false;
-        SharedPreferenceService.setAsrAlarm(!isAlarm);
-      case Prayer.maghrib:
-        bool isAlarm = SharedPreferenceService.getMaghribAlarm() ?? false;
-        SharedPreferenceService.setMaghribAlarm(!isAlarm);
-      case Prayer.isha:
-        bool isAlarm = SharedPreferenceService.getIshaAlarm() ?? false;
-        SharedPreferenceService.setIshaAlarm(!isAlarm);
+    final end = _getEndTime(times, current);
+    if (end != null) {
+      list.add(
+        PrayerTimeCard(
+          title: 'Current',
+          subtitle: current,
+          time: 'End ${_format(end)}',
+          image: '',
+          gradientColors: const [
+            Color(0xFF00A86B),
+            Color(0xFFDAF7DC),
+          ],
+        ),
+      );
     }
+
+    final start = _getStartTime(times, Prayer.values.firstWhere(
+          (e) => e.name == next,
+      orElse: () => Prayer.fajr,
+    ));
+
+    if (start != null) {
+      list.add(
+        PrayerTimeCard(
+          title: 'Coming',
+          subtitle: next,
+          time: 'Start ${_format(start)}',
+          image: '',
+          gradientColors: const [
+            Color(0xFF6CA6CD),
+            Color(0xFFB0E0E6),
+          ],
+        ),
+      );
+    }
+
+    return list;
+  }
+
+  /* ------------------------------------------------ */
+  /*                ALARM HANDLING                    */
+  /* ------------------------------------------------ */
+
+  bool _getAlarmStatus(Prayer prayer) {
+    switch (prayer) {
+      case Prayer.sehri:
+        return SharedPreferenceService.getSehriAlarm() ?? false;
+      case Prayer.fajr:
+        return SharedPreferenceService.getFajrAlarm() ?? false;
+      case Prayer.dhur:
+        return SharedPreferenceService.getDhuhrAlarm() ?? false;
+      case Prayer.asr:
+        return SharedPreferenceService.getAsrAlarm() ?? false;
+      case Prayer.maghrib:
+        return SharedPreferenceService.getMaghribAlarm() ?? false;
+      case Prayer.isha:
+        return SharedPreferenceService.getIshaAlarm() ?? false;
+    }
+  }
+
+  void _setAlarmStatus(Prayer prayer, bool value) {
+    switch (prayer) {
+      case Prayer.sehri:
+        SharedPreferenceService.setSehriAlarm(value);
+        break;
+      case Prayer.fajr:
+        SharedPreferenceService.setFajrAlarm(value);
+        break;
+      case Prayer.dhur:
+        SharedPreferenceService.setDhuhrAlarm(value);
+        break;
+      case Prayer.asr:
+        SharedPreferenceService.setAsrAlarm(value);
+        break;
+      case Prayer.maghrib:
+        SharedPreferenceService.setMaghribAlarm(value);
+        break;
+      case Prayer.isha:
+        SharedPreferenceService.setIshaAlarm(value);
+        break;
+    }
+  }
+
+  /* ------------------------------------------------ */
+  /*                    LOGGER                        */
+  /* ------------------------------------------------ */
+
+  void _logError(String action, Object error) {
+    LogService.logStorage.writeInfoLog(
+      'GetPrayerTimeCubit',
+      action,
+      error.toString(),
+    );
   }
 }

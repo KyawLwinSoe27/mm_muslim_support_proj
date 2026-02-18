@@ -10,110 +10,147 @@ class DonateUsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context;
+    final colors = context.colorScheme;
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Donate Us',
-          style: context.textTheme.titleLarge?.copyWith(
-            color: context.colorScheme.onSecondary,
-            fontWeight: FontWeight.w500,
+      appBar: AppBar(),
+      body: Stack(
+        children: [
+          // Gradient background
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [colors.primary.withOpacity(0.8), colors.secondary],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
           ),
-        ),
-      ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.volunteer_activism,
-                size: 80,
-                color: context.colorScheme.primary,
-              ),
-              const SizedBox(height: 20),
-              Text(
-                'Support Minara',
-                style: context.textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: context.colorScheme.primary,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                'Your donation helps us improve this app and bring more Islamic content and features to the global Muslim community.',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16),
-              ),
-              // const SizedBox(height: 30),
-              // ElevatedButton.icon(
-              //   icon: const Icon(Icons.favorite),
-              //   label: const Text('Donate via PayPal'),
-              //   onPressed: () {
-              //     // Launch donation link
-              //   },
-              //   style: ElevatedButton.styleFrom(
-              //     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-              //   ),
-              // ),
-              const SizedBox(height: 20),
-              OutlinedButton.icon(
-                icon: Icon(
-                  Icons.monetization_on,
-                  color: context.colorScheme.primary,
-                ),
-                label: Text('Donate', style: context.textTheme.titleMedium),
-                onPressed: () {
-                  // Show bank info dialog
-                  showDialog(
-                    context: context,
-                    builder:
-                        (context) => AlertDialog(
-                          title: const Text('Contact Information'),
-                          content: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Developer Name: ${AppConstants.developerName}',
+          SafeArea(
+            child: Center(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Header Card
+                    Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      elevation: 6,
+                      shadowColor: colors.primary.withOpacity(0.4),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 32, horizontal: 24),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.volunteer_activism,
+                              size: 80,
+                              color: colors.primary,
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              'Support Minara',
+                              style:
+                              theme.textTheme.headlineSmall?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: colors.primary,
                               ),
-                              const SizedBox(height: 8),
-                              const Text(
-                                'Account Name: ${AppConstants.developerEmail}',
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              'Your donation helps us improve this app and bring more Islamic content and features to the global Muslim community.',
+                              textAlign: TextAlign.center,
+                              style:
+                              theme.textTheme.bodyMedium?.copyWith(
+                                color: colors.onSurfaceVariant,
+                                height: 1.5,
                               ),
-                              const SizedBox(height: 16),
-                              InkWell(
-                                onTap: () async {
-                                  // url opener
-                                  // Open the phone dialer with the developer's phone number
-                                  launchUrl(
-                                    Uri.parse(
-                                      'tel:${AppConstants.developerPhone}',
-                                    ),
-                                  );
-                                },
-                                child: const Text(
-                                  'Account Number: ${AppConstants.developerPhone}',
-                                ),
-                              ),
-                            ],
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: const Text('Close'),
                             ),
                           ],
                         ),
-                  );
-                },
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+
+                    // Donate via Bank
+                    OutlinedButton.icon(
+                      icon: Icon(Icons.monetization_on, color: colors.onSecondary),
+                      label: const Text(
+                        'Donate',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: colors.onSecondary,
+                        side: BorderSide(color: colors.onSecondary, width: 2),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 16, horizontal: 24),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16)),
+                      ),
+                      onPressed: () {
+                        // Show bank info dialog
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text('Contact Information'),
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                    'Developer Name: ${AppConstants.developerName}'),
+                                const SizedBox(height: 8),
+                                Text(
+                                    'Account Name: ${AppConstants.developerEmail}'),
+                                const SizedBox(height: 16),
+                                InkWell(
+                                  onTap: () async {
+                                    final url = Uri.parse(
+                                        'tel:${AppConstants.developerPhone}');
+                                    if (await canLaunchUrl(url)) {
+                                      await launchUrl(url);
+                                    }
+                                  },
+                                  child: Text(
+                                    'Account Number: ${AppConstants.developerPhone}',
+                                    style: TextStyle(
+                                      color: colors.primary,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: const Text('Close'),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 32),
+
+                    // Footer
+                    Text(
+                      'JazakAllahu Khair for your support!',
+                      style: theme.textTheme.bodyLarge
+                          ?.copyWith(color: colors.onPrimaryContainer),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

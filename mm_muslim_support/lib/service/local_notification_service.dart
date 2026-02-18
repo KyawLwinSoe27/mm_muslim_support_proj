@@ -2,6 +2,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mm_muslim_support/service/function_service.dart';
+import 'package:mm_muslim_support/service/shared_preference_service.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:flutter_timezone/flutter_timezone.dart';
@@ -9,8 +10,9 @@ import 'package:flutter_timezone/flutter_timezone.dart';
 class NotiPayLoad {
   final int id;
   final String name;
+  final DateTime? scheduledTime;
 
-  const NotiPayLoad({required this.id, required this.name});
+  const NotiPayLoad({required this.id, required this.name, this.scheduledTime});
 }
 
 class LocalNotificationService {
@@ -25,9 +27,9 @@ class LocalNotificationService {
 
     // init time zone handling
     tz.initializeTimeZones();
-    final String timeZoneName = await FlutterTimezone.getLocalTimezone();
+    final TimezoneInfo timeZoneName = await FlutterTimezone.getLocalTimezone();
     tz.setLocalLocation(
-      tz.getLocation(FunctionService.locationName(timeZoneName)),
+      tz.getLocation(FunctionService.locationName(timeZoneName.identifier)),
     );
 
     // init Android
@@ -113,6 +115,10 @@ class LocalNotificationService {
     required tz.TZDateTime scheduledDate,
   }) async {
     try {
+      // Save scheduledDate to shared preferences (key = id)
+      await SharedPreferenceService.setNotificationTime(id, scheduledDate.toIso8601String());
+
+
       await notificationPlugin.zonedSchedule(
         id,
         title,
@@ -169,11 +175,15 @@ class LocalNotificationService {
     final List<PendingNotificationRequest> pendingNotificationList =
         await notificationPlugin.pendingNotificationRequests();
 
-    return pendingNotificationList.map((notification) {
-      return NotiPayLoad(
-        id: notification.id,
-        name: notification.title ?? 'No Title',
-      );
-    }).toList();
+    return Future.wait(
+      pendingNotificationList.map((notification) async {
+        final scheduledTime = await SharedPreferenceService.getNotificationTime(notification.id);
+        return NotiPayLoad(
+          id: notification.id,
+          name: notification.title ?? 'No Title',
+          scheduledTime: scheduledTime,
+        );
+      }),
+    );
   }
 }

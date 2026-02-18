@@ -21,15 +21,22 @@ class SharedPreferenceService {
   static const String _keyMadhab = 'madhab';
   static const String _keyAppLifeCycle = 'app_life_cycle';
 
+  static const String _keyIsSehriAlarm = 'is_sehri_alarm';
   static const String _keyIsFajrAlarm = 'is_fajr_alarm';
   static const String _keyIsDhuhrAlarm = 'is_dhuhr_alarm';
   static const String _keyIsAsrAlarm = 'is_asr_alarm';
   static const String _keyIsMaghribAlarm = 'is_maghrib_alarm';
   static const String _keyIsIshaAlarm = 'is_isha_alarm';
+  static const String _hijriOffsetKey = 'hijri_offset';
+
 
   // Setters
   Future<void> setLanguage(String value) async {
     await _prefs?.setString(_keyLanguage, value);
+  }
+
+  static Future<void> setFirstOpen(bool value) async {
+    await _prefs?.setBool('isFirstOpen', value);
   }
 
   static Future<void> setLocation(String location) async {
@@ -54,6 +61,10 @@ class SharedPreferenceService {
 
   static Future<void> setAppLifeCycle(bool appLifeCycle) async {
     await _prefs?.setBool(_keyAppLifeCycle, appLifeCycle);
+  }
+
+  static Future<void> setSehriAlarm(bool isSehriAlarm) async {
+    await _prefs?.setBool(_keyIsSehriAlarm, isSehriAlarm);
   }
 
   static Future<void> setFajrAlarm(bool isFajrAlarm) async {
@@ -92,12 +103,20 @@ class SharedPreferenceService {
     return _prefs?.getString(_keyPlaceMarksName);
   }
 
+  static bool? getFirstOpen() {
+    return _prefs?.getBool('isFirstOpen');
+  }
+
   static String? getPrayerCalculationMethod() {
     return _prefs?.getString(_keyPrayerCalculationMethod);
   }
 
   static bool? getMadhab() {
     return _prefs?.getBool(_keyMadhab);
+  }
+
+  static bool? getSehriAlarm() {
+    return _prefs?.getBool(_keyIsSehriAlarm);
   }
 
   static bool? getFajrAlarm() {
@@ -132,5 +151,24 @@ class SharedPreferenceService {
   // Clear
   Future<void> clearAll() async {
     await _prefs?.clear();
+  }
+
+  static Future<void> setNotificationTime(int id, String iso8601string) async {
+    await _prefs?.setString('noti_time_$id', iso8601string);
+  }
+
+  static Future<DateTime?> getNotificationTime(int id) async {
+    final prefs = await SharedPreferences.getInstance();
+    final iso = prefs.getString('noti_time_$id');
+    return iso != null ? DateTime.parse(iso) : null;
+  }
+
+  static Future<void> setHijriOffset(int value) async {
+    await _prefs?.setInt(_hijriOffsetKey, value);
+  }
+
+  static int? getHijriOffset() {
+    // if you already cache prefs globally use that
+    return _prefs?.getInt(_hijriOffsetKey);
   }
 }

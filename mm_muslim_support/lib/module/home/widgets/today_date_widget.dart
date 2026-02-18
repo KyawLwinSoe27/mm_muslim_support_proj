@@ -7,33 +7,30 @@ class TodayDateWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => GetHijriDateCubit()..getTodayDate(),
-      child: BlocBuilder<GetHijriDateCubit, GetHijriDateState>(
-        builder: (context, state) {
-          if (state is GetHijriDateLoaded) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  state.todayDate.gregorianDate,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.onSecondary,
-                  ),
+    return BlocBuilder<GetHijriDateCubit, GetHijriDateState>(
+      builder: (context, state) {
+        if (state is GetHijriDateLoaded) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                state.todayDate.gregorianDate,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.onSecondary,
                 ),
-                Text(
-                  state.todayDate.hijriDate,
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: Theme.of(context).colorScheme.onSecondary,
-                  ),
+              ),
+              Text(
+                state.todayDate.hijriDate,
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                  color: Theme.of(context).colorScheme.onSecondary,
                 ),
-              ],
-            );
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
-        },
-      ),
+              ),
+            ],
+          );
+        } else {
+          return const Center(child: CircularProgressIndicator());
+        }
+      },
     );
   }
 }

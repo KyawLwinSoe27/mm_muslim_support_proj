@@ -16,7 +16,7 @@ class GetLocationTimeCubit extends Cubit<GetLocationTimeState> {
     emit(GetLocationTimeLoading());
     try {
       PrayerTimes prayerTimes = FunctionService.getPrayerTime();
-      String? location = await LocationService.getLocation();
+      String? location = LocationService.getLocationName();
 
       emit(
         GetLocationTimeLoaded(

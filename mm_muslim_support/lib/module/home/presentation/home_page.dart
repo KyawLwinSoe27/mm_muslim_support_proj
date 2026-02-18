@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mm_muslim_support/model/tasbih_list_model.dart';
 import 'package:mm_muslim_support/module/home/cubit/bottom_navigation_bar_cubit.dart';
 import 'package:mm_muslim_support/module/home/cubit/change_date_cubit.dart';
+import 'package:mm_muslim_support/module/home/cubit/get_hijri_date_cubit/get_hijri_date_cubit.dart';
 import 'package:mm_muslim_support/module/home/cubit/get_prayer_time_cubit/get_prayer_time_cubit.dart';
+import 'package:mm_muslim_support/module/home/presentation/ramadan_dashboard_page.dart';
 import 'package:mm_muslim_support/module/tasbih/cubits/tasbih_counter_cubit.dart';
 import 'package:mm_muslim_support/module/home/presentation/dashboard_page.dart';
 import 'package:mm_muslim_support/module/home/presentation/namaz_times_page.dart';
@@ -12,16 +14,36 @@ import 'package:mm_muslim_support/module/home/widgets/drawer_widget.dart';
 import 'package:mm_muslim_support/module/home/widgets/today_date_widget.dart';
 import 'package:mm_muslim_support/module/menu/cubit/get_location_cubit/get_location_cubit.dart';
 import 'package:mm_muslim_support/module/stay_tuned_page.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   static String routeName = 'splash';
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final RefreshController _refreshController =
+  RefreshController(initialRefresh: false);
+
+
+  @override
+  void dispose() {
+    _refreshController.dispose();
+    super.dispose();
+  }
+
   Widget _buildPage(int index) {
     switch (index) {
       case 0:
-        return const DashboardPage();
+        return BlocBuilder<GetHijriDateCubit, GetHijriDateState>(
+          builder: (context, state) {
+            return const RamadanDashboardPage();
+          },
+        );
       case 1:
         return MultiBlocProvider(
           providers: [
@@ -30,7 +52,8 @@ class HomePage extends StatelessWidget {
             ),
             BlocProvider<ChangeDateCubit>(
               create:
-                  (context) => ChangeDateCubit(
+                  (context) =>
+                  ChangeDateCubit(
                     getPrayerTimeCubit: context.read<GetPrayerTimeCubit>(),
                   ),
             ),
@@ -74,10 +97,29 @@ class HomePage extends StatelessWidget {
         create: (context) => GetLocationCubit(),
         child: const DrawerWidget(),
       ),
-      body: BlocBuilder<BottomNavigationBarCubit, int>(
-        builder: (context, state) {
-          return _buildPage(state);
+      body: BlocListener<GetHijriDateCubit, GetHijriDateState>(
+        listener: (context, state) {
+          if (state is GetHijriDateLoaded) {
+            _refreshController.refreshCompleted();
+          }
+
+          if (state is GetHijriDateError) {
+            _refreshController.refreshFailed();
+          }
         },
+        child: BlocBuilder<BottomNavigationBarCubit, int>(
+          builder: (context, state) {
+            return SmartRefresher(
+                enablePullDown: true,
+                onRefresh: () {
+                  context.read<GetHijriDateCubit>().getTodayDate();
+                },
+                header: const WaterDropHeader(),
+                controller: _refreshController,
+
+                child: _buildPage(state));
+          },
+        ),
       ),
       bottomNavigationBar: BlocBuilder<BottomNavigationBarCubit, int>(
         builder: (context, state) {

@@ -14,7 +14,7 @@ class GetLocationCubit extends Cubit<GetLocationState> {
     try {
       await SharedPreferenceService.removePlaceMarksName();
       await LocationService.getCurrentLocation(); // get lat and long
-      await LocationService.getLocation(); // get location name
+      LocationService.getLocationName(); // get location name
 
       String location = SharedPreferenceService.getPlaceMarksName() ?? '';
       emit(GetLocationLoaded(location: 'Your updated location is $location'));
