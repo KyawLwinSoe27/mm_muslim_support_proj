@@ -58,7 +58,7 @@ class QuranListPage extends StatelessWidget {
       body: ListView.separated(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         itemCount: quranList.length,
-        separatorBuilder: (_, __) => const SizedBox(height: 12),
+        separatorBuilder: (_, _) => const SizedBox(height: 12),
         itemBuilder: (context, index) {
           final quran = quranList[index];
           return InkWell(
@@ -71,13 +71,13 @@ class QuranListPage extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
                 gradient: LinearGradient(
-                  colors: [colors.primary.withOpacity(0.1), colors.primary.withOpacity(0.05)],
+                  colors: [colors.primary.withValues(alpha: 0.1), colors.primary.withValues(alpha: 0.05)],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: colors.primary.withOpacity(0.1),
+                    color: colors.primary.withValues(alpha: 0.1),
                     blurRadius: 8,
                     offset: const Offset(0, 4),
                   )

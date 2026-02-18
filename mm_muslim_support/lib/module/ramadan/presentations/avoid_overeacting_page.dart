@@ -44,15 +44,15 @@ class AvoidOvereatingPage extends StatelessWidget {
             Expanded(
               child: ListView.separated(
                 itemCount: tips.length,
-                separatorBuilder: (_, __) => const SizedBox(height: 12),
+                separatorBuilder: (_, _) => const SizedBox(height: 12),
                 itemBuilder: (context, index) {
                   return Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: context.colorScheme.secondary.withOpacity(0.1),
+                      color: context.colorScheme.secondary.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color: context.colorScheme.primary.withOpacity(0.5),
+                        color: context.colorScheme.primary.withValues(alpha: 0.5),
                       ),
                     ),
                     child: Row(

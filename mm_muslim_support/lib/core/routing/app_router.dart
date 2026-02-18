@@ -33,7 +33,6 @@ import 'package:mm_muslim_support/module/quran/presentations/surah_listen_list.d
 import 'package:mm_muslim_support/module/quran/presentations/surah_listen_page.dart';
 import 'package:mm_muslim_support/module/stay_tuned_page.dart';
 import 'package:mm_muslim_support/module/tasbih/presentations/tasbih_page.dart';
-import 'package:mm_muslim_support/modules/ramadan_tracker/ramadan_tracker_page.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
@@ -187,11 +186,11 @@ class AppRouter {
         path: '/logs',
         builder: (context, state) => const LogsScreen(),
       ),
-      GoRoute(
-        name: 'ramadan_tracker',
-        path: RamadanTrackerPage.routeName,
-        builder: (context, state) => const RamadanTrackerPage(),
-      ),
+      // GoRoute(
+      //   name: 'ramadan_tracker',
+      //   path: RamadanTrackerPage.routeName,
+      //   builder: (context, state) => const RamadanTrackerPage(),
+      // ),
       GoRoute(
         name: AlarmPage.routeName,
         path: '/alarm_page',

@@ -20,7 +20,7 @@ class GetLocationTimeCubit extends Cubit<GetLocationTimeState> {
 
       emit(
         GetLocationTimeLoaded(
-          location: location ?? '',
+          location: location,
           date: DateUtility.DateTimeToString(
             DateTime.now(),
             CustomDateFormat.simpleDate,

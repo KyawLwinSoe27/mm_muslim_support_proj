@@ -16,7 +16,7 @@ class DailyDuaCarousel extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         itemCount: duas.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 12),
+        separatorBuilder: (_, _) => const SizedBox(width: 12),
         itemBuilder: (context, index) {
           final dua = duas[index];
           return Directionality(
@@ -29,12 +29,12 @@ class DailyDuaCarousel extends StatelessWidget {
                   width: 260,
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: colorScheme.surface.withOpacity(0.5),
+                    color: colorScheme.surface.withValues(alpha: 0.5),
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: colorScheme.primary.withOpacity(0.2)),
+                    border: Border.all(color: colorScheme.primary.withValues(alpha: 0.2)),
                     boxShadow: [
                       BoxShadow(
-                        color: colorScheme.primary.withOpacity(0.08),
+                        color: colorScheme.primary.withValues(alpha: 0.08),
                         blurRadius: 8,
                         offset: const Offset(0, 4),
                       ),
