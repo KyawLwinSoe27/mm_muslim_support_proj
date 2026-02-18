@@ -9,10 +9,12 @@ import 'package:mm_muslim_support/core/themes/theme.dart';
 import 'package:mm_muslim_support/firebase_options.dart';
 import 'package:mm_muslim_support/logic/theme_cubit.dart';
 import 'package:mm_muslim_support/service/audio_handler.dart';
+import 'package:mm_muslim_support/service/background_worker.dart';
 import 'package:mm_muslim_support/service/local_notification_service.dart';
 import 'package:mm_muslim_support/service/location_service.dart';
 import 'package:mm_muslim_support/service/permission_service.dart';
 import 'package:mm_muslim_support/service/shared_preference_service.dart';
+import 'package:workmanager/workmanager.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -20,6 +22,10 @@ late final AudioPlayerHandler audioHandler;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Workmanager().initialize(
+    callbackDispatcher);
+
+  await _registerDailyTask();
   final sharedPrefs = SharedPreferenceService();
   await sharedPrefs.init();
   if(SharedPreferenceService.getFirstOpen() ?? true) {
@@ -51,6 +57,32 @@ void main() async {
 
   runApp(BlocProvider(create: (context) => ThemeCubit(), child: const MyApp()));
 }
+
+Future<void> _registerDailyTask() async {
+  await Workmanager().registerPeriodicTask(
+    'dailyPrayerTaskId',
+    dailyPrayerTask,
+    frequency: const Duration(hours: 24),
+    initialDelay: _calculateInitialDelay(),
+    existingWorkPolicy: ExistingPeriodicWorkPolicy.replace,
+  );
+}
+
+Duration _calculateInitialDelay() {
+  final now = DateTime.now();
+  final nextRun =
+  DateTime(now.year, now.month, now.day, 0, 5);
+
+  if (now.isAfter(nextRun)) {
+    return nextRun
+        .add(const Duration(days: 1))
+        .difference(now);
+  } else {
+    return nextRun.difference(now);
+  }
+}
+
+
 
 Future<void> getLocationFromDevice() async {
   bool googleServiceAvailable =

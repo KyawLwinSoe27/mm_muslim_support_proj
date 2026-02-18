@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mm_muslim_support/core/routing/context_ext.dart';
 import 'package:mm_muslim_support/model/quran_song_model.dart';
 import 'package:mm_muslim_support/module/quran/presentations/surah_listen_page.dart';
-import 'package:mm_muslim_support/utility/extensions.dart';
 
 class SurahListenList extends StatefulWidget {
   const SurahListenList({super.key});
@@ -18,45 +17,100 @@ class _SurahListenListState extends State<SurahListenList> {
 
   @override
   void dispose() {
-    _scrollController.dispose(); // Clean up controller
+    _scrollController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final primaryColor = theme.colorScheme.primary;
+    final onPrimary = theme.colorScheme.onPrimary;
+    final surfaceColor = theme.colorScheme.surface;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
           'Surah List',
-          style: context.textTheme.titleLarge?.copyWith(
-            color: context.colorScheme.onSecondary,
-            fontWeight: FontWeight.w500,
+          style: theme.textTheme.titleLarge?.copyWith(
+            color: onPrimary,
+            fontWeight: FontWeight.w600,
           ),
         ),
+        backgroundColor: primaryColor,
+        elevation: 0,
       ),
       body: Scrollbar(
         controller: _scrollController,
-        thickness: 10,
-        radius: const Radius.circular(4),
+        thickness: 8,
+        radius: const Radius.circular(8),
+        thumbVisibility: true, // always show thumb
+        trackVisibility: false,
         interactive: true,
-        thumbVisibility: false, // Set to true to always show the scrollbar
-        child: ListView.separated(
-          controller: _scrollController,
-          itemCount: surahList.length,
-          separatorBuilder: (_, _) => const Divider(),
-          itemBuilder: (context, index) {
-            final surah = surahList[index];
-            return ListTile(
-              leading: const CircleAvatar(child: Icon(Icons.music_note)),
-              trailing: Text(surah.number.toString()),
-              title: Text(surah.name, style: context.textTheme.titleMedium),
-              onTap:
-                  () => context.navigateWithPushNamed(
-                    SurahListenPageContent.routeName,
-                    extra: surah,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: ListView.separated(
+            controller: _scrollController,
+            itemCount: surahList.length,
+            separatorBuilder: (_, __) => const SizedBox(height: 12),
+            itemBuilder: (context, index) {
+              final surah = surahList[index];
+
+              return GestureDetector(
+                onTap: () => context.navigateWithPushNamed(
+                  SurahListenPageContent.routeName,
+                  extra: surah,
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: primaryColor.withValues(alpha: 0.9),
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 6,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
                   ),
-            );
-          },
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16, vertical: 12),
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 28,
+                        backgroundColor: surfaceColor,
+                        child: Text(
+                          surah.number.toString(),
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: primaryColor,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Text(
+                          surah.name,
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            color: onPrimary,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                      Icon(
+                        Icons.play_circle_fill,
+                        color: onPrimary,
+                        size: 32,
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
         ),
       ),
     );
