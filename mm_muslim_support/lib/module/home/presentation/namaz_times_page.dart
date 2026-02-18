@@ -7,11 +7,8 @@ import 'package:mm_muslim_support/module/home/cubit/get_location_time_cubit/get_
 import 'package:mm_muslim_support/module/home/cubit/get_prayer_time_cubit/get_prayer_time_cubit.dart';
 import 'package:mm_muslim_support/module/home/presentation/alarm_page.dart';
 import 'package:mm_muslim_support/service/function_service.dart';
-import 'package:mm_muslim_support/service/local_notification_service.dart';
 import 'package:mm_muslim_support/utility/extensions.dart';
 import 'package:mm_muslim_support/utility/image_constants.dart';
-import 'package:mm_muslim_support/widget/set_alarm_button.dart';
-import 'package:timezone/timezone.dart';
 
 class NamazTimesPage extends StatelessWidget {
   const NamazTimesPage({super.key});

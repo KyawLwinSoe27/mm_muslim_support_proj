@@ -7,7 +7,6 @@ import 'package:mm_muslim_support/module/home/cubit/get_hijri_date_cubit/get_hij
 import 'package:mm_muslim_support/module/home/cubit/get_prayer_time_cubit/get_prayer_time_cubit.dart';
 import 'package:mm_muslim_support/module/home/presentation/ramadan_dashboard_page.dart';
 import 'package:mm_muslim_support/module/tasbih/cubits/tasbih_counter_cubit.dart';
-import 'package:mm_muslim_support/module/home/presentation/dashboard_page.dart';
 import 'package:mm_muslim_support/module/home/presentation/namaz_times_page.dart';
 import 'package:mm_muslim_support/module/home/presentation/tasbih_list_page.dart';
 import 'package:mm_muslim_support/module/home/widgets/drawer_widget.dart';

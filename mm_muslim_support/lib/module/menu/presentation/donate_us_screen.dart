@@ -102,10 +102,10 @@ class DonateUsScreen extends StatelessWidget {
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
+                                const Text(
                                     'Developer Name: ${AppConstants.developerName}'),
                                 const SizedBox(height: 8),
-                                Text(
+                                const Text(
                                     'Account Name: ${AppConstants.developerEmail}'),
                                 const SizedBox(height: 16),
                                 InkWell(

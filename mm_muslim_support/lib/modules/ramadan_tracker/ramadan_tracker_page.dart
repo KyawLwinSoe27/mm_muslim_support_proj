@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'cubit/ramadan_tracker_cubit.dart';
-import 'cubit/ramadan_tracker_state.dart';
-import 'widgets/header_section.dart';
-import 'widgets/progress_section.dart';
-import 'widgets/time_cards_row.dart';
-import 'widgets/monthly_schedule_list.dart';
-import 'widgets/daily_dua_carousel.dart';
-import 'widgets/bottom_nav_placeholder.dart';
+import 'package:mm_muslim_support/modules/ramadan_tracker/cubit/ramadan_tracker_cubit.dart';
+import 'package:mm_muslim_support/modules/ramadan_tracker/cubit/ramadan_tracker_state.dart';
+import 'package:mm_muslim_support/modules/ramadan_tracker/widgets/header_section.dart';
+import 'package:mm_muslim_support/modules/ramadan_tracker/widgets/progress_section.dart';
+import 'package:mm_muslim_support/modules/ramadan_tracker/widgets/time_cards_row.dart';
+import 'package:mm_muslim_support/modules/ramadan_tracker/widgets/monthly_schedule_list.dart';
+import 'package:mm_muslim_support/modules/ramadan_tracker/widgets/daily_dua_carousel.dart';
+import 'package:mm_muslim_support/modules/ramadan_tracker/widgets/bottom_nav_placeholder.dart';
 
 /// Ramadan Tracker Page
 /// Route: /ramadan_tracker

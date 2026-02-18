@@ -26,7 +26,7 @@ class ProgressSection extends StatelessWidget {
               CircularProgressIndicator(
                 value: progress,
                 strokeWidth: 10,
-                backgroundColor: colorScheme.surfaceVariant,
+                backgroundColor: colorScheme.surfaceContainerHighest,
                 valueColor: AlwaysStoppedAnimation(colorScheme.primary),
               ),
               Column(

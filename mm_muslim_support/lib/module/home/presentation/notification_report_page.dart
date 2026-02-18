@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mm_muslim_support/service/local_notification_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationReportPage extends StatefulWidget {
   const NotificationReportPage({super.key});

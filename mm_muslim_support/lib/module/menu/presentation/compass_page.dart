@@ -1,10 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_compass/flutter_compass.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:mm_muslim_support/utility/extensions.dart';
 import 'package:mm_muslim_support/utility/image_constants.dart';
 import 'package:mm_muslim_support/widget/compass_painter.dart';
 import 'package:prayers_times/prayers_times.dart';
@@ -84,7 +82,7 @@ class _CompassPageState extends State<CompassPage> {
                                 angle: (qiblaDirection - normalizedDirection) * pi / 180,
                                 child: Column(
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.arrow_drop_up,
                                       color: Colors.amberAccent,
                                       size: 60,
@@ -143,7 +141,7 @@ class _CompassPageState extends State<CompassPage> {
 
                         const SizedBox(height: 24),
                         const Text(
-                          "Rotate your device to align with the Qibla pointer",
+                          'Rotate your device to align with the Qibla pointer',
                           style: TextStyle(color: Colors.white70),
                         ),
                       ],
