@@ -114,10 +114,10 @@ class _TaraweehPageState extends State<TaraweehPage> {
                 borderRadius: BorderRadius.circular(16),
               ),
               elevation: 4,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
+              child: const Padding(
+                padding: EdgeInsets.all(16.0),
                 child: Column(
-                  children: const [
+                  children: [
                     Text(
                       'Taraweeh Tips',
                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),

@@ -40,7 +40,7 @@ class PrayerTimeSettingPage extends StatelessWidget {
                     child: DropdownButtonFormField<PrayerCalculationMethod>(
                       isExpanded: true, // <--- IMPORTANT
                       menuMaxHeight: 300,
-                      value: state,
+                      initialValue: state,
                       decoration: const InputDecoration(
                         labelText: 'Calculation Method',
                         border: OutlineInputBorder(),

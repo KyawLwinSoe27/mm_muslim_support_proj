@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'ramadan_tracker_state.dart';
+import 'package:mm_muslim_support/modules/ramadan_tracker/cubit/ramadan_tracker_state.dart';
 import 'package:mm_muslim_support/models/ramadan_day_model.dart';
 import 'package:mm_muslim_support/models/dua_model.dart';
 import 'package:mm_muslim_support/service/shared_preference_service.dart';

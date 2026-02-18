@@ -28,14 +28,14 @@ class MonthlyScheduleList extends StatelessWidget {
             color: isToday
                 ? colorScheme.primary.withOpacity(0.1)
                 : isCompleted
-                    ? colorScheme.surfaceVariant.withOpacity(0.2)
+                    ? colorScheme.surfaceContainerHighest.withOpacity(0.2)
                     : Colors.transparent,
             borderRadius: BorderRadius.circular(8),
           ),
           margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
           child: ListTile(
             leading: CircleAvatar(
-              backgroundColor: isToday ? colorScheme.primary : colorScheme.surfaceVariant,
+              backgroundColor: isToday ? colorScheme.primary : colorScheme.surfaceContainerHighest,
               child: Text('${day.day}', style: TextStyle(color: isToday ? colorScheme.onPrimary : colorScheme.onSurface)),
             ),
             title: Text(

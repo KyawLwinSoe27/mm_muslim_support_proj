@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mm_muslim_support/service/get_prayer_time_service.dart';
-import 'package:prayers_times/prayers_times.dart';
 
 part 'ramadan_state.dart';
 
