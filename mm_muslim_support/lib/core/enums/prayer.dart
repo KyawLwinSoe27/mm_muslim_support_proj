@@ -1,4 +1,5 @@
 enum Prayer {
+  sehri('Sehri'),
   fajr('Fajr'),
   dhur('Dhur'),
   asr('Asr'),

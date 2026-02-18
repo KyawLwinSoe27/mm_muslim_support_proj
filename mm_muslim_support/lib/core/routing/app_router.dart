@@ -2,11 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mm_muslim_support/common/bloc/download_file_bloc/download_file_bloc.dart';
+import 'package:mm_muslim_support/common/cubit/hijri_offset_cubit.dart';
 import 'package:mm_muslim_support/core/enums/folder.dart';
 import 'package:mm_muslim_support/model/quran_song_model.dart';
 import 'package:mm_muslim_support/model/tasbih_model.dart';
 import 'package:mm_muslim_support/module/history/presentations/islamic_history_page.dart';
 import 'package:mm_muslim_support/module/home/cubit/bottom_navigation_bar_cubit.dart';
+import 'package:mm_muslim_support/module/home/cubit/get_hijri_date_cubit/get_hijri_date_cubit.dart';
+import 'package:mm_muslim_support/module/home/presentation/alarm_page.dart';
+import 'package:mm_muslim_support/module/home/presentation/notification_report_page.dart';
+import 'package:mm_muslim_support/module/ramadan/presentations/avoid_overeacting_page.dart';
+import 'package:mm_muslim_support/module/ramadan/presentations/charity_and_sadaqah_page.dart';
+import 'package:mm_muslim_support/module/ramadan/presentations/healty_suhoor_page.dart';
+import 'package:mm_muslim_support/module/ramadan/presentations/hydrate_often_page.dart';
+import 'package:mm_muslim_support/module/ramadan/presentations/taraweeh_page.dart';
 import 'package:mm_muslim_support/module/tasbih/cubits/tasbih_counter_cubit.dart';
 import 'package:mm_muslim_support/module/home/presentation/home_page.dart';
 import 'package:mm_muslim_support/module/menu/cubit/get_prayer_calculation_method_cubit.dart';
@@ -24,6 +33,7 @@ import 'package:mm_muslim_support/module/quran/presentations/surah_listen_list.d
 import 'package:mm_muslim_support/module/quran/presentations/surah_listen_page.dart';
 import 'package:mm_muslim_support/module/stay_tuned_page.dart';
 import 'package:mm_muslim_support/module/tasbih/presentations/tasbih_page.dart';
+import 'package:mm_muslim_support/modules/ramadan_tracker/ramadan_tracker_page.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
@@ -34,8 +44,15 @@ class AppRouter {
         name: HomePage.routeName,
         path: '/',
         builder:
-            (context, state) => BlocProvider(
-              create: (context) => BottomNavigationBarCubit(),
+            (context, state) => MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (context) => GetHijriDateCubit()..getTodayDate(),
+                ),
+                BlocProvider(
+                  create: (context) => BottomNavigationBarCubit(),
+                ),
+              ],
               child: const HomePage(),
             ),
       ),
@@ -49,8 +66,15 @@ class AppRouter {
         name: PrayerTimeSettingPage.routeName,
         path: '/prayerSettingPage',
         builder:
-            (context, state) => BlocProvider(
-              create: (context) => GetPrayerCalculationMethodCubit(),
+            (context, state) => MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (context) => HijriOffsetCubit(),
+                ),
+                BlocProvider(
+                  create: (context) => GetPrayerCalculationMethodCubit(),
+                ),
+              ],
               child: const PrayerTimeSettingPage(),
             ),
       ),
@@ -163,6 +187,47 @@ class AppRouter {
         path: '/logs',
         builder: (context, state) => const LogsScreen(),
       ),
+      GoRoute(
+        name: 'ramadan_tracker',
+        path: RamadanTrackerPage.routeName,
+        builder: (context, state) => const RamadanTrackerPage(),
+      ),
+      GoRoute(
+        name: AlarmPage.routeName,
+        path: '/alarm_page',
+        builder: (context, state) => const AlarmPage(),
+      ),
+      GoRoute(
+        name: NotificationReportPage.routeName,
+        path: '/notification_report',
+        builder: (context, state) => const NotificationReportPage(),
+      ),
+      GoRoute(
+        name: AvoidOvereatingPage.routeName,
+        path: '/avoid_overeating',
+        builder: (context, state) => const AvoidOvereatingPage(),
+      ),
+      GoRoute(
+        name: CharitySadaqahPage.routeName,
+        path: '/charity_sadaqah',
+        builder: (context, state) => const CharitySadaqahPage(),
+      ),
+      GoRoute(
+        name: HealthySuhoorPage.routeName,
+        path: '/healthy_suhoor',
+        builder: (context, state) => const HealthySuhoorPage(),
+      ),
+      GoRoute(
+        name: HydrateOftenScreen.routeName,
+        path: '/hydrate_often',
+        builder: (context, state) => const HydrateOftenScreen(),
+      ),
+      GoRoute(
+        name: TaraweehPage.routeName,
+        path: '/taraweeh',
+        builder: (context, state) => const TaraweehPage(),
+      )
+
     ],
     // Optional: Custom error page route (404-like)
     errorPageBuilder: (context, state) {

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#19e66b",
+                        "accent": "#FFD700",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#0a120d",
+                        "glass": "rgba(255, 255, 255, 0.05)",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .gold-glass {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.05) 0%, rgba(255, 215, 0, 0.1) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+        .active-glow {
+            box-shadow: 0 0 20px rgba(25, 230, 107, 0.2);
+            border: 1px solid #19e66b;
+        }
+        .bg-pattern {
+            background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuBQ5Tn7OGZgN_ESTivR7Fexyr_hAnhca4-gORBxFoCPa_GoD4VzpKOKOO1oT4A3xkbLrB9M4vNeuDqRy-vrhGjzvzt0S-bXVKFoNJv0cF561yzV3PZibnT_3J58KM-FhhbTWj-Nwplu_vXe0YbjQvA2B_-XSOEzaDciJHa6XWmqcDT6nsuXjGf5F_JFxEfcUYwrYe2gai0ckosd7wONuLtJjwZaCU8Hf1S4Vi6COKVRtQzlrAK7Mb2L6WArFkondrnnqmSuJ8yuFy7v);
+            background-size: cover;
+            background-position: center;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+    <style>
+        body {
+          min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white min-h-screen selection:bg-primary/30">
+<div class="relative flex h-full min-h-screen w-full flex-col overflow-x-hidden bg-pattern">
+    <header class="flex items-center bg-transparent p-4 pb-2 justify-between sticky top-0 z-50 backdrop-blur-md">
+        <div class="flex size-10 shrink-0 items-center justify-center rounded-full glass-card">
+            <span class="material-symbols-outlined text-white">chevron_left</span>
+        </div>
+        <div class="flex flex-col items-center">
+            <h2 class="text-white text-lg font-bold leading-tight tracking-tight">Ramadan Tracker</h2>
+            <p class="text-xs text-primary font-medium">London, UK • Day 12</p>
+        </div>
+        <div class="flex size-10 items-center justify-center rounded-full glass-card">
+            <span class="material-symbols-outlined text-white">share</span>
+        </div>
+    </header>
+    <section class="flex flex-col items-center justify-center py-6 px-4 relative">
+        <div class="relative flex items-center justify-center w-40 h-40">
+            <svg class="w-full h-full transform -rotate-90">
+                <circle class="text-white/10" cx="80" cy="80" fill="transparent" r="74" stroke="currentColor" stroke-width="6"></circle>
+                <circle class="text-primary" cx="80" cy="80" fill="transparent" r="74" stroke="currentColor" stroke-dasharray="465" stroke-dashoffset="186" stroke-linecap="round" stroke-width="8"></circle>
+            </svg>
+            <div class="absolute flex flex-col items-center justify-center text-center">
+                <span class="text-4xl font-extrabold tracking-tighter text-white">18</span>
+                <span class="text-[10px] font-semibold uppercase tracking-widest text-primary/80">Days Left</span>
+            </div>
+        </div>
+        <div class="flex gap-4 mt-6 w-full max-w-sm px-2">
+            <div class="flex-1 glass-card rounded-xl p-3 flex flex-col items-center">
+                <span class="text-primary text-[10px] font-bold uppercase mb-1">Suhoor</span>
+                <span class="text-white font-bold text-base leading-none">04:22</span>
+            </div>
+            <div class="flex-1 glass-card rounded-xl p-3 flex flex-col items-center border-b-2 border-primary/40">
+                <span class="text-accent text-[10px] font-bold uppercase mb-1">Next Prayer</span>
+                <span class="text-white font-bold text-base leading-none">Dhuhr</span>
+            </div>
+            <div class="flex-1 glass-card rounded-xl p-3 flex flex-col items-center">
+                <span class="text-primary text-[10px] font-bold uppercase mb-1">Iftar</span>
+                <span class="text-white font-bold text-base leading-none">18:14</span>
+            </div>
+        </div>
+    </section>
+    <div class="px-4 pb-6">
+        <div class="flex items-center justify-between mb-4 px-2">
+            <h3 class="text-white text-xl font-bold">Monthly Schedule</h3>
+            <button class="text-primary text-sm font-bold flex items-center gap-1">
+                <span class="material-symbols-outlined text-sm">calendar_month</span> Full Month
+            </button>
+        </div>
+        <div class="flex flex-col gap-3">
+            <div class="glass-card rounded-xl p-4 flex items-center justify-between opacity-70">
+                <div class="flex items-center gap-4">
+                    <div class="flex flex-col items-center justify-center w-10">
+                        <span class="text-white/60 text-xs font-bold">11</span>
+                        <span class="text-white/40 text-[10px] uppercase">Mar 21</span>
+                    </div>
+                    <div class="h-8 w-px bg-white/10"></div>
+                    <div class="flex flex-col">
+                        <div class="flex items-center gap-2">
+                            <span class="text-white/60 text-sm font-semibold">Day 11</span>
+                            <span class="bg-primary/20 text-primary text-[9px] px-1.5 py-0.5 rounded font-bold">COMPLETED</span>
+                        </div>
+                        <span class="text-white/40 text-[10px]">Suhoor 04:24 • Iftar 18:12</span>
+                    </div>
+                </div>
+                <div class="flex items-center justify-center size-8 rounded-full bg-primary/20">
+                    <span class="material-symbols-outlined text-primary text-xl" style="font-variation-settings: 'FILL' 1">check_circle</span>
+                </div>
+            </div>
+            <div class="glass-card active-glow rounded-xl p-4 flex items-center justify-between relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-1">
+                    <span class="bg-primary text-black text-[10px] font-black px-2 py-0.5 rounded-bl-lg uppercase tracking-tighter">Today</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="flex flex-col items-center justify-center w-10">
+                        <span class="text-primary text-lg font-black leading-none">12</span>
+                        <span class="text-white/60 text-[10px] uppercase font-bold">Mar 22</span>
+                    </div>
+                    <div class="h-10 w-px bg-primary/20"></div>
+                    <div class="flex flex-col">
+                        <span class="text-white text-sm font-bold">Day 12</span>
+                        <span class="text-white/60 text-[10px]">04:22 • 18:14</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button class="flex items-center justify-center size-10 rounded-full border-2 border-primary group active:scale-95 transition-all">
+                        <span class="material-symbols-outlined text-primary text-2xl">check</span>
+                    </button>
+                </div>
+            </div>
+            <div class="glass-card rounded-xl p-4 flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <div class="flex flex-col items-center justify-center w-10">
+                        <span class="text-white text-xs font-bold">13</span>
+                        <span class="text-white/40 text-[10px] uppercase">Mar 23</span>
+                    </div>
+                    <div class="h-8 w-px bg-white/10"></div>
+                    <div class="flex flex-col">
+                        <span class="text-white text-sm font-semibold">Day 13</span>
+                        <span class="text-white/40 text-[10px]">Suhoor 04:20 • Iftar 18:16</span>
+                    </div>
+                </div>
+                <button class="flex items-center justify-center size-8 rounded-full border border-white/10">
+                    <span class="material-symbols-outlined text-white/20 text-lg">circle</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="px-4 pb-36">
+        <div class="flex items-center justify-between mb-4 px-2">
+            <h3 class="text-white text-xl font-bold">Daily Duas &amp; Supplications</h3>
+        </div>
+        <div class="flex gap-4 overflow-x-auto no-scrollbar pb-4 snap-x">
+            <div class="snap-center shrink-0 w-[85%] gold-glass rounded-2xl p-5 relative overflow-hidden">
+                <div class="absolute -right-4 -top-4 opacity-10">
+                    <span class="material-symbols-outlined text-8xl text-accent">menu_book</span>
+                </div>
+                <div class="flex justify-between items-start mb-4">
+                    <span class="bg-accent/20 text-accent text-[10px] font-bold px-2 py-1 rounded-full border border-accent/30 tracking-wider">AUTHENTIC</span>
+                    <div class="flex gap-2">
+                        <button class="size-8 rounded-full glass-card flex items-center justify-center active:bg-white/20">
+                            <span class="material-symbols-outlined text-white/80 text-lg">content_copy</span>
+                        </button>
+                        <button class="size-8 rounded-full glass-card flex items-center justify-center active:bg-white/20">
+                            <span class="material-symbols-outlined text-white/80 text-lg">share</span>
+                        </button>
+                    </div>
+                </div>
+                <h4 class="text-accent font-bold text-sm mb-1 uppercase tracking-tight">Dua for Suhoor</h4>
+                <p class="text-white/60 text-[10px] mb-3">Intention for Fasting</p>
+                <p class="text-white text-xl text-right font-serif leading-relaxed mb-4" dir="rtl">وَبِصَوْمِ غَدٍ نَّوَيْتُ مِنْ شَهْرِ رَمَضَانَ</p>
+                <p class="text-white/80 text-xs italic leading-relaxed">"I intend to keep the fast for tomorrow in the month of Ramadan."</p>
+            </div>
+            <div class="snap-center shrink-0 w-[85%] gold-glass rounded-2xl p-5 relative overflow-hidden">
+                <div class="absolute -right-4 -top-4 opacity-10">
+                    <span class="material-symbols-outlined text-8xl text-accent">water_drop</span>
+                </div>
+                <div class="flex justify-between items-start mb-4">
+                    <span class="bg-accent/20 text-accent text-[10px] font-bold px-2 py-1 rounded-full border border-accent/30 tracking-wider">AUTHENTIC</span>
+                    <div class="flex gap-2">
+                        <button class="size-8 rounded-full glass-card flex items-center justify-center active:bg-white/20">
+                            <span class="material-symbols-outlined text-white/80 text-lg">content_copy</span>
+                        </button>
+                        <button class="size-8 rounded-full glass-card flex items-center justify-center active:bg-white/20">
+                            <span class="material-symbols-outlined text-white/80 text-lg">share</span>
+                        </button>
+                    </div>
+                </div>
+                <h4 class="text-accent font-bold text-sm mb-1 uppercase tracking-tight">Dua for Iftar</h4>
+                <p class="text-white/60 text-[10px] mb-3">Upon Breaking the Fast</p>
+                <p class="text-white text-xl text-right font-serif leading-relaxed mb-4" dir="rtl">ذَهَبَ الظَّمَأُ وَابْتَلَّتِ الْعُرُوقُ وَثَبَتَ الأَجْرُ إِنْ شَاءَ اللَّهُ</p>
+                <p class="text-white/80 text-xs italic leading-relaxed">"Thirst has gone, the arteries are moist, and the reward is certain, if Allah wills."</p>
+            </div>
+            <div class="snap-center shrink-0 w-[85%] gold-glass rounded-2xl p-5 relative overflow-hidden">
+                <div class="absolute -right-4 -top-4 opacity-10">
+                    <span class="material-symbols-outlined text-8xl text-accent">star</span>
+                </div>
+                <div class="flex justify-between items-start mb-4">
+                    <span class="bg-accent/20 text-accent text-[10px] font-bold px-2 py-1 rounded-full border border-accent/30 tracking-wider">AUTHENTIC</span>
+                    <div class="flex gap-2">
+                        <button class="size-8 rounded-full glass-card flex items-center justify-center active:bg-white/20">
+                            <span class="material-symbols-outlined text-white/80 text-lg">content_copy</span>
+                        </button>
+                        <button class="size-8 rounded-full glass-card flex items-center justify-center active:bg-white/20">
+                            <span class="material-symbols-outlined text-white/80 text-lg">share</span>
+                        </button>
+                    </div>
+                </div>
+                <h4 class="text-accent font-bold text-sm mb-1 uppercase tracking-tight">Dua for Laylatul Qadr</h4>
+                <p class="text-white/60 text-[10px] mb-3">Night of Power</p>
+                <p class="text-white text-xl text-right font-serif leading-relaxed mb-4" dir="rtl">اللَّهُمَّ إِنَّكَ عَفُوٌّ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي</p>
+                <p class="text-white/80 text-xs italic leading-relaxed">"O Allah, You are Forgiving and love forgiveness, so forgive me."</p>
+            </div>
+        </div>
+    </div>
+    <nav class="fixed bottom-0 left-0 right-0 glass-card border-t border-white/10 px-6 py-3 pb-8 z-50 rounded-t-3xl">
+        <div class="flex items-center justify-between max-w-sm mx-auto">
+            <a class="flex flex-col items-center gap-1 group" href="#">
+                <span class="material-symbols-outlined text-white/40 group-hover:text-primary">home</span>
+                <span class="text-[10px] font-bold text-white/40 group-hover:text-primary">Home</span>
+            </a>
+            <a class="flex flex-col items-center gap-1 group" href="#">
+                <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1">calendar_today</span>
+                <span class="text-[10px] font-bold text-primary">Calendar</span>
+            </a>
+            <div class="flex flex-col items-center -mt-10">
+                <div class="size-14 bg-primary rounded-full flex items-center justify-center shadow-[0_8px_24px_rgba(25,230,107,0.4)] border-4 border-background-dark">
+                    <span class="material-symbols-outlined text-black font-bold">explore</span>
+                </div>
+                <span class="text-[10px] font-bold text-white/60 mt-1">Qibla</span>
+            </div>
+            <a class="flex flex-col items-center gap-1 group" href="#">
+                <span class="material-symbols-outlined text-white/40 group-hover:text-primary">menu_book</span>
+                <span class="text-[10px] font-bold text-white/40 group-hover:text-primary">Quran</span>
+            </a>
+            <a class="flex flex-col items-center gap-1 group" href="#">
+                <span class="material-symbols-outlined text-white/40 group-hover:text-primary">settings</span>
+                <span class="text-[10px] font-bold text-white/40 group-hover:text-primary">Settings</span>
+            </a>
+        </div>
+    </nav>
+    <div class="fixed bottom-1.5 left-1/2 -translate-x-1/2 w-32 h-1 bg-white/20 rounded-full z-[60]"></div>
+</div>
+
+</body></html>

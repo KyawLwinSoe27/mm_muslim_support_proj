@@ -22,6 +22,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final sharedPrefs = SharedPreferenceService();
   await sharedPrefs.init();
+  if(SharedPreferenceService.getFirstOpen() ?? true) {
+    SharedPreferenceService.setFirstOpen(false);
+    await SharedPreferenceService.setHijriOffset(-1);
+  }
   LocalNotificationService().initNotification();
   await PermissionService.requestNotificationPermission();
   await getLocationFromDevice();
