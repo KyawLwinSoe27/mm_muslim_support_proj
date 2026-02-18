@@ -42,7 +42,6 @@ class _NotificationPageState extends State<NotificationPage> {
           );
           TZDateTime scheduledDate = TZDateTime.from(selectedDateTime!, local);
           await LocalNotificationService().scheduleNotification(
-            context: context,
             id: selectedDateTime?.millisecond ?? 0,
             title: 'Alarm',
             body:

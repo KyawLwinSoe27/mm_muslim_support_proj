@@ -20,6 +20,7 @@ class AlarmCubit extends Cubit<AlarmState> {
   Future<void> _initialize() async {
     await _notiService.initNotification();
     loadAlarms();
+    await rescheduleAllEnabledAlarms(); // 🔥 Important
   }
 
   void loadAlarms() {
@@ -38,31 +39,83 @@ class AlarmCubit extends Cubit<AlarmState> {
   void toggleAlarm(Prayer prayer, bool value) async {
     _savePreference(prayer, value);
 
-    // Schedule or cancel notification
     if (value) {
-      final prayerTimes = GetPrayerTimeService.getPrayerTimes();
-      DateTime? scheduledTime;
-
-      if (prayer == Prayer.sehri) {
-        scheduledTime = prayerTimes.sehri;
-      } else {
-        scheduledTime = _getPrayerTime(prayerTimes, prayer);
-      }
-
-      if (scheduledTime != null) {
-        await _notiService.scheduleNotification(
-          context: _context!,
-          id: prayer.index,
-          title: prayer.name.toUpperCase(),
-          body: 'It\'s time for ${prayer.name.toUpperCase()}',
-          scheduledDate: tz.TZDateTime.from(scheduledTime, tz.local),
-        );
-      }
+      await _schedulePrayer(prayer);
     } else {
       await _notiService.cancelNotificationById(prayer.index);
     }
 
     loadAlarms();
+  }
+
+  Future<void> _schedulePrayer(Prayer prayer) async {
+    final prayerTimes = GetPrayerTimeService.getPrayerTimes();
+    DateTime? time = _getPrayerTime(prayerTimes, prayer);
+
+    if (time == null) return;
+
+    // 🔥 If time already passed, schedule tomorrow
+    if (time.isBefore(DateTime.now())) {
+      final tomorrowTimes = GetPrayerTimeService.getPrayerTimes(
+        dateTime: DateTime.now().add(const Duration(days: 1)),
+      );
+
+      time = _getPrayerTime(tomorrowTimes, prayer);
+    }
+
+    if (time == null) return;
+
+    await _notiService.scheduleNotification(
+      id: prayer.index,
+      title: prayer.name.toUpperCase(),
+      body: "It's time for ${prayer.name.toUpperCase()}",
+      scheduledDate: tz.TZDateTime.from(time, tz.local),
+    );
+  }
+
+  Future<void> rescheduleAllEnabledAlarms() async {
+    for (var prayer in Prayer.values) {
+      await _notiService.cancelNotificationById(prayer.index);
+
+      final enabled = _getSavedAlarmValue(prayer);
+      if (enabled) {
+        await _schedulePrayer(prayer);
+      }
+    }
+  }
+
+  bool _getSavedAlarmValue(Prayer prayer) {
+    switch (prayer) {
+      case Prayer.sehri:
+        return SharedPreferenceService.getSehriAlarm() ?? false;
+      case Prayer.fajr:
+        return SharedPreferenceService.getFajrAlarm() ?? false;
+      case Prayer.dhur:
+        return SharedPreferenceService.getDhuhrAlarm() ?? false;
+      case Prayer.asr:
+        return SharedPreferenceService.getAsrAlarm() ?? false;
+      case Prayer.maghrib:
+        return SharedPreferenceService.getMaghribAlarm() ?? false;
+      case Prayer.isha:
+        return SharedPreferenceService.getIshaAlarm() ?? false;
+    }
+  }
+
+  DateTime? _getPrayerTime(PrayerTimes prayerTimes, Prayer prayer) {
+    switch (prayer) {
+      case Prayer.sehri:
+        return prayerTimes.sehri;
+      case Prayer.fajr:
+        return prayerTimes.fajrStartTime;
+      case Prayer.dhur:
+        return prayerTimes.dhuhrStartTime;
+      case Prayer.asr:
+        return prayerTimes.asrStartTime;
+      case Prayer.maghrib:
+        return prayerTimes.maghribStartTime;
+      case Prayer.isha:
+        return prayerTimes.ishaStartTime;
+    }
   }
 
   void _savePreference(Prayer prayer, bool value) {
@@ -86,28 +139,5 @@ class AlarmCubit extends Cubit<AlarmState> {
         SharedPreferenceService.setIshaAlarm(value);
         break;
     }
-  }
-
-  DateTime? _getPrayerTime(PrayerTimes prayerTimes, Prayer prayer) {
-    switch (prayer) {
-      case Prayer.sehri:
-        return prayerTimes.sehri;
-      case Prayer.fajr:
-        return prayerTimes.fajrStartTime;
-      case Prayer.dhur:
-        return prayerTimes.dhuhrStartTime;
-      case Prayer.asr:
-        return prayerTimes.asrStartTime;
-      case Prayer.maghrib:
-        return prayerTimes.maghribStartTime;
-      case Prayer.isha:
-        return prayerTimes.ishaStartTime;
-      }
-  }
-
-  BuildContext? _context;
-
-  void setContext(BuildContext context) {
-    _context = context;
   }
 }

@@ -13,7 +13,7 @@ class AlarmPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => AlarmCubit()..setContext(context),
+      create: (_) => AlarmCubit(),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Prayer Alarm Settings'),

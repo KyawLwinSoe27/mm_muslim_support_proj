@@ -108,7 +108,6 @@ class LocalNotificationService {
   // }
 
   Future<void> scheduleNotification({
-    required BuildContext context,
     required int id,
     required String title,
     required String body,
@@ -127,34 +126,12 @@ class LocalNotificationService {
         notificationDetail,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
-        androidScheduleMode: AndroidScheduleMode.alarmClock,
-        matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
+        androidScheduleMode: AndroidScheduleMode.alarmClock
       );
-
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'Notification scheduled for ${scheduledDate.toLocal()}',
-            ),
-            backgroundColor: Colors.green,
-          ),
-        );
-      }
       FirebaseCrashlytics.instance.log(
         'Scheduled notification with ID $id at $scheduledDate',
       );
     } catch (e) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to schedule notification: $e'),
-            backgroundColor: Colors.red,
-            duration: const Duration(minutes: 5),
-          ),
-        );
-      }
-
       FirebaseCrashlytics.instance.log(
         'Scheduled notification with ID $id at $scheduledDate. The error is $e',
       );
