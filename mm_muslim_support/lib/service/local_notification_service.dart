@@ -1,5 +1,4 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mm_muslim_support/service/function_service.dart';
 import 'package:mm_muslim_support/service/shared_preference_service.dart';
@@ -67,9 +66,10 @@ class LocalNotificationService {
 
   static AndroidNotificationDetails androidPlatformChannelSpecifics =
       const AndroidNotificationDetails(
-        'your_channel_id',
-        'your_channel_name',
-        channelDescription: 'your_channel_description',
+        'azan_prayer_channel',
+        'Prayer Time Notifications',
+        channelDescription:
+        'Notifications for prayer times with Azan sound',
         importance: Importance.max,
         priority: Priority.max,
         playSound: true,
