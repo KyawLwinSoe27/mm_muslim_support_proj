@@ -37,7 +37,7 @@ class CompassCustomPainter extends CustomPainter {
 
     Paint darkIndexLine =
         Paint()
-          ..color = Colors.grey[700]!
+          ..color = Colors.grey.shade700
           ..strokeWidth = 6
           ..strokeCap = StrokeCap.round;
 

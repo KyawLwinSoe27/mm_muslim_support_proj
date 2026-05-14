@@ -1,10 +1,11 @@
-import 'dart:ui';
+import 'dart:ui' show Color;
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mm_muslim_support/core/enums/custom_date_format.dart';
 import 'package:mm_muslim_support/core/enums/prayer.dart';
+import 'package:mm_muslim_support/core/helpers/prayer_helper.dart';
 import 'package:mm_muslim_support/model/custom_prayer_time.dart';
 import 'package:mm_muslim_support/model/prayer_calculation_method.dart';
 import 'package:mm_muslim_support/model/prayer_time_card.dart';
@@ -12,6 +13,7 @@ import 'package:mm_muslim_support/service/location_service.dart';
 import 'package:mm_muslim_support/service/log_service.dart';
 import 'package:mm_muslim_support/service/shared_preference_service.dart';
 import 'package:mm_muslim_support/utility/date_utils.dart';
+import 'package:mm_muslim_support/utility/image_constants.dart';
 import 'package:prayers_times/prayers_times.dart';
 part 'get_prayer_time_state.dart';
 
@@ -22,7 +24,7 @@ class GetPrayerTimeCubit extends Cubit<GetPrayerTimeState> {
   /*                    PUBLIC API                    */
   /* ------------------------------------------------ */
 
-  Future<void> getPrayerTime() async {
+  Future<void> fetchPrayerTimes() async {
     emit(GetPrayerTimeLoading());
 
     try {
@@ -66,8 +68,8 @@ class GetPrayerTimeCubit extends Cubit<GetPrayerTimeState> {
 
   List<PrayerTimeCard> _buildPrayerCards(PrayerTimes times) {
     final list = <PrayerTimeCard>[
-      _staticCard('Sehri', times.sehri),
-      _staticCard('Iftari', times.maghribStartTime),
+      _staticCard('Sehri', times.sehri, ImageConstants.sehri),
+      _staticCard('Iftari', times.maghribStartTime, ImageConstants.iftar),
     ];
 
     list.addAll(_currentAndNextCards(times));
@@ -80,9 +82,10 @@ class GetPrayerTimeCubit extends Cubit<GetPrayerTimeState> {
       return CustomPrayerTime(
         dateTime: times.date,
         prayerName: prayer,
-        prayerTime:
-        DateUtility.DateTimeToString(time!, CustomDateFormat.timeOnly),
-        prayerDateTime: time,
+        prayerTime: time != null
+            ? DateUtility.DateTimeToString(time, CustomDateFormat.timeOnly)
+            : '--:--',
+        prayerDateTime: time ?? times.date,
         enableNotify: _getAlarmStatus(prayer),
       );
     }).toList();
@@ -135,22 +138,8 @@ class GetPrayerTimeCubit extends Cubit<GetPrayerTimeState> {
   /*                TIME HELPERS                      */
   /* ------------------------------------------------ */
 
-  DateTime? _getStartTime(PrayerTimes times, Prayer prayer) {
-    switch (prayer) {
-      case Prayer.sehri:
-        return times.sehri;
-      case Prayer.fajr:
-        return times.fajrStartTime;
-      case Prayer.dhur:
-        return times.dhuhrStartTime;
-      case Prayer.asr:
-        return times.asrStartTime;
-      case Prayer.maghrib:
-        return times.maghribStartTime;
-      case Prayer.isha:
-        return times.ishaStartTime;
-    }
-  }
+  DateTime? _getStartTime(PrayerTimes times, Prayer prayer) =>
+      getPrayerTime(times, prayer);
 
   DateTime? _getEndTime(PrayerTimes times, String? prayerName) {
     switch (prayerName) {
@@ -176,11 +165,29 @@ class GetPrayerTimeCubit extends Cubit<GetPrayerTimeState> {
   /*                CARD BUILDERS                     */
   /* ------------------------------------------------ */
 
-  PrayerTimeCard _staticCard(String title, DateTime? time) {
+  String _getPrayerImage(String? prayerName) {
+    if (prayerName == null) return ImageConstants.kaaba;
+    switch (prayerName.toLowerCase()) {
+      case 'fajr':
+        return ImageConstants.fajr;
+      case 'dhuhr':
+        return ImageConstants.dhuhr;
+      case 'asr':
+        return 'assets/images/asr.png';
+      case 'maghrib':
+        return 'assets/images/magrib.png';
+      case 'isha':
+        return ImageConstants.isha;
+      default:
+        return ImageConstants.kaaba;
+    }
+  }
+
+  PrayerTimeCard _staticCard(String title, DateTime? time, String imagePath) {
     return PrayerTimeCard(
       title: title,
       time: _format(time),
-      image: '',
+      image: imagePath,
       gradientColors: const [
         Color(0xFF00A86B),
         Color(0xFFDAF7DC),
@@ -201,7 +208,7 @@ class GetPrayerTimeCubit extends Cubit<GetPrayerTimeState> {
           title: 'Current',
           subtitle: current,
           time: 'End ${_format(end)}',
-          image: '',
+          image: _getPrayerImage(current),
           gradientColors: const [
             Color(0xFF00A86B),
             Color(0xFFDAF7DC),
@@ -221,7 +228,7 @@ class GetPrayerTimeCubit extends Cubit<GetPrayerTimeState> {
           title: 'Coming',
           subtitle: next,
           time: 'Start ${_format(start)}',
-          image: '',
+          image: _getPrayerImage(next),
           gradientColors: const [
             Color(0xFF6CA6CD),
             Color(0xFFB0E0E6),
@@ -237,45 +244,11 @@ class GetPrayerTimeCubit extends Cubit<GetPrayerTimeState> {
   /*                ALARM HANDLING                    */
   /* ------------------------------------------------ */
 
-  bool _getAlarmStatus(Prayer prayer) {
-    switch (prayer) {
-      case Prayer.sehri:
-        return SharedPreferenceService.getSehriAlarm() ?? false;
-      case Prayer.fajr:
-        return SharedPreferenceService.getFajrAlarm() ?? false;
-      case Prayer.dhur:
-        return SharedPreferenceService.getDhuhrAlarm() ?? false;
-      case Prayer.asr:
-        return SharedPreferenceService.getAsrAlarm() ?? false;
-      case Prayer.maghrib:
-        return SharedPreferenceService.getMaghribAlarm() ?? false;
-      case Prayer.isha:
-        return SharedPreferenceService.getIshaAlarm() ?? false;
-    }
-  }
+  bool _getAlarmStatus(Prayer prayer) =>
+      getPrayerAlarmValue(prayer);
 
-  void _setAlarmStatus(Prayer prayer, bool value) {
-    switch (prayer) {
-      case Prayer.sehri:
-        SharedPreferenceService.setSehriAlarm(value);
-        break;
-      case Prayer.fajr:
-        SharedPreferenceService.setFajrAlarm(value);
-        break;
-      case Prayer.dhur:
-        SharedPreferenceService.setDhuhrAlarm(value);
-        break;
-      case Prayer.asr:
-        SharedPreferenceService.setAsrAlarm(value);
-        break;
-      case Prayer.maghrib:
-        SharedPreferenceService.setMaghribAlarm(value);
-        break;
-      case Prayer.isha:
-        SharedPreferenceService.setIshaAlarm(value);
-        break;
-    }
-  }
+  void _setAlarmStatus(Prayer prayer, bool value) =>
+      setPrayerAlarmValue(prayer, value);
 
   /* ------------------------------------------------ */
   /*                    LOGGER                        */

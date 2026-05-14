@@ -11,58 +11,66 @@ class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      padding: const EdgeInsets.only(bottom: 20),
       child: Column(
         children: [
           const PrayerTimeGrid(),
-          const SizedBox(height: 20),
+          const SizedBox(height: 16),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: _SectionHeader(title: 'Daily Dua', icon: Icons.menu_book_rounded),
+          ),
+          const SizedBox(height: 8),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: BlocProvider(
               create: (context) => DailyQuranDuaCubit(dailyDuaList),
               child: BlocBuilder<DailyQuranDuaCubit, DailyQuranDuaModel>(
-                builder: (context, state) {
-                  return DailyQuranDuaWidget(
-                    title: 'Daily Dua',
-                    dailyQuranDuaModel: state,
-                  );
-                },
+                builder: (context, state) => DailyQuranDuaWidget(
+                  title: 'Daily Dua',
+                  dailyQuranDuaModel: state,
+                ),
               ),
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 20),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: _SectionHeader(title: 'Daily Quran Verse', icon: Icons.auto_stories_rounded),
+          ),
+          const SizedBox(height: 8),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: BlocProvider(
               create: (context) => DailyQuranDuaCubit(dailyQuranList),
               child: BlocBuilder<DailyQuranDuaCubit, DailyQuranDuaModel>(
-                builder: (context, state) {
-                  return DailyQuranDuaWidget(
-                    title: 'Daily Quran Verse',
-                    dailyQuranDuaModel: state,
-                  );
-                },
+                builder: (context, state) => DailyQuranDuaWidget(
+                  title: 'Daily Quran Verse',
+                  dailyQuranDuaModel: state,
+                ),
               ),
             ),
           ),
-          // const SizedBox(height: 20),
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          //   child: Row(
-          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //     children: [
-          //       Text('History Articles', style: context.textTheme.titleMedium,),
-          //       TextButtonWidget(text: 'See All', onPressed: () => context.navigateWithPushNamed(IslamicHistoryPage.routeName),),
-          //     ],
-          //   ),
-          // ),
-          // const SizedBox(height: 10),
-          // Column(
-          //   mainAxisSize: MainAxisSize.min,
-          //   crossAxisAlignment: CrossAxisAlignment.start,
-          //   children: historicalEvents.map((event) => IslamicHistoryWidget(event: event )).toList(),
-          // )
         ],
       ),
+    );
+  }
+}
+
+class _SectionHeader extends StatelessWidget {
+  final String title;
+  final IconData icon;
+  const _SectionHeader({required this.title, required this.icon});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Row(
+      children: [
+        Icon(icon, size: 20, color: theme.colorScheme.primary),
+        const SizedBox(width: 8),
+        Text(title, style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
+      ],
     );
   }
 }
