@@ -42,10 +42,12 @@ extension ContextExt on BuildContext {
     String routeName, {
     Object? extra,
   }) {
-    while (Navigator.of(this).canPop()) {
-      back();
-    }
-    pushReplacementNamed(routeName, extra: extra);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      while (Navigator.of(this).canPop()) {
+        back();
+      }
+      pushReplacementNamed(routeName, extra: extra);
+    });
   }
 
   Future<T?> navigateAndRemoveCurrent<T extends Object?>(

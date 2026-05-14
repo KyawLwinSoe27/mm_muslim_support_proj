@@ -46,10 +46,11 @@ class _CompassPageState extends State<CompassPage> {
                   return const Center(child: CircularProgressIndicator());
                 }
 
-                double? direction = snapshot.data!.heading;
-                if (direction == null) {
+                final heading = snapshot.data?.heading;
+                if (heading == null) {
                   return const Center(child: Text('Device does not have compass sensor.'));
                 }
+                final direction = heading;
 
                 final normalizedDirection = (direction + 360) % 360;
 

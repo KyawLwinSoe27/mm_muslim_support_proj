@@ -14,8 +14,14 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
   bool isFinished = false;
   QuranSongModel? currentSong;
 
-  void setCurrentSurah(QuranSongModel quranSongModel) {
+  void setCurrentSurah(QuranSongModel? quranSongModel) {
     currentSong = quranSongModel;
+  }
+
+  Future<void> stopAndClear() async {
+    await audioHandler.stop();
+    setCurrentSurah(null);
+    emit(const AudioPlayerState.initial());
   }
 
   void seek(Duration position) {
@@ -25,11 +31,14 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
 
   Future<void> setAudio(QuranSongModel surah) async {
     setCurrentSurah(surah);
+    final song = currentSong;
+    if (song == null) return;
+
     final MediaItem? mediaItem = await audioHandler.mediaItem.first;
     final PlaybackState playbackState = await audioHandler.playbackState.first;
 
     final String? currentSongId = mediaItem?.id;
-    final String targetSongId = currentSong!.number.toString();
+    final String targetSongId = song.number.toString();
 
     if (currentSongId != null && currentSongId == targetSongId) {
       _listenToPlaybackState();
@@ -42,7 +51,7 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
             position: playbackState.position,
             buffered: playbackState.bufferedPosition,
             name: mediaItem?.title,
-            currentSurahId: currentSong!.number,
+            currentSurahId: song.number,
           ),
         );
       }
@@ -54,13 +63,13 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
     if (!isClosed) {
       emit(
         state.copyWith(
-          name: 'Surah ${currentSong!.name}',
-          currentSurahId: currentSong!.number,
+          name: 'Surah ${song.name}',
+          currentSurahId: song.number,
         ),
       );
     }
 
-    await audioHandler.setUrl(currentSong!);
+    await audioHandler.setUrl(song);
     _listenToPlaybackState();
     _startPositionTimer();
   }
@@ -79,8 +88,10 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
 
       if (isCompleted && !isFinished) {
         isFinished = true;
-        currentSong = surahList[state.currentSurahId];
-        await setAudio(currentSong!);
+        final index = (state.currentSurahId - 1).clamp(0, surahList.length - 1);
+        final nextSong = surahList[index];
+        currentSong = nextSong;
+        await setAudio(nextSong);
         await audioHandler.play();
         isFinished = false;
       }

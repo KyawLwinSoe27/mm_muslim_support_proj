@@ -128,13 +128,9 @@ class LocalNotificationService {
             UILocalNotificationDateInterpretation.absoluteTime,
         androidScheduleMode: AndroidScheduleMode.alarmClock
       );
-      FirebaseCrashlytics.instance.log(
-        'Scheduled notification with ID $id at $scheduledDate',
-      );
+      try { FirebaseCrashlytics.instance.log('Scheduled notification with ID $id at $scheduledDate'); } catch (_) {}
     } catch (e) {
-      FirebaseCrashlytics.instance.log(
-        'Scheduled notification with ID $id at $scheduledDate. The error is $e',
-      );
+      try { FirebaseCrashlytics.instance.log('Scheduled notification with ID $id at $scheduledDate. The error is $e'); } catch (_) {}
     }
   }
 

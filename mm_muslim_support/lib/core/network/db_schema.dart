@@ -33,3 +33,20 @@ class PrayerTimeTableSchema {
     )
   ''';
 }
+
+class PrayerTrackerTable {
+  static const String tableName = 'prayer_tracker';
+  static const String id = 'id';
+  static const String prayerName = 'prayer_name';
+  static const String date = 'date';
+  static const String performed = 'performed';
+
+  static const String createTable = '''
+    CREATE TABLE $tableName (
+      $id INTEGER PRIMARY KEY AUTOINCREMENT,
+      $prayerName TEXT NOT NULL,
+      $date TEXT NOT NULL,
+      $performed INTEGER NOT NULL DEFAULT 0
+    )
+  ''';
+}

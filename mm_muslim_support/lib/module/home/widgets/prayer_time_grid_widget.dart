@@ -7,28 +7,27 @@ class PrayerTimeGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return BlocProvider(
-      create: (context) => GetPrayerTimeCubit()..getPrayerTime(),
+      create: (context) => GetPrayerTimeCubit()..fetchPrayerTimes(),
       child: BlocBuilder<GetPrayerTimeCubit, GetPrayerTimeState>(
-        buildWhen: (prev, current) {
-          return current is GetPrayerTimeLoading ||
-              current is GetPrayerTimeLoaded ||
-              current is GetPrayerTimeError;
-        },
+        buildWhen: (prev, current) =>
+            current is GetPrayerTimeLoading ||
+            current is GetPrayerTimeLoaded ||
+            current is GetPrayerTimeError,
         builder: (context, state) {
           if (state is GetPrayerTimeLoaded) {
             return SizedBox(
-              height: state.prayerTimes.length > 2 ? 300 : 150,
-              width: double.infinity,
+              height: state.prayerTimes.length > 2 ? 310 : 160,
               child: GridView.builder(
                 physics: const NeverScrollableScrollPhysics(),
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 itemCount: state.prayerTimes.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  mainAxisSpacing: 12,
-                  crossAxisSpacing: 12,
-                  childAspectRatio: 1.3,
+                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 16,
+                  childAspectRatio: 1.25,
                 ),
                 itemBuilder: (context, index) {
                   final card = state.prayerTimes[index];
@@ -36,44 +35,81 @@ class PrayerTimeGrid extends StatelessWidget {
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: card.gradientColors,
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
                       ),
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(24),
+                      boxShadow: [
+                        BoxShadow(
+                          color: card.gradientColors[0].withValues(alpha: 0.3),
+                          blurRadius: 12,
+                          offset: const Offset(0, 6),
+                        ),
+                      ],
                     ),
-                    padding: const EdgeInsets.all(12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    clipBehavior: Clip.antiAlias,
+                    child: Stack(
                       children: [
-                        Text(
-                          card.title,
-                          style: Theme.of(
-                            context,
-                          ).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
+                        // Background image decorator
+                        Positioned(
+                          right: -10,
+                          bottom: -10,
+                          child: Opacity(
+                            opacity: 0.15,
+                            child: Image.asset(
+                              card.image,
+                              width: 90,
+                              height: 90,
+                              fit: BoxFit.contain,
+                            ),
                           ),
                         ),
-                        Text(
-                          card.subtitle ?? card.time,
-                          style: Theme.of(
-                            context,
-                          ).textTheme.headlineSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
+                        
+                        // Content
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    card.title,
+                                    style: theme.textTheme.titleMedium?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  Icon(
+                                    Icons.access_time_rounded,
+                                    color: Colors.white.withValues(alpha: 0.7),
+                                    size: 20,
+                                  ),
+                                ],
+                              ),
+                              const Spacer(),
+                              Text(
+                                card.time,
+                                style: theme.textTheme.headlineSmall?.copyWith(
+                                  fontWeight: FontWeight.w800,
+                                  color: Colors.white,
+                                  letterSpacing: 0.5,
+                                ),
+                              ),
+                              if (card.subtitle != null) ...[
+                                const SizedBox(height: 4),
+                                Text(
+                                  card.subtitle!,
+                                  style: theme.textTheme.bodySmall?.copyWith(
+                                    color: Colors.white.withValues(alpha: 0.8),
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ],
                           ),
                         ),
-                        const Spacer(),
-                        if (card.image.isNotEmpty)
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: Image.asset(card.image, height: 48),
-                          ),
-                        if (card.subtitle != null)
-                          Text(
-                            card.time,
-                            style: const TextStyle(color: Colors.black),
-                          ),
                       ],
                     ),
                   );
@@ -81,12 +117,31 @@ class PrayerTimeGrid extends StatelessWidget {
               ),
             );
           } else if (state is GetPrayerTimeLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return const SizedBox(
+              height: 200,
+              child: Center(child: CircularProgressIndicator()),
+            );
           } else if (state is GetPrayerTimeError) {
-            return const Center(child: Text('Error loading prayer times'));
-          } else {
-            return const Center(child: Text('No prayer times available'));
+            return Padding(
+              padding: const EdgeInsets.all(16),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.cloud_off_rounded, size: 48, color: theme.colorScheme.error),
+                    const SizedBox(height: 12),
+                    Text(
+                      'Unable to load prayer times',
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        color: theme.colorScheme.error,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
           }
+          return const SizedBox.shrink();
         },
       ),
     );

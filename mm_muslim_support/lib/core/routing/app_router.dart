@@ -6,18 +6,19 @@ import 'package:mm_muslim_support/common/cubit/hijri_offset_cubit.dart';
 import 'package:mm_muslim_support/core/enums/folder.dart';
 import 'package:mm_muslim_support/model/quran_song_model.dart';
 import 'package:mm_muslim_support/model/tasbih_model.dart';
-import 'package:mm_muslim_support/module/history/presentations/history_timeline_page.dart';
-import 'package:mm_muslim_support/module/history/presentations/islamic_history_page.dart';
+import 'package:mm_muslim_support/data/islamic_history_events.dart';
+import 'package:mm_muslim_support/module/history/presentation/history_timeline_page.dart';
+import 'package:mm_muslim_support/module/history/presentation/islamic_history_page.dart';
 import 'package:mm_muslim_support/module/home/cubit/bottom_navigation_bar_cubit.dart';
 import 'package:mm_muslim_support/module/home/cubit/get_hijri_date_cubit/get_hijri_date_cubit.dart';
 import 'package:mm_muslim_support/module/home/presentation/alarm_page.dart';
 import 'package:mm_muslim_support/module/home/presentation/notification_report_page.dart';
-import 'package:mm_muslim_support/module/ramadan/presentations/avoid_overeacting_page.dart';
-import 'package:mm_muslim_support/module/ramadan/presentations/charity_and_sadaqah_page.dart';
-import 'package:mm_muslim_support/module/ramadan/presentations/healty_suhoor_page.dart';
-import 'package:mm_muslim_support/module/ramadan/presentations/hydrate_often_page.dart';
-import 'package:mm_muslim_support/module/ramadan/presentations/taraweeh_page.dart';
-import 'package:mm_muslim_support/module/tasbih/cubits/tasbih_counter_cubit.dart';
+import 'package:mm_muslim_support/module/ramadan/presentation/avoid_overeating_page.dart';
+import 'package:mm_muslim_support/module/ramadan/presentation/charity_and_sadaqah_page.dart';
+import 'package:mm_muslim_support/module/ramadan/presentation/healthy_suhoor_page.dart';
+import 'package:mm_muslim_support/module/ramadan/presentation/hydrate_often_page.dart';
+import 'package:mm_muslim_support/module/ramadan/presentation/taraweeh_page.dart';
+import 'package:mm_muslim_support/module/tasbih/cubit/tasbih_counter_cubit.dart';
 import 'package:mm_muslim_support/module/home/presentation/home_page.dart';
 import 'package:mm_muslim_support/module/menu/cubit/get_prayer_calculation_method_cubit.dart';
 import 'package:mm_muslim_support/module/menu/presentation/about_us_screen.dart';
@@ -25,15 +26,17 @@ import 'package:mm_muslim_support/module/menu/presentation/compass_page.dart';
 import 'package:mm_muslim_support/module/menu/presentation/donate_us_screen.dart';
 import 'package:mm_muslim_support/module/menu/presentation/logs_page.dart';
 import 'package:mm_muslim_support/module/menu/presentation/prayer_time_setting_page.dart';
-import 'package:mm_muslim_support/module/notification/presentations/notification_page.dart';
+import 'package:mm_muslim_support/module/notification/presentation/notification_page.dart';
 import 'package:mm_muslim_support/module/quran/bloc/audio_player_cubit/audio_player_cubit.dart';
 import 'package:mm_muslim_support/module/quran/cubit/book_mark_cubit/book_mark_cubit.dart';
-import 'package:mm_muslim_support/module/quran/presentations/quran_list_page.dart';
-import 'package:mm_muslim_support/module/quran/presentations/quran_screen.dart';
-import 'package:mm_muslim_support/module/quran/presentations/surah_listen_list.dart';
-import 'package:mm_muslim_support/module/quran/presentations/surah_listen_page.dart';
+import 'package:mm_muslim_support/module/quran/presentation/quran_list_page.dart';
+import 'package:mm_muslim_support/module/quran/presentation/quran_screen.dart';
+import 'package:mm_muslim_support/module/quran/presentation/surah_listen_list.dart';
+import 'package:mm_muslim_support/module/quran/presentation/surah_listen_page.dart';
+import 'package:mm_muslim_support/module/home/presentation/prayer_tracker_page.dart';
+import 'package:mm_muslim_support/module/quran/presentation/allah_names_page.dart';
 import 'package:mm_muslim_support/module/stay_tuned_page.dart';
-import 'package:mm_muslim_support/module/tasbih/presentations/tasbih_page.dart';
+import 'package:mm_muslim_support/module/tasbih/presentation/tasbih_page.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
@@ -149,9 +152,6 @@ class AppRouter {
           return MultiBlocProvider(
             providers: [
               BlocProvider(
-                create: (_) => AudioPlayerCubit()..setAudio(quranSongModel),
-              ),
-              BlocProvider(
                 create:
                     (context) =>
                         DownloadFileBloc()..add(
@@ -162,7 +162,16 @@ class AppRouter {
                         ),
               ),
             ],
-            child: SurahListenPageContent(quranSongModel: quranSongModel),
+            child: Builder(
+              builder: (context) {
+                // Set audio if it's different from the currently playing one
+                final currentAudio = context.read<AudioPlayerCubit>().currentSong;
+                if (currentAudio?.number != quranSongModel.number) {
+                  context.read<AudioPlayerCubit>().setAudio(quranSongModel);
+                }
+                return SurahListenPageContent(quranSongModel: quranSongModel);
+              }
+            ),
           );
         },
       ),
@@ -231,138 +240,18 @@ class AppRouter {
         name: HistoryTimelinePage.routeName,
         path: '/history_timeline',
         builder: (context, state) {
-          final List<HistoryEvent> islamicHistoryEvents = [
-            HistoryEvent(
-              id: '1',
-              title: 'Birth of Prophet Muhammad ﷺ',
-              description: 'Prophet Muhammad ﷺ was born in Mecca in the Year of the Elephant.',
-              startDate: DateTime(570),
-              imageUrl: 'assets/images/birth_prophet.png',
-            ),
-            HistoryEvent(
-              id: '2',
-              title: 'First Revelation',
-              description: 'Prophet Muhammad ﷺ received the first revelation in Cave Hira.',
-              startDate: DateTime(610),
-            ),
-            HistoryEvent(
-              id: '3',
-              title: 'Start of Da’wah',
-              description: 'Prophet ﷺ began publicly calling people to Islam.',
-              startDate: DateTime(613),
-            ),
-            HistoryEvent(
-              id: '4',
-              title: 'Migration to Abyssinia',
-              description: 'Some Muslims migrated to Abyssinia to escape persecution.',
-              startDate: DateTime(615),
-            ),
-            HistoryEvent(
-              id: '5',
-              title: 'Isra and Mi’raj',
-              description: 'Prophet ﷺ traveled to Jerusalem and ascended to the heavens.',
-              startDate: DateTime(620),
-            ),
-            HistoryEvent(
-              id: '6',
-              title: 'Hijrah (Migration to Medina)',
-              description: 'The Prophet ﷺ and companions migrated from Mecca to Medina.',
-              startDate: DateTime(622),
-            ),
-            HistoryEvent(
-              id: '7',
-              title: 'Battle of Badr',
-              description: 'First major battle between Muslims and Quraysh.',
-              startDate: DateTime(624),
-            ),
-            HistoryEvent(
-              id: '8',
-              title: 'Battle of Uhud',
-              description: 'Second battle between Muslims and Quraysh in Medina.',
-              startDate: DateTime(625),
-            ),
-            HistoryEvent(
-              id: '9',
-              title: 'Battle of the Trench',
-              description: 'Muslims defended Medina with a trench during siege by Quraysh.',
-              startDate: DateTime(627),
-            ),
-            HistoryEvent(
-              id: '10',
-              title: 'Treaty of Hudaybiyyah',
-              description: 'Peace treaty between Muslims and Quraysh of Mecca.',
-              startDate: DateTime(628),
-            ),
-            HistoryEvent(
-              id: '11',
-              title: 'Conquest of Mecca',
-              description: 'Prophet ﷺ peacefully conquered Mecca.',
-              startDate: DateTime(630),
-            ),
-            HistoryEvent(
-              id: '12',
-              title: 'Farewell Pilgrimage',
-              description: 'Prophet ﷺ performed his final pilgrimage to Mecca.',
-              startDate: DateTime(632),
-            ),
-            HistoryEvent(
-              id: '13',
-              title: 'Death of Prophet Muhammad ﷺ',
-              description: 'The Prophet ﷺ passed away in Medina.',
-              startDate: DateTime(632),
-            ),
-            HistoryEvent(
-              id: '14',
-              title: 'Caliph Abu Bakr ﷺ',
-              description: 'Abu Bakr became the first caliph after Prophet ﷺ.',
-              startDate: DateTime(632),
-              endDate: DateTime(634),
-            ),
-            HistoryEvent(
-              id: '15',
-              title: 'Caliph Umar ibn al-Khattab ﷺ',
-              description: 'Second caliph, expanded the Islamic state significantly.',
-              startDate: DateTime(634),
-              endDate: DateTime(644),
-            ),
-            HistoryEvent(
-              id: '16',
-              title: 'Caliph Uthman ibn Affan ﷺ',
-              description: 'Third caliph, known for compilation of the Quran.',
-              startDate: DateTime(644),
-              endDate: DateTime(656),
-            ),
-            HistoryEvent(
-              id: '17',
-              title: 'Caliph Ali ibn Abi Talib ﷺ',
-              description: 'Fourth caliph, known for wisdom and justice.',
-              startDate: DateTime(656),
-              endDate: DateTime(661),
-            ),
-            HistoryEvent(
-              id: '18',
-              title: 'Foundation of Baghdad',
-              description: 'Abbasid Caliphate established Baghdad as its capital.',
-              startDate: DateTime(762),
-            ),
-            HistoryEvent(
-              id: '19',
-              title: 'Golden Age of Islam',
-              description: 'Flourishing of science, medicine, literature, and philosophy.',
-              startDate: DateTime(800),
-              endDate: DateTime(1258),
-            ),
-            HistoryEvent(
-              id: '20',
-              title: 'Mongol Siege of Baghdad',
-              description: 'End of Abbasid Caliphate after Mongol invasion.',
-              startDate: DateTime(1258),
-            ),
-          ];
-
           return HistoryTimelinePage(events: islamicHistoryEvents);
-
         },
+      ),
+      GoRoute(
+        name: AllahNamesPage.routeName,
+        path: '/allah_names',
+        builder: (context, state) => const AllahNamesPage(),
+      ),
+      GoRoute(
+        name: PrayerTrackerPage.routeName,
+        path: '/prayer_tracker',
+        builder: (context, state) => const PrayerTrackerPage(),
       ),
 
     ],

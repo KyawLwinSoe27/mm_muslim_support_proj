@@ -22,17 +22,27 @@ class _NotificationReportPageState extends State<NotificationReportPage> {
   }
 
   Future<void> _loadNotifications() async {
-    await _notificationService.initNotification();
-    final notifications = await _notificationService.retrievePendingNotificationList();
-    setState(() {
-      _notifications = notifications;
-      _isLoading = false;
-    });
+    try {
+      await _notificationService.initNotification();
+      final notifications = await _notificationService.retrievePendingNotificationList();
+      if (mounted) {
+        setState(() {
+          _notifications = notifications;
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
   }
 
   Future<void> _cancelNotification(int id) async {
-    await _notificationService.cancelNotificationById(id);
-    _loadNotifications(); // refresh list
+    try {
+      await _notificationService.cancelNotificationById(id);
+      _loadNotifications();
+    } catch (_) {}
   }
 
   @override

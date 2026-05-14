@@ -8,24 +8,34 @@ class HijriOffsetCubit extends Cubit<int> {
     return SharedPreferenceService.getHijriOffset() ?? 0;
   }
 
+  bool _pending = false;
+
   void changeOffset(int value) async {
-    await SharedPreferenceService.setHijriOffset(value);
-    emit(value);
+    if (_pending) return;
+    _pending = true;
+    try {
+      await SharedPreferenceService.setHijriOffset(value);
+      emit(value);
+    } finally {
+      _pending = false;
+    }
   }
 
   void increase() {
-    if (state < 2) {
+    if (state < 2 && !_pending) {
       changeOffset(state + 1);
     }
   }
 
   void decrease() {
-    if (state > -2) {
+    if (state > -2 && !_pending) {
       changeOffset(state - 1);
     }
   }
 
   void reset() {
-    changeOffset(0);
+    if (!_pending) {
+      changeOffset(0);
+    }
   }
 }

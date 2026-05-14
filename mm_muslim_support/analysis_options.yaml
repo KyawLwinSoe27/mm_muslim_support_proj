@@ -20,7 +20,6 @@ linter:
     prefer_const_literals_to_create_immutables: true
 
     # Null safety & type checking
-    avoid_returning_null_for_future: true
     avoid_field_initializers_in_const_classes: true
     annotate_overrides: true
     type_annotate_public_apis: true

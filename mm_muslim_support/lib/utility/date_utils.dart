@@ -28,24 +28,26 @@ class DateUtility {
     }
   }
 
-  static DateTime convertTo24HourDateTime(String time12h) {
-    int hour = 0;
-    int minute = 0;
-    time12h.trim();
-    List<String> timeParts = time12h.split(':');
+  static DateTime? convertTo24HourDateTime(String time12h) {
+    final trimmed = time12h.trim();
+    final parts = trimmed.split(':');
+    if (parts.length != 2) return null;
 
-    if (time12h.toLowerCase().contains('pm')) {
-      hour = int.parse(timeParts[0]) + 12;
-    } else {
-      hour = int.parse(timeParts[0]);
+    final hour = int.tryParse(parts[0]);
+    if (hour == null || hour < 1 || hour > 12) return null;
+
+    final minutePart = parts[1].replaceAll(RegExp(r'[^0-9]'), '');
+    final minute = int.tryParse(minutePart);
+    if (minute == null || minute < 0 || minute > 59) return null;
+
+    int adjustedHour = hour;
+    if (trimmed.toLowerCase().contains('pm') && hour < 12) {
+      adjustedHour = hour + 12;
+    } else if (trimmed.toLowerCase().contains('am') && hour == 12) {
+      adjustedHour = 0;
     }
-    List<String> getMinutes = timeParts[1].split(' ');
-
-    minute = int.parse(getMinutes[0]);
 
     final now = DateTime.now();
-
-    // Create a new DateTime with today's date and parsed time
-    return DateTime(now.year, now.month, now.day, hour, minute);
+    return DateTime(now.year, now.month, now.day, adjustedHour, minute);
   }
 }

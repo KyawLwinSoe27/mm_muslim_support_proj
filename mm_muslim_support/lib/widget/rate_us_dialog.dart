@@ -22,10 +22,12 @@ class _RateUsDialogState extends State<RateUsDialog> {
     Navigator.of(context).pop();
 
     if (_rating >= 4) {
-      if (await _inAppReview.isAvailable()) {
-        await _inAppReview.requestReview();
-      } else {
+      // Directly open the store listing instead of in-app review
+      // This guarantees the user is taken directly to the Play Store.
+      try {
         await _inAppReview.openStoreListing();
+      } catch (e) {
+        // Fallback if needed
       }
     } else {
       // Optionally handle feedback for low ratings

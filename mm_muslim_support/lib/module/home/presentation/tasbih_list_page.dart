@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mm_muslim_support/core/routing/context_ext.dart';
 import 'package:mm_muslim_support/model/tasbih_list_model.dart';
-import 'package:mm_muslim_support/module/tasbih/presentations/tasbih_page.dart';
+import 'package:mm_muslim_support/module/tasbih/presentation/tasbih_page.dart';
 import 'package:mm_muslim_support/utility/extensions.dart';
 
 class TasbihListPage extends StatelessWidget {

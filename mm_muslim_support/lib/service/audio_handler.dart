@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:audio_service/audio_service.dart';
@@ -6,9 +7,11 @@ import 'package:audio_session/audio_session.dart';
 import 'package:mm_muslim_support/core/enums/folder.dart';
 import 'package:mm_muslim_support/model/quran_song_model.dart';
 import 'package:mm_muslim_support/service/file_management_service.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
   final AudioPlayer _player = AudioPlayer();
+  StreamSubscription<PlaybackEvent>? _playbackSubscription;
 
   AudioPlayerHandler() {
     _init();
@@ -18,12 +21,15 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
     final session = await AudioSession.instance;
     await session.configure(const AudioSessionConfiguration.music());
 
-    _player.playbackEventStream.listen((event) {
+    _playbackSubscription = _player.playbackEventStream.listen((event) {
       final processingState = _transformState(_player.processingState);
 
-      // if (processingState == AudioProcessingState.completed) {
-      //   _player.seek(Duration.zero); // ✅ Reset to start
-      // }
+      // Manage wakelock based on playing state
+      if (_player.playing && processingState != AudioProcessingState.completed) {
+        WakelockPlus.enable();
+      } else {
+        WakelockPlus.disable();
+      }
 
       playbackState.add(
         PlaybackState(
@@ -116,5 +122,10 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
   Future<void> replay() async {
     await _player.seek(Duration.zero);
     await _player.play();
+  }
+
+  void dispose() {
+    _playbackSubscription?.cancel();
+    _player.dispose();
   }
 }
