@@ -28,6 +28,3 @@ pnpm-debug.log*
 .DS_Store
 .idea/
 .vscode/
-
-# Firebase / secrets
-service-account-key.json
