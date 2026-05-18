@@ -8,9 +8,7 @@ class PrayerTimeGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return BlocProvider(
-      create: (context) => GetPrayerTimeCubit()..fetchPrayerTimes(),
-      child: BlocBuilder<GetPrayerTimeCubit, GetPrayerTimeState>(
+    return BlocBuilder<GetPrayerTimeCubit, GetPrayerTimeState>(
         buildWhen: (prev, current) =>
             current is GetPrayerTimeLoading ||
             current is GetPrayerTimeLoaded ||
@@ -143,7 +141,6 @@ class PrayerTimeGrid extends StatelessWidget {
           }
           return const SizedBox.shrink();
         },
-      ),
-    );
+      );
   }
 }

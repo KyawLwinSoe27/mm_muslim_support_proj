@@ -14,6 +14,7 @@ import 'package:mm_muslim_support/module/home/presentation/tasbih_list_page.dart
 import 'package:mm_muslim_support/module/home/widgets/drawer_widget.dart';
 import 'package:mm_muslim_support/module/home/widgets/today_date_widget.dart';
 import 'package:mm_muslim_support/module/menu/cubit/get_location_cubit/get_location_cubit.dart';
+import 'package:mm_muslim_support/service/analytics_service.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class HomePage extends StatefulWidget {
@@ -27,6 +28,16 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final RefreshController _refreshController = RefreshController(initialRefresh: false);
+
+  static const _tabNames = ['home', 'prayer', 'tasbih', 'history'];
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      AnalyticsService().logScreenView(screenName: 'home');
+    });
+  }
 
   @override
   void dispose() {
@@ -113,7 +124,13 @@ class _HomePageState extends State<HomePage> {
             ),
             child: BottomNavigationBar(
               currentIndex: state,
-              onTap: (index) => context.read<BottomNavigationBarCubit>().changePage(index),
+              onTap: (index) {
+                context.read<BottomNavigationBarCubit>().changePage(index);
+                AnalyticsService().logButtonTap(
+                  buttonName: 'bottom_nav_${_tabNames[index]}',
+                  screenName: 'home',
+                );
+              },
               items: const [
                 BottomNavigationBarItem(icon: Icon(Icons.home_rounded), activeIcon: Icon(Icons.home_rounded), label: 'Home'),
                 BottomNavigationBarItem(icon: Icon(Icons.mosque_rounded), activeIcon: Icon(Icons.mosque_rounded), label: 'Prayer'),

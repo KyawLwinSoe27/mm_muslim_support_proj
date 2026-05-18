@@ -52,6 +52,9 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
             buffered: playbackState.bufferedPosition,
             name: mediaItem?.title,
             currentSurahId: song.number,
+            sourceType: audioHandler.isUsingLocalFile 
+                ? AudioSourceType.local 
+                : AudioSourceType.streaming,
           ),
         );
       }
@@ -70,6 +73,17 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
     }
 
     await audioHandler.setUrl(song);
+    
+    if (!isClosed) {
+      emit(
+        state.copyWith(
+          sourceType: audioHandler.isUsingLocalFile 
+              ? AudioSourceType.local 
+              : AudioSourceType.streaming,
+        ),
+      );
+    }
+    
     _listenToPlaybackState();
     _startPositionTimer();
   }

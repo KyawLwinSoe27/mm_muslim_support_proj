@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+enum AudioSourceType { local, streaming }
+
 class AudioPlayerState extends Equatable {
   final bool isPlaying;
   final Duration position;
@@ -7,6 +9,7 @@ class AudioPlayerState extends Equatable {
   final Duration duration;
   final String name;
   final int currentSurahId;
+  final AudioSourceType sourceType;
 
   const AudioPlayerState({
     required this.isPlaying,
@@ -15,6 +18,7 @@ class AudioPlayerState extends Equatable {
     required this.duration,
     required this.name,
     required this.currentSurahId,
+    this.sourceType = AudioSourceType.streaming,
   });
 
   const AudioPlayerState.initial()
@@ -23,7 +27,8 @@ class AudioPlayerState extends Equatable {
       buffered = Duration.zero,
       name = '',
       currentSurahId = 0,
-      duration = Duration.zero;
+      duration = Duration.zero,
+      sourceType = AudioSourceType.streaming;
 
   AudioPlayerState copyWith({
     bool? isPlaying,
@@ -32,6 +37,7 @@ class AudioPlayerState extends Equatable {
     String? name,
     Duration? duration,
     int? currentSurahId,
+    AudioSourceType? sourceType,
   }) {
     return AudioPlayerState(
       isPlaying: isPlaying ?? this.isPlaying,
@@ -40,6 +46,7 @@ class AudioPlayerState extends Equatable {
       duration: duration ?? this.duration,
       name: name ?? this.name,
       currentSurahId: currentSurahId ?? this.currentSurahId,
+      sourceType: sourceType ?? this.sourceType,
     );
   }
 
@@ -51,5 +58,6 @@ class AudioPlayerState extends Equatable {
     name,
     duration,
     currentSurahId,
+    sourceType,
   ];
 }

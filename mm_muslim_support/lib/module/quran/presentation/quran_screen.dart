@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mm_muslim_support/common/bloc/download_file_bloc/download_file_bloc.dart';
 import 'package:mm_muslim_support/module/quran/cubit/book_mark_cubit/book_mark_cubit.dart';
+import 'package:mm_muslim_support/service/analytics_service.dart';
 import 'package:pdfx/pdfx.dart';
 
 class QuranScreen extends StatefulWidget {
@@ -19,6 +20,14 @@ class _QuranScreenState extends State<QuranScreen> {
   int _currentPage = 1;
   int _totalPages = 0;
   bool _showControls = true;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      AnalyticsService().logScreenView(screenName: 'quran_reader');
+    });
+  }
 
   @override
   void dispose() {
@@ -215,6 +224,11 @@ class _QuranScreenState extends State<QuranScreen> {
               ),
               onPageChanged: (page) {
                 setState(() => _currentPage = page);
+                AnalyticsService().logFeatureUsed(
+                  featureName: 'quran_page_changed',
+                  screenName: 'quran_reader',
+                  additionalParams: {'page': page},
+                );
               },
               onDocumentLoaded: (document) {
                 setState(() => _totalPages = document.pagesCount);

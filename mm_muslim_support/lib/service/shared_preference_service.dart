@@ -171,4 +171,13 @@ class SharedPreferenceService {
     // if you already cache prefs globally use that
     return _prefs?.getInt(_hijriOffsetKey);
   }
+
+  static Future<void> setLastSyncTime(String key, DateTime time) async {
+    await _prefs?.setString(key, time.toIso8601String());
+  }
+
+  static DateTime? getLastSyncTime(String key) {
+    final raw = _prefs?.getString(key);
+    return raw != null ? DateTime.parse(raw) : null;
+  }
 }

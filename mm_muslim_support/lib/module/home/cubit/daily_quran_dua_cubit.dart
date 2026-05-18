@@ -4,8 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mm_muslim_support/model/daily_quran_dua_model.dart';
 
 class DailyQuranDuaCubit extends Cubit<DailyQuranDuaModel> {
+  static const Duration rotationInterval = Duration(seconds: 30);
+
   final List<DailyQuranDuaModel> duaList;
-  late Timer _timer;
+  Timer? _timer;
   final Random _random = Random();
 
   DailyQuranDuaCubit(this.duaList) : super(duaList[0]) {
@@ -13,7 +15,11 @@ class DailyQuranDuaCubit extends Cubit<DailyQuranDuaModel> {
   }
 
   void _startRandomizer() {
-    _timer = Timer.periodic(const Duration(seconds: 30), (_) {
+    if (duaList.length <= 1) {
+      return;
+    }
+
+    _timer = Timer.periodic(rotationInterval, (_) {
       _emitRandom();
     });
   }
@@ -25,7 +31,7 @@ class DailyQuranDuaCubit extends Cubit<DailyQuranDuaModel> {
 
   @override
   Future<void> close() {
-    _timer.cancel();
+    _timer?.cancel();
     return super.close();
   }
 }

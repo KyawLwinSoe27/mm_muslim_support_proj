@@ -19,15 +19,28 @@ class AppDatabase {
 
     return await openDatabase(
       path,
-      version: 2,
+      version: 4,
       onCreate: (db, version) async {
         await db.execute(BookmarkTableSchema.createTable);
         await db.execute(PrayerTimeTableSchema.createTable);
         await db.execute(PrayerTrackerTable.createTable);
+        await db.execute(QuranVersesCacheTable.createTable);
+        await db.execute(DailyDuasCacheTable.createTable);
+        await db.execute(HadithsCacheTable.createTable);
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         if (oldVersion < 2) {
           await db.execute(PrayerTrackerTable.createTable);
+        }
+        if (oldVersion < 3) {
+          await db.execute(QuranVersesCacheTable.createTable);
+          await db.execute(DailyDuasCacheTable.createTable);
+          await db.execute(HadithsCacheTable.createTable);
+        }
+        if (oldVersion < 4) {
+          await db.execute('ALTER TABLE ${QuranVersesCacheTable.tableName} ADD COLUMN ${ContentCacheTable.mmTranslation} TEXT NOT NULL DEFAULT ""');
+          await db.execute('ALTER TABLE ${DailyDuasCacheTable.tableName} ADD COLUMN ${ContentCacheTable.mmTranslation} TEXT NOT NULL DEFAULT ""');
+          await db.execute('ALTER TABLE ${HadithsCacheTable.tableName} ADD COLUMN ${ContentCacheTable.mmTranslation} TEXT NOT NULL DEFAULT ""');
         }
       },
     );

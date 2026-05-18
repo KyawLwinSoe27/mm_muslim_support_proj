@@ -60,14 +60,55 @@ class GlobalMiniPlayer extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          state.name.isNotEmpty ? state.name : currentSong.name,
-                          style: theme.textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: theme.colorScheme.onPrimaryContainer,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                        Row(
+                          children: [
+                            Flexible(
+                              child: Text(
+                                state.name.isNotEmpty ? state.name : currentSong.name,
+                                style: theme.textTheme.titleSmall?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: theme.colorScheme.onPrimaryContainer,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+                              decoration: BoxDecoration(
+                                color: state.sourceType == AudioSourceType.local
+                                    ? Colors.green.withValues(alpha: 0.2)
+                                    : Colors.blue.withValues(alpha: 0.2),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    state.sourceType == AudioSourceType.local
+                                        ? Icons.storage_rounded
+                                        : Icons.cloud_outlined,
+                                    size: 10,
+                                    color: state.sourceType == AudioSourceType.local
+                                        ? Colors.green
+                                        : Colors.blue,
+                                  ),
+                                  const SizedBox(width: 2),
+                                  Text(
+                                    state.sourceType == AudioSourceType.local ? 'Local' : 'Stream',
+                                    style: theme.textTheme.labelSmall?.copyWith(
+                                      fontSize: 9,
+                                      color: state.sourceType == AudioSourceType.local
+                                          ? Colors.green
+                                          : Colors.blue,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                         Text(
                           'Surah ${currentSong.number}',

@@ -1,5 +1,6 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:mm_muslim_support/core/helpers/firebase_availability.dart';
 import 'package:mm_muslim_support/service/function_service.dart';
 import 'package:mm_muslim_support/service/shared_preference_service.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -55,13 +56,33 @@ class LocalNotificationService {
     _isInitialized = true;
   }
 
+  static AndroidNotificationDetails defaultAndroidChannel =
+      const AndroidNotificationDetails(
+        'general_channel',
+        'General Notifications',
+        channelDescription: 'General app notifications',
+        importance: Importance.max,
+        priority: Priority.max,
+        playSound: true,
+        icon: '@drawable/ic_launcher',
+      );
+
+  static DarwinNotificationDetails defaultIOSChannel =
+      const DarwinNotificationDetails();
+
+  NotificationDetails get defaultNotificationDetail => NotificationDetails(
+    android: defaultAndroidChannel,
+    iOS: defaultIOSChannel,
+  );
+
   // Shown an immediate notification
   Future<void> showNotification({
     int id = 0,
     String? title,
     String? body,
+    NotificationDetails? details,
   }) async {
-    await notificationPlugin.show(id, title, body, notificationDetail);
+    await notificationPlugin.show(id, title, body, details ?? defaultNotificationDetail);
   }
 
   static AndroidNotificationDetails androidPlatformChannelSpecifics =
@@ -82,7 +103,7 @@ class LocalNotificationService {
   static DarwinNotificationDetails iOSPlatformChannelSpecifics =
       const DarwinNotificationDetails(sound: 'azan.mp3');
 
-  NotificationDetails notificationDetail = NotificationDetails(
+  NotificationDetails get prayerNotificationDetail => NotificationDetails(
     android: androidPlatformChannelSpecifics,
     iOS: iOSPlatformChannelSpecifics,
   );
@@ -123,14 +144,18 @@ class LocalNotificationService {
         title,
         body,
         scheduledDate,
-        notificationDetail,
+        prayerNotificationDetail,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
         androidScheduleMode: AndroidScheduleMode.alarmClock
       );
-      try { FirebaseCrashlytics.instance.log('Scheduled notification with ID $id at $scheduledDate'); } catch (_) {}
+      if (FirebaseAvailability.isAvailable) {
+        FirebaseCrashlytics.instance.log('Scheduled notification with ID $id at $scheduledDate');
+      }
     } catch (e) {
-      try { FirebaseCrashlytics.instance.log('Scheduled notification with ID $id at $scheduledDate. The error is $e'); } catch (_) {}
+      if (FirebaseAvailability.isAvailable) {
+        FirebaseCrashlytics.instance.log('Scheduled notification with ID $id at $scheduledDate. The error is $e');
+      }
     }
   }
 

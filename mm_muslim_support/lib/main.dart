@@ -2,6 +2,7 @@ import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:mm_muslim_support/core/helpers/firebase_availability.dart';
 import 'package:mm_muslim_support/core/routing/app_router.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:mm_muslim_support/core/themes/theme.dart';
@@ -9,10 +10,13 @@ import 'package:mm_muslim_support/firebase_options.dart';
 import 'package:mm_muslim_support/logic/theme_cubit.dart';
 import 'package:mm_muslim_support/service/audio_handler.dart';
 import 'package:mm_muslim_support/service/background_worker.dart';
+import 'package:mm_muslim_support/service/device_registration_service.dart';
+import 'package:mm_muslim_support/service/fcm_service.dart';
 import 'package:mm_muslim_support/service/local_notification_service.dart';
 import 'package:mm_muslim_support/service/location_service.dart';
 import 'package:mm_muslim_support/service/permission_service.dart';
 import 'package:mm_muslim_support/service/shared_preference_service.dart';
+import 'package:mm_muslim_support/service/analytics_service.dart';
 import 'package:workmanager/workmanager.dart';
 
 import 'package:mm_muslim_support/widget/global_mini_player.dart';
@@ -24,6 +28,8 @@ late final AudioPlayerHandler audioHandler;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  final googleServicesAvailable = await FirebaseAvailability.checkAvailability();
   await Workmanager().initialize(
     callbackDispatcher);
 
@@ -38,9 +44,16 @@ void main() async {
   await PermissionService.requestNotificationPermission();
   await getLocationFromDevice();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  if (googleServicesAvailable) {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+
+    await FcmService().initialize();
+    final fcmToken = await FcmService().getToken();
+    await DeviceRegistrationService().registerDevice(fcmToken: fcmToken);
+    await AnalyticsService().init();
+  }
 
   audioHandler = await AudioService.init(
     builder: () => AudioPlayerHandler(),

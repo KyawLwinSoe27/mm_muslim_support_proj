@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mm_muslim_support/model/tasbih_model.dart';
 import 'package:mm_muslim_support/module/tasbih/cubit/tasbih_counter_cubit.dart';
+import 'package:mm_muslim_support/service/analytics_service.dart';
 import 'package:mm_muslim_support/utility/dialog_utils.dart';
 
 class TasbihPage extends StatefulWidget {
@@ -21,8 +22,8 @@ class _TasbihPageState extends State<TasbihPage> with SingleTickerProviderStateM
   @override
   void initState() {
     super.initState();
-    // Pre-feed the required information to the Cubit when page loads
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      AnalyticsService().logScreenView(screenName: 'tasbih');
       if (mounted) {
         final cubit = context.read<TasbihCounterCubit>();
         cubit.total = widget.tasbih[cubit.state.tasbihIndex].count;
@@ -54,6 +55,7 @@ class _TasbihPageState extends State<TasbihPage> with SingleTickerProviderStateM
     HapticFeedback.lightImpact();
     final cubit = context.read<TasbihCounterCubit>();
     cubit.increment(cubit.state.tasbihIndex);
+    AnalyticsService().logButtonTap(buttonName: 'tasbih_counter_tap', screenName: 'tasbih');
   }
 
   void _onTapCancel() {
@@ -308,6 +310,7 @@ class _TasbihPageState extends State<TasbihPage> with SingleTickerProviderStateM
                     onPressed: () {
                       HapticFeedback.mediumImpact();
                       context.read<TasbihCounterCubit>().reset();
+                      AnalyticsService().logButtonTap(buttonName: 'tasbih_reset', screenName: 'tasbih');
                     },
                     icon: const Icon(Icons.refresh_rounded),
                     iconSize: 32,

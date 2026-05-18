@@ -12,6 +12,9 @@ import 'package:wakelock_plus/wakelock_plus.dart';
 class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
   final AudioPlayer _player = AudioPlayer();
   StreamSubscription<PlaybackEvent>? _playbackSubscription;
+  bool _isUsingLocalFile = false;
+
+  bool get isUsingLocalFile => _isUsingLocalFile;
 
   AudioPlayerHandler() {
     _init();
@@ -72,7 +75,6 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
   }
 
   Future<void> setUrl(QuranSongModel quranSongModel) async {
-    // check in local file
     final Duration? duration;
     final dir = await FileManagementService.getDownloadDirectory(
       Folder.quranRecitation,
@@ -80,23 +82,24 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
     final filePath = '${dir.path}/${quranSongModel.filePath}';
 
     if (await File(filePath).exists()) {
+      _isUsingLocalFile = true;
       duration = await _player.setFilePath(filePath);
     } else {
+      _isUsingLocalFile = false;
       duration = await _player.setUrl(quranSongModel.mp3Url);
     }
 
-    // final duration =  await _player.setUrl(quranSongModel.mp3Url);
     final mediaItem = MediaItem(
       id: quranSongModel.number.toString(),
       album: 'Quran',
-      title: 'Surah ${quranSongModel.name}', // Optionally pass dynamic title
+      title: 'Surah ${quranSongModel.name}',
       duration: duration,
       artUri: Uri.parse(
         'https://drive.google.com/file/d/1q8oD_nKbaYOJhYb0n6sS2W_IcqNBt6DP/view',
-      ), // Optional image
+      ),
     );
 
-    this.mediaItem.add(mediaItem); // ✅ CORRECT — update the stream
+    this.mediaItem.add(mediaItem);
   }
 
   @override

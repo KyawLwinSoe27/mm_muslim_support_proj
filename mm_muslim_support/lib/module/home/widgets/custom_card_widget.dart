@@ -53,12 +53,20 @@ class DailyQuranDuaWidget extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            Text(
-              dailyQuranDuaModel.translation,
-              style: context.textTheme.labelSmall?.copyWith(
-                color: context.colorScheme.onPrimary,
+            if (dailyQuranDuaModel.mmTranslation.isNotEmpty)
+              Text(
+                dailyQuranDuaModel.mmTranslation,
+                style: context.textTheme.labelSmall?.copyWith(
+                  color: context.colorScheme.onPrimary,
+                ),
               ),
-            ),
+            if (dailyQuranDuaModel.mmTranslation.isEmpty)
+              Text(
+                dailyQuranDuaModel.translation,
+                style: context.textTheme.labelSmall?.copyWith(
+                  color: context.colorScheme.onPrimary,
+                ),
+              ),
           ],
         ),
       ),

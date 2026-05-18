@@ -14,9 +14,13 @@ class PermissionService {
     if (Platform.isIOS) {
       return true;
     }
-    GooglePlayServicesAvailability availability =
-        await GoogleApiAvailability.instance
-            .checkGooglePlayServicesAvailability();
-    return availability == GooglePlayServicesAvailability.success;
+    try {
+      GooglePlayServicesAvailability availability =
+          await GoogleApiAvailability.instance
+              .checkGooglePlayServicesAvailability();
+      return availability == GooglePlayServicesAvailability.success;
+    } catch (_) {
+      return false;
+    }
   }
 }

@@ -50,3 +50,62 @@ class PrayerTrackerTable {
     )
   ''';
 }
+
+class ContentCacheTable {
+  static const String id = 'id';
+  static const String firestoreId = 'firestore_id';
+  static const String arabic = 'arabic';
+  static const String translation = 'translation';
+  static const String mmTranslation = 'mm_translation';
+  static const String reference = 'reference';
+  static const String sortOrder = 'sort_order';
+  static const String updatedAt = 'updated_at';
+}
+
+class QuranVersesCacheTable {
+  static const String tableName = 'cached_quran_verses';
+  static const String createTable = '''
+    CREATE TABLE $tableName (
+      ${ContentCacheTable.id} INTEGER PRIMARY KEY AUTOINCREMENT,
+      ${ContentCacheTable.firestoreId} TEXT NOT NULL UNIQUE,
+      ${ContentCacheTable.arabic} TEXT NOT NULL,
+      ${ContentCacheTable.translation} TEXT NOT NULL,
+      ${ContentCacheTable.mmTranslation} TEXT NOT NULL,
+      ${ContentCacheTable.reference} TEXT NOT NULL,
+      ${ContentCacheTable.sortOrder} INTEGER NOT NULL DEFAULT 0,
+      ${ContentCacheTable.updatedAt} TEXT NOT NULL
+    )
+  ''';
+}
+
+class DailyDuasCacheTable {
+  static const String tableName = 'cached_daily_duas';
+  static const String createTable = '''
+    CREATE TABLE $tableName (
+      ${ContentCacheTable.id} INTEGER PRIMARY KEY AUTOINCREMENT,
+      ${ContentCacheTable.firestoreId} TEXT NOT NULL UNIQUE,
+      ${ContentCacheTable.arabic} TEXT NOT NULL,
+      ${ContentCacheTable.translation} TEXT NOT NULL,
+      ${ContentCacheTable.mmTranslation} TEXT NOT NULL,
+      ${ContentCacheTable.reference} TEXT NOT NULL DEFAULT '',
+      ${ContentCacheTable.sortOrder} INTEGER NOT NULL DEFAULT 0,
+      ${ContentCacheTable.updatedAt} TEXT NOT NULL
+    )
+  ''';
+}
+
+class HadithsCacheTable {
+  static const String tableName = 'cached_hadiths';
+  static const String createTable = '''
+    CREATE TABLE $tableName (
+      ${ContentCacheTable.id} INTEGER PRIMARY KEY AUTOINCREMENT,
+      ${ContentCacheTable.firestoreId} TEXT NOT NULL UNIQUE,
+      ${ContentCacheTable.arabic} TEXT NOT NULL,
+      ${ContentCacheTable.translation} TEXT NOT NULL,
+      ${ContentCacheTable.mmTranslation} TEXT NOT NULL,
+      ${ContentCacheTable.reference} TEXT NOT NULL,
+      ${ContentCacheTable.sortOrder} INTEGER NOT NULL DEFAULT 0,
+      ${ContentCacheTable.updatedAt} TEXT NOT NULL
+    )
+  ''';
+}

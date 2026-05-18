@@ -110,13 +110,54 @@ class SurahListenPageContent extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           // Title & Subtitle
-                          Text(
-                            state.name,
-                            textAlign: TextAlign.center,
-                            style: theme.textTheme.headlineMedium?.copyWith(
-                              fontWeight: FontWeight.w800,
-                              color: theme.colorScheme.onSurface,
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Flexible(
+                                child: Text(
+                                  state.name,
+                                  textAlign: TextAlign.center,
+                                  style: theme.textTheme.headlineMedium?.copyWith(
+                                    fontWeight: FontWeight.w800,
+                                    color: theme.colorScheme.onSurface,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                decoration: BoxDecoration(
+                                  color: state.sourceType == AudioSourceType.local
+                                      ? Colors.green.withValues(alpha: 0.2)
+                                      : Colors.blue.withValues(alpha: 0.2),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      state.sourceType == AudioSourceType.local
+                                          ? Icons.storage_rounded
+                                          : Icons.cloud_outlined,
+                                      size: 14,
+                                      color: state.sourceType == AudioSourceType.local
+                                          ? Colors.green
+                                          : Colors.blue,
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      state.sourceType == AudioSourceType.local ? 'Local' : 'Streaming',
+                                      style: theme.textTheme.labelSmall?.copyWith(
+                                        color: state.sourceType == AudioSourceType.local
+                                            ? Colors.green
+                                            : Colors.blue,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 8),
                           Text(
